@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <link rel="stylesheet" href="index/css/main.css">
+  <link rel="stylesheet" href="index/js/swiper/css/swiper.min.css">
+  <link rel="stylesheet" href="../css/mui.min.css">
+  <script src="index/js/flexible.js"></script>
+  <script src="index/js/swiper/js/swiper.min.js"></script>
+  <script src="index/js/jquery-3.3.1.min.js"></script>
+  <script src="../js/API.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../js/mui.min.js"></script>
+  <title>个人中心</title>
+  <style>
+    .personalCenter ul.information li a span {
+      font-size: 16px;
+    }
+
+    .personalCenter .header .content .info {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .personalCenter .header .content .info span {
+      margin-right: 5px;
+      margin-top: 5px;
+    }
+
+    .personalCenter .header .content {
+      flex: 1;
+    }
+
+    footer ul li a p {
+      line-height: 24px;
+      font-size: 12px;
+    }
+
+    #alert {
+      position: fixed;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      font-size: 14px;
+      padding: 4px 6px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="personalCenter">
+    <div class="header">
+      <div class="content">
+        <div class="name" id="name">暂无</div>
+        <div class="phone" id="phone">暂无</div>
+        <div class="info" id="deptjob">
+
+        </div>
+      </div>
+      <div class="headerPhoto">
+        <!--<img class="photo" src="index/images/头像@2x.png" alt="" />-->
+        <img class="photo" id="photo" src="http://47.101.195.208:10000/userInfo.png" alt="" />
+        <!--<img class="icon" src="index/images/编辑个人自留@2x.png" alt="" />-->
+      </div>
+    </div>
+    <ul class="information">
+      <li>
+        <a href="javascript:void(0)" onclick="window.location.href='person/changInfo.html'">
+          <div class="img">
+            <img src="index/images//个人信息@2x.png" alt="" />
+          </div>
+          <span>个人信息</span>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:void(0)" onclick="window.location.href='../../g60kc/kejiyouyou/personal.html'">
+          <div class="img">
+            <img src="index/images/我的优优@2x.png" alt="" />
+          </div>
+          <span>我的优优</span>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:void(0)" onclick="window.location.href='person/myservernew.html'">
+          <div class="img">
+            <img src="index/images/我的服务@2x.png" alt="" />
+          </div>
+          <span>我的服务</span>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:void(0)" onclick="window.location.href='person/recommend.html'">
+          <div class="img">
+            <img src="index/images/我的推荐@2x.png" alt="" />
+          </div>
+          <span>我的推荐</span>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:void(0)" onclick="window.location.href='person/favorite.html'">
+          <div class="img">
+            <img src="index/images/收藏夹@2x.png" alt="" />
+          </div>
+          <span>收藏夹</span>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:void(0)" onclick="window.location.href='person/hobbySetting.html'">
+          <div class="img">
+            <img src="index/images/兴趣设置@2x.png" alt="" />
+          </div>
+          <span>兴趣设置</span>
+        </a>
+      </li>
+      <li>
+        <a>
+          <div class="img">
+            <img src="../images/g60/hotphone.png" alt="" />
+          </div>
+          <span onclick="call('400-920-5940')" href="tel:400-920-5940">服务热线</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div id="alert" style="display: none">
+    <span>请拨打： 400-920-5940</span>
+  </div>
+
+  <footer>
+    <ul class="clearfix">
+      <li class="">
+        <a href="../html/index.html">
+          <div class="img">
+            <img src="index/images/微信图片_20190415090810.png" alt="" />
+          </div>
+          <p>首页</p>
+        </a>
+      </li>
+      <li class="">
+        <a href="../../g60kc/kejiyouyou/index.html">
+          <div class="img">
+            <img src="index/images/kejiyouyou2.png" alt="">
+          </div>
+          <p>科技优优</p>
+        </a>
+      </li>
+      <li class=" ">
+        <a href="more.html">
+          <div class="img">
+            <img src="index/images/所有服务@2x.png" alt="" />
+          </div>
+          <p>所有服务</p>
+        </a>
+      </li>
+      <li class="active">
+        <a href="#">
+          <div class="img">
+            <img src="index/images/个人中心高亮@2x.png" alt="" />
+          </div>
+          <p>个人中心</p>
+        </a>
+      </li>
+    </ul>
+  </footer>
+  <script type="text/javascript">
+    var dataid = localStorage.getItem("userID");
+    $.ajax({
+      url: ip + "personcentre/info",
+      type: 'post',
+      data: {
+        userId: dataid
+      },
+      dataType: "json",
+      success: function (data) {
+        
+          if (isEmpty(data.content.ext1)) {
+            $("#photo").attr("src", "http://47.101.195.208:10000/userInfo.png");
+          } else {
+            $("#photo").attr("src", data.content.ext1);
+          }
+          $("#name").html(data.content.name);
+          $("#phone").html(data.content.mobile);
+          //储存手机号
+          localStorage.setItem("mobile", data.content.mobile);
+
+
+          if (!isEmpty(data.content.deptName)) {
+            var arr = data.content.deptName.split(",");
+            for (var i = 0; i < arr.length; i++) {
+              $("#deptjob").append("<span id='dept'>" + arr[i] + "</span>");
+            }
+          }
+          if (!isEmpty(data.content.title)) {
+            $("#deptjob").append("<span id='job'>" + data.content.title + "</span>");
+          }
+        
+
+
+      }, error: function (msg) {
+        console.log(msg)
+      }
+    });
+
+    function isEmpty(obj) {
+      if (typeof obj == "undefined" || obj == null || obj == "") {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    function alertMsg() {
+      $('#alert')
+        .fadeToggle()
+        .delay(2000)
+        .fadeToggle();
+    }
+
+
+    function showAndriod() {
+      if (!localStorage.getItem("token")) {
+        location.href = "http://kzcloud.g60.kechuang.cn/g60-h5/html/login.html";
+      }
+
+    }
+
+    function call(tel) {
+      var u = navigator.userAgent;
+      if (u.toLowerCase().indexOf("androidapp") !== -1) {
+        window.android.callTel(tel);
+      }
+    }
+
+  </script>
+</body>
+
+</html>

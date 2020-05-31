@@ -1,0 +1,351 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="format-detection" content="email=no"/>
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <link rel="stylesheet" href="../../css/popup.css">
+    <link rel="stylesheet" href="../../css/popup.css">
+
+    <script src="../../js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/swiper-4.3.5.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/common.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/API.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/flexible.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../html/index/js/flexible.js"></script>
+    <script src="../../laydate/laydate.js" type="text/javascript" charset="utf-8"></script>
+    <title>院士详情</title>
+    <style>
+        .model .content .header > p {
+            margin-bottom:0;
+        }
+        .model .content .header input {
+            margin-bottom:0;
+        }
+        .topContent {
+            padding-top: 32px;
+            /*border-bottom: 5px solid #eee;*/
+        }
+
+        .mainCon {
+            padding: 10px 15px;
+        }
+
+        .fix {
+            overflow: hidden;
+        }
+
+        .topImg {
+            width: 120px;
+        }
+
+        .fl {
+            float: left;
+        }
+
+        img {
+            border: 0;
+        }
+
+        .topContent .des {
+            margin-left: 10px;
+        }
+
+        .fr {
+            float: right;
+        }
+
+        .topContent p.til {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .topContent p {
+            color: #999;
+        }
+
+        p {
+            line-height: 24px;
+        }
+
+        .topContent p {
+            color: #999;
+        }
+
+        p {
+            line-height: 24px;
+        }
+
+        p {
+            font-size: 14px;
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #8f8f94;
+        }
+
+        .compDetailsBox .tab {
+            /*border-bottom: 1px solid #eee;*/
+            overflow: hidden;
+        }
+
+        .compDetailsBox .tab div:first-child {
+            border-right: 1px solid #eee;
+        }
+
+        .preBtn {
+            width: 220px;
+            text-align: center;
+            height: 42px;
+            line-height: 42px;
+            color: #fff;
+            clear: both;
+            background: #507cad;
+            font-size: 16px;
+            margin: 25px auto 10px;
+        }
+
+        .fl {
+            float: left;
+        }
+
+        .compDetailsBox .tab span.active {
+            /*border-bottom: 3px solid #507cad;*/
+        }
+
+        .compDetailsBox .tab span {
+            display: block;
+            width: 68%;
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+            padding: 10px 0;
+            margin: 0 auto;
+        }
+
+        .mainCon {
+            padding: 10px 15px;
+        }
+
+        .basicInfo .til {
+            padding-bottom: 10px;
+        }
+
+        p {
+            line-height: 24px;
+        }
+
+        p {
+            font-size: 14px;
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #8f8f94;
+        }
+
+        .basicInfo .content {
+            /*border-top: 1px solid #eee;*/
+            /*border-bottom: 1px solid #eee;*/
+            padding: 10px 0;
+        }
+
+        .basicInfo .des {
+            padding-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<div id="app">
+    <div class="fix topContent mainCon">
+        <input type="hidden" id="id" name="id" value="240">
+        <div class="fix" id="count"><img v-bind:src="image"   onerror="javascript:this.src='http://47.101.195.208:10000/ImageNotFound.png';" class="topImg fl" >
+            <div class="fr des" style="width: 60%"><p class="til" v-html="name"></p>
+                <p>专业：<span v-html="professional"></span></p>
+                <p>职位：<span v-html="job"></span></p></div>
+        </div>
+    </div>
+    <div class="compDetailsBox">
+        <div class="tab">
+<!--            <div class="preBtn" onclick="">我要预约</div>-->
+            <div style="width: calc(100% - 1px);" class="fl">
+                <span class="active" onclick="changeTab(this,0)">基本信息</span>
+            </div>
+
+        </div>
+        <div class="basicInfo detailsInfo mainCon" id="detail"><p class="til">服务：<span v-html="service"></span></p>
+            <div class="des"><p>介绍：<span v-html="information"></span></p></div>
+        </div>
+
+    </div>
+</div>
+<!------- 我要咨询弹窗-------- -->
+<div class="model" style="display:none">
+    <div class="content">
+        <div class="header">
+            <p class="title">姓名</p>
+            <input id="applyUserName" type="text" placeholder="姓名">
+            <p class="phone">联系电话</p>
+            <input id="applyUserPhone" type="number" placeholder="">
+            <p >电子邮箱</p>
+            <input id="applyUserEmail" type="email" >
+            <p >留言信息</p>
+            <input id="applyUserRemark" type="text" placeholder="留言">
+            <p>申请服务开始时间</p>
+            <input readonly="readonly" type="text" id="startTime" placeholder="请选择开始时间"
+                   style="border: 0px;width:50%"/>
+            <p>申请服务结束时间</p>
+            <input readonly="readonly" type="text" id="endTime" placeholder="请选择结束时间"
+                   style="border: 0px;width:50%"/>
+        </div>
+        <div class="button">
+            <div onclick="closeModel()" class="leftBtn">取消</div>
+            <div onclick="submit_qr()" class="rightBtn">确定</div>
+        </div>
+    </div>
+</div>
+<!--  <div class="bottomBtn">
+    <p style="color: white">我要预约</p>
+</div>  -->
+</body>
+
+</html>
+
+<script src="../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+
+<script>
+    var nowDate="";
+    $(function(){
+        var myDate = new Date;
+        var year = myDate.getFullYear();//获取当前年
+        var yue = myDate.getMonth()+1;//获取当前月
+        if (yue<10){
+            yue="0"+yue;
+        }
+        var date = myDate.getDate();//获取当前日
+        nowDate=year+"-"+yue+"-"+date;
+    })
+    var datas = "";
+    var data = {id: localStorage.getItem("data-id")}
+    window.onload = function () {
+        function getList() {
+            apiAjax("academician/getDetailInfo", data)
+//            console.log(API_result)
+            datas = API_result.content;
+            var app = new Vue({
+                el: '#app',
+                data: datas,
+            })
+        }
+
+        getList();
+    }
+
+
+    $(function() {
+
+        $('.bottomBtn p').click(function() {
+            $('#applyUserName').val(localStorage.getItem("Dingname"));
+            $('#applyUserPhone').val(localStorage.getItem("Dingmobile"))
+            $('.model').fadeToggle()
+        })
+
+    })
+
+    function closeModel() {
+        $('.model').hide();
+    }
+
+    var submitCount=0;
+    function submit_qr() {
+        if (submitCount > 0) {
+            mui.toast("请勿重新提交！")
+            return;
+        }
+        var userId=localStorage.getItem("userID");
+        if(userId==null||userId==""){
+            userId="123";
+        }
+        // var userId = "123"  //钉钉表用户ID
+
+        var dataId = localStorage.getItem("data-id"); //数据id
+
+        var applyUserName = $('#applyUserName').val();
+        var applyUserPhone = $('#applyUserPhone').val();
+        var applyUserEmail = $('#applyUserEmail').val();
+        var applyUserRemark = $('#applyUserRemark').val();
+
+        var startTime =$("#startTime").val();
+        var endTime =$("#endTime").val();
+
+
+        if (applyUserName == null || applyUserName == "") {
+            mui.toast("联系人姓名不能为空")
+            return;
+        }
+
+        if (applyUserPhone == null || applyUserPhone == "") {
+            mui.toast("联系电话不能为空")
+            return;
+        }
+
+        if (startTime==null||startTime==""){
+            mui.toast("开始时间不能为空")
+            return;
+        }
+
+        if (endTime==null||endTime==""){
+            mui.toast("结束时间不能为空")
+            return;
+        }
+
+        if (startTime<nowDate||startTime>endTime) {
+            mui.toast("开始时间和结束时间选择不合理")
+            return;
+        }
+
+
+        var requestData = {
+            userId: userId,
+            serviceName: '院士服务申请',
+            type: "10",
+            tableName: "zygx_academician",
+            tableId: dataId,
+            name: applyUserName,
+            mobile: applyUserPhone,
+            email: applyUserEmail,
+            content: applyUserRemark,
+            ext1:startTime,
+            ext2:endTime,
+            ext4:localStorage.getItem("DduserId")
+        }
+        apiAjax("serverapp/save", requestData);
+        if (API_result.code == 0) {
+            submitCount++;
+            mui.toast("提交成功")
+            closeModel()
+        } else {
+            if(API_result.tag!=""){
+                mui.toast(API_result.tag)
+            }else{
+                mui.toast("提交失败，请稍后重试！")
+            }
+        }
+    }
+
+    laydate.render({
+        elem: '#startTime'
+    });
+    laydate.render({
+        elem: '#endTime'
+    });
+
+</script>
+
+
+
+

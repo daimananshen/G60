@@ -1,0 +1,24 @@
+#list_cc .userItem{ margin-top: 0;}
+#list_cc .userItem>div{ margin: 0; padding: 10px;position: relative;}
+#list_cc .container .arrow_cc{ width: 8px; height: 13px; background: url(../images/cc/right.png) right center no-repeat; background-size:100% 100%; right: 10px; top:50%; margin-top: -6.5px; position: absolute; }
+
+#list_cc .container.list_cc .arrow_cc{ width: 13px; height: 8px; background: url(../images/cc/xia.png) right center no-repeat; background-size:100% 100%; right: 10px; top:50%; margin-top: -4px; position: absolute; }
+#list_cc .container.list_cc.on .arrow_cc{ background: url(../images/cc/shang.png) right center no-repeat; background-size:13px 8px;}
+#list_cc .list_cc_con{display: none}
+#list_cc ul{ padding-bottom: 10px; overflow: hidden;    border-bottom: 1px solid #eee; padding: 0 0px 10px 10px; display: flex;flex-wrap:wrap;justify-content:flex-start}
+#list_cc ul li{ width: 30%; line-height: 40px; text-align: center;background:rgba(242,242,242,1);border-radius:5px; margin-top: 10px; margin-right: 3.33%; }
+#list_cc ul li a{color: #4A4A4A; display: block; line-height: 40px; text-align: center; }
+
+.table_cc{ margin: 10px 10px 0; background: #fff;}
+.table_cc tr td{ padding: 10px; vertical-align: middle;}
+.table_cc td h1{ text-align: left; font-size: 15px; color: #4A4A4A; line-height: 24px;}
+.table_cc td p{ text-align: left; font-size: 12px; color: #9B9B9B; line-height: 20px;}
+
+
+.box_cc{ width: 44%; float: left; margin:10px 1%; border: 1px solid #ccc; padding: 5px;}
+.item-attributes{ overflow: hidden; zoom:1; padding: 5px;}
+.item-price{ float: left;}
+.item-location{float: right;}
+.item-brief-desc{ line-height: 20px; font-size: 14px;  color: #666; overflow : hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 4;-webkit-box-orient: vertical; min-height: 80px;}
+.item-pub-info{ overflow: hidden; zoom:1;}
+.item-price em{ font-weight: 700; font-size: 14px; color: #f40;}

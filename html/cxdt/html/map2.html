@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>创新地图检索</title>
+    <!--<link rel="stylesheet" href="../css/map.css">-->
+    <link rel="stylesheet" href="../../kpfw/css/mapupdate.css?id=6">
+    <script src="../../kpfw/js/flexible.js"></script>
+    <script src="../../../js/mui.min.js"></script>
+    <script src="../../kpfw/js/jquery-3.3.1.min.js"></script>
+    <script src="../../../js/API.js"></script>
+    <style>
+
+        .info {
+            padding: 8px 12px;
+            /*margin-bottom: 1rem;*/
+            /*border-radius: .25rem;*/
+            position: fixed;
+            top: 45px;
+            background-color: white;
+            width: auto;
+            /*min-width: 22rem;*/
+            border-width: 0;
+            right: 20px;
+            box-shadow: 0 2px 6px 0 rgba(114, 124, 245, .5);
+            z-index: 1000;
+            border-radius:10px;
+
+        }
+        #centerCoord {
+            display: flex;
+            flex-direction: column;
+        }
+        #centerCoord button.active {
+            background-color: #1975FF;
+            color: #fff;
+            border: 1px solid  #1975FF;
+        }
+        #centerCoord button {
+            color: #111213;
+            border: 1px solid  #ccc;
+            font-size: 18px;
+            padding: 6px;
+            border-radius:6px;
+
+        }
+        #centerCoord #fuhua{
+            margin: 10px 0px;
+        }
+
+    </style>
+
+</head>
+    
+<body>
+<div class="container_map">
+    <div class="info">
+        <div id="centerCoord">
+            <button id="zhongchuang" class="active">众创空间</button>
+            <button id="fuhua">孵化器</button>
+            <button id="yanjiu">研究平台</button>
+        </div>
+        <div id="tips"></div>
+    </div>
+    <p class="title">
+        <span></span>
+        <span>创新地图检索</span>
+    </p>
+    <div class="content">
+        <div class="map">
+            <div class="img">
+                <img src="../../kpfw/images/newmapimg.png" alt="">
+            </div>
+            <a href="#" class="hefei" onclick="openMyPage('合肥')">
+                    <span>合肥(<span id="hefei">0</span>家)<span></span>
+            </a>
+            <a href="#" class="wuhu" onclick="openMyPage('芜湖')">
+                    <span>芜湖(<span id="wuhu">0</span>家)<span></span>
+            </a>
+            <a href="#" class="xuancheng" onclick="openMyPage('宣城')">
+                    <span>宣城(<span id="xuancheng">0</span>家)<span></span>
+            </a>
+            <a href="#" class="suzhou" onclick="openMyPage('苏州')">
+                    <span>苏州(<span id="suzhou">0</span>家)<span></span>
+            </a>
+            <a href="#" class="shanghai" onclick="openMyPage('上海')">
+                    <span>上海(<span id="shanghai">0</span>家)<span></span>
+            </a>
+            <a href="#" class="jaixing" onclick="openMyPage('嘉兴')">
+                    <span>嘉兴(<span id="jaixing">0</span>家)<span></span>
+            </a>
+            <a href="#" class="huzhou" onclick="openMyPage('湖州')">
+                    <span>湖州(<span id="huzhou">0</span>家)<span></span>
+            </a>
+            <a href="#" class="hangzhou" onclick="openMyPage('杭州')">
+                    <span>杭州(<span id="hangzhou">0</span>家)<span></span>
+            </a>
+            <a href="#" class="jinhua" onclick="openMyPage('金华')">
+                    <span>金华(<span id="jinhua">0</span>家)<span></span>
+            </a>
+
+        </div>
+
+    </div>
+</div>
+</body>
+<script>
+    $("#centerCoord > button").click(function() {
+        $(this).addClass('active').siblings().removeClass('active')
+        console.log(1111)
+    })
+    var type=0; //类型。0/众创控件，1/孵化器，2/研究平台
+    $(function () {
+        //初始化获取G60城市科普机构数量
+            reloadMap();
+           getCount(0);
+        $("#zhongchuang").click(function(){
+            reloadMap();
+            getCount(0);
+            type=0;
+        });
+        $("#fuhua").click(function(){
+            reloadMap();
+            getCount(1);
+            type=1;
+        });
+        $("#yanjiu").click(function(){
+            reloadMap();
+            getCount(2);
+            type=2;
+        });
+    })
+    function openMyPage(page) {
+        //得到的数据
+        localStorage.removeItem("mapCity")
+        switch (type) {
+            case 0:
+                localStorage.setItem("mapCity",page);
+                window.location.href='../../zygx/zygxInnovationCarrier0.html';
+                break;
+            case 1:
+                localStorage.setItem("mapCity",page);
+                window.location.href='../../zygx/zygxInnovationCarrier1.html';
+                break
+            case 2:
+                localStorage.setItem("mapCity",page);
+                window.location.href='../../zygx/zygxInnovationCarrier2.html';
+                break;
+        }
+    }
+    function getCount(type){
+        $.ajax({
+            type: 'post',
+            url: ip+'innovationCarrier/getCountByCity',
+            data: {
+                type: type
+            },
+            success: function (data) {
+                var listData = data.content;
+                for(var i=0;i<listData.length;i++){
+                    switch (listData[i].key) {
+                        case "合肥":
+                            $("#hefei").text(listData[i].value)
+                            break;
+                        case "芜湖":
+                            $("#wuhu").text(listData[i].value)
+                            break;
+                        case "宣城":
+                            $("#xuancheng").text(listData[i].value)
+                            break;
+                        case "苏州":
+                            $("#suzhou").text(listData[i].value)
+                            break;
+                        case "上海":
+                            $("#shanghai").text(listData[i].value)
+                            break;
+                        case "嘉兴":
+                            $("#jaixing").text(listData[i].value)
+                            break;
+                        case "湖州":
+                            $("#huzhou").text(listData[i].value)
+                            break;
+                        case "杭州":
+                            $("#hangzhou").text(listData[i].value)
+                            break;
+                        case "金华":
+                            $("#jinhua").text(listData[i].value)
+                            break;
+
+                    }
+                }
+            },
+            error: function (e) {
+                console(JSON.stringify(e))
+            }
+        });
+    }
+        function reloadMap() {
+            $("#hefei").text('0');
+            $("#wuhu").text('0');
+            $("#xuancheng").text('0');
+            $("#suzhou").text('0');
+            $("#shanghai").text('0');
+            $("#jaixing").text('0');
+            $("#huzhou").text('0');
+            $("#hangzhou").text('0');
+            $("#jinhua").text('0');
+        }
+
+
+</script>
+
+</html>

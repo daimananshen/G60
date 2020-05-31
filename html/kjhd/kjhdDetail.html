@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+    <title>科技活动详情</title>
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <link rel="stylesheet" href="../detail/css/activity.css">
+     <script src="../detail/js/flexible.js"></script>
+    <script src="../detail/js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/API.js" type="text/javascript" charset="utf-8"></script>
+    <!--禁止表情-->
+    <script src="../../js/emojiInput.js"></script>
+</head>
+    
+<body>
+
+    <div class="container_activity" id="app">
+        <div class="headerImg">
+            <img :src="image1" alt="">
+            <span v-html="name"></span>
+        </div>
+        <div class="content">
+            <div class="time">
+                <img src="../detail/images/微信图片_20190419134130.png" alt="">
+                 <span>活动时间：</span>
+                <p><span v-html="beginDate"></span>至<span  v-html="endDate"></span >
+                    <span v-if="status == 0 ">未开始</span>
+                    <span v-if="status == 1 " style="color: #2ecc71">已开始</span>
+                    <span v-if="status == 2 " style="color: #c9e2b3">已结束</span>
+                </p>
+            </div>
+            <div class="address">
+                <img src="../detail/images/微信图片_20190419134114.png" alt="">
+                <span v-html="address">活动地点：</span>
+                <p></p>
+            </div>
+            <div class="mind">
+                <img src="../detail/images/微信图片_20190419134125.png" alt="">
+                <div style="width:200px">注意事项：</div>
+                <p>
+                    <span v-html="notice"></span>
+                </p>
+                <input type="hidden" id="scienceActivityId"  v-bind:value="id">
+            </div>
+        </div>
+        <!-- 添加的html -->
+        <div class="details" v-html="content">
+        </div>
+    </div>  
+    <!-- 立即报名弹窗-------------- -->
+    <div class="model" style="display:none" id="apps">
+        <div class="content">
+            <div class="header">
+                    <p class="title">参与成员</p>
+                    <input type="text" placeholder="姓名" id="name" maxlength="9" disabled>
+                    <input type="number" placeholder="年龄" id="age" maxlength="3">
+                    <p class="phone">联系电话</p>
+                    <input type="number" placeholder=请输入联系电话 id="tel" maxlength="11" disabled>
+                    <p >电子邮箱</p>
+                    <input type="email"  id="email" maxlength="40">
+            </div>
+            <div class="button">
+                <div class="leftBtn" onclick="closeModel()">取消</div>
+                <div class="rightBtn" onclick="submit_qr()">确定</div>
+            </div>
+        </div> 
+    </div>
+
+    <div class="bottomBtn">
+            <p style="color: #ffffff">立即报名</p>
+    </div>
+  <script>
+      $('#name').val(localStorage.getItem("Dingname"));
+      $('#tel').val(localStorage.getItem("Dingmobile"))
+
+      function submit_qr() {
+
+          var  re = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/
+          if(re.test($("#email").val())){
+
+          }else{
+              mui.alert("邮箱格式错误");
+              return
+          }
+          var data={name:$("#name").val(),scienceActivityId:$("#scienceActivityId").val(),age:$("#age").val(),tel:$("#tel").val(),email:$("#email").val(),userId:localStorage.getItem("userID")};
+          apiJsonAjax("ScienceActivityUser/add", JSON.stringify(data))
+
+          mui.toast(API_result.content)
+          $('.model').fadeToggle();
+      }
+
+
+      function getByNameAndTel() {
+          apiAjax("ScienceActivityUser/getByNameAndTel",{scienceActivityId:$("#scienceActivityId").val(),tel:$("#tel").val()})
+//            console.log(API_result)
+          getByTel=API_result.content;
+
+          $("#name").val(getByTel.name)
+          $("#age").val(getByTel.age)
+          $("#tel").val(getByTel.tel)
+          $("#email").val(getByTel.email)
+      }
+      function closeModel() {
+          $('.model').hide();
+      }
+
+      $(function() {
+
+        $('.bottomBtn p').click(function() {
+            $('.model').fadeToggle()
+            getByNameAndTel()
+        })
+
+      })
+
+      var datas="";
+      var getByTel="";
+      var data={id: localStorage.getItem("data-id")}
+      window.onload=function () {
+          function getList() {
+              apiAjax("ScienceActivity/getById",data)
+//            console.log(API_result)
+              datas=API_result.content;
+              if(datas.status==0){
+//                  $(".bottomBtn").hide()
+              }
+              if(datas.status==1){
+
+              }
+              if(datas.status==2){
+                  $(".bottomBtn").hide()
+              }
+          }
+
+          getList();
+          var app = new Vue({
+              el: '#app',
+              data: datas,
+          })
+      }
+
+
+
+
+
+  </script>
+</body>
+
+</html>

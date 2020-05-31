@@ -1,0 +1,156 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title></title>
+    <link rel="stylesheet" href="../css/font-awesome-4.7.0/css/font-awesome.min.css">
+    <script src="../js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/vue.min.js"></script>
+</head>
+<style lang="less" scoped>
+    body {
+        background: #F0F0F0;
+        margin: 0;
+    }
+
+    .todayDate {
+        text-align: center;
+        margin-top: 1rem;
+    }
+
+    .message {
+        margin: 1rem;
+        background: #FFFFFF;
+        border: 1px solid #DDDDDD;
+        border-radius: 0.2rem;
+    }
+
+    .message ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    .message ul li {
+        list-style: none;
+    }
+
+    .message ul .title {
+        margin: 1rem 1rem 0;
+        font-size: 1rem;
+        color: #333333;
+    }
+
+    .tips {
+        margin: 0 1rem 0;
+        font-size: 0.8rem;
+        color: #999999;
+        line-height: 2.4rem;
+    }
+
+    .line {
+        border: 0.5px solid #DDDDDD;
+        width: 100%;
+    }
+
+    .look {
+        margin: 0.2rem 1rem;
+        font-size: 0.8rem;
+        color: #333;
+        line-height: 2.4rem;
+    }
+
+    .message li.look:after {
+        content: "\f105";
+        font-size: .9375rem;
+        color: #a0a0a0;
+        right: .8125rem;
+    }
+
+    .message li.look:after {
+        display: block;
+        font-family: 'FontAwesome';
+        line-height: 2rem;
+        top: 50%;
+        float: right;
+        margin-right: 75%;
+        margin-top: 0.2rem;
+    }
+
+    .look a {
+        text-decoration: none;
+        color: #333;
+    }
+</style>
+
+<body>
+    <div class="main" id="messageDetail">
+        <div v-for="item in lists">
+            <div class="todayDate">{{item.pushTime}}</div>
+            <div class="message">
+                <ul>
+                    <li class="title">{{item.content}}</li>
+                    <li class="tips">点击查看，请及时回复，机不可失哦！</li>
+                    <li class="line"></li>
+                    <li class="look"><a :href="item.urlMobile">查看详情</a></li>
+                </ul>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+        
+
+    </div>
+
+
+</body>
+
+<script>
+    // 创建vue实例化对象
+    var vm = new Vue({
+        el: '#messageDetail',
+        data: {
+            // 数据创建
+            lists: [],
+        },
+        methods: {
+            // 创建方法函数
+            getMessage() {
+                let that = this;
+                var token = localStorage.getItem("token");
+                var phoneNumber = localStorage.getItem("phoneNum");
+                var moduleName = localStorage.getItem("secondaryModule");
+
+                if (moduleName == "科技优优") {
+                    document.title = '科技优优';
+                } else if (moduleName == "新闻通告") {
+                    document.title = '新闻通告';
+                } else if (moduleName == "活动推荐") {
+                    document.title = '活动推荐';
+                } else {
+                    document.title = '受理通知';
+                }
+
+                $.ajax({
+                    type: "get",
+                    url: "http://kzcloud.g60.kechuang.cn/api/message/push/listByModule?moduleName=" + moduleName + "&phoneNumber=" + phoneNumber,
+                    async: false,
+                    headers:{Authorization: 'Bearer ' + token},
+                    success: function (response) {
+                        if (response.code == 200) {
+                            that.lists = response.result;
+                        }
+                    }, error: function (msg) {
+                    }
+                });
+            }
+        },
+        mounted() {
+            // 页面初始化调用
+            this.getMessage();
+        },
+    })
+
+</script>
+
+</html>

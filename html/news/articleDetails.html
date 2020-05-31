@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="format-detection" content="email=no" />
+	<link rel="stylesheet" href="../../css/mui.min.css">
+	<link rel="stylesheet" type="text/css" href="../../css/main.css" />
+	<link rel="stylesheet" type="text/css" href="../../css/font-awesome-4.7.0/css/font-awesome.css" />
+	<script src="../../js/vue.min.js"></script>
+	<script src="../../js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/common.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/API.js" type="text/javascript" charset="utf-8"></script>
+	<title>新闻详情</title>
+	<style>
+		img {
+			vertical-align: middle;
+			width: 80%;
+		}
+
+		.header {
+			position: fixed;
+			width: 100%;
+		}
+	</style>
+</head>
+
+<body style="background: #fff;">
+	<div id="app">
+		<div class="articalDetails marB70 container" style="margin-top: -44px;">
+			<p class="til" v-html="title">
+
+			</p>
+			<div class="updateTime">
+				<span>更新时间：</span>
+				<span v-html="ext2.substring(0,10)"></span>
+				<div style="float: right">
+					<i class="fa fa-heart-o fa-2g " id="starIcon" aria-hidden="true" style="color: orange"
+						onclick="star()"></i>
+					<span id="sc">收藏</span>
+				</div>
+			</div>
+			<div v-html="content">
+
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+
+
+	var strItem;
+	var cmsId = getQueryString("cmsId");
+	var userID = localStorage.getItem("userID");
+	//var userID = localStorage.getItem("userID");
+	$.ajax({
+		//url: "http://47.101.195.208/ht/cms/getCmsNewsById",
+		url: ip + "cms/getCmsNewsById",
+		type: 'post',
+		data: {
+			cmsId: cmsId
+		},
+		dataType: "json",
+		success: function (data) {
+
+			strItem = data.data;
+			new Vue({
+				el: "#app",
+				data: strItem,
+
+			})
+			
+			//前端自己定义方法,从接口中获取数据传入方法
+			toShareInfoAndroid(strItem)
+
+		}, error: function (msg) {
+			console.log(msg)
+		}
+	});
+
+
+	function toShareInfoAndroid(strItem) {
+		// 判断是否为安卓端（否则会报错）
+	
+		var u = navigator.userAgent;
+		if(u.toLowerCase().indexOf("androidapp") !== -1||u.toLowerCase().indexOf("iosapp") !== -1){
+			var imgUrl = "";
+			if(strItem.previewImage == ""){
+				imgUrl = "";
+			}else{
+				imgUrl = strItem.previewImage;
+			}
+
+			var obj = {
+				title: strItem.title,
+				imgUrl: imgUrl,
+				path: window.location.href
+			};
+			if (u.toLowerCase().indexOf("androidapp") !== -1) {
+				// 把分享内容传递给原生安卓端 安卓端事件
+				window.android.shareInfoAndroid(JSON.stringify(obj));
+			}else if(u.toLowerCase().indexOf("iosapp") !== -1){
+				// 把分享内容传递给原生ios
+				window.webkit.messageHandlers.shareInfoIOS.postMessage(obj)
+			}
+		}
+	}
+
+	//收藏
+	function star() {
+
+		var arrUrl = location.href.split("/");
+		var pageName = arrUrl[arrUrl.length - 1];
+		if (!localStorage.getItem("token") && pageName != "login.html") {
+			location.href = "http://kzcloud.g60.kechuang.cn/g60-h5/html/login.html";
+		} else {
+			$.ajax({
+				url: ip + "favorite/star",
+				type: 'post',
+				data: {
+					userId: userID,
+					favoriteId: cmsId,
+					title: strItem.title,
+					type: strItem.columnName,
+					imageUrl: strItem.previewImage
+				},
+				dataType: "json",
+				success: function (data) {
+					if (data.code == "0") {
+						flag()
+					}
+				}
+			});
+		}
+	}
+
+	$(function () {
+		flag()
+	})
+
+
+	function flag() {
+
+		//判断是否已经收藏
+		$.ajax({
+			url: ip + "favorite/flag",
+			type: 'post',
+			data: {
+				userId: userID,
+				favoriteId: cmsId
+			},
+			dataType: "json",
+			success: function (data) {
+				console.log(data)
+				if (data.content) {
+					$("#starIcon").attr("class", "fa fa-heart fa-2g");
+					$("#sc").text("已收藏");
+				} else {
+					$("#starIcon").attr("class", "fa fa-heart-o fa-2g");
+					$("#sc").text("收藏");
+				}
+			}
+		});
+
+	}
+</script>
+
+</html>

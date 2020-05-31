@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>询问</title>
+	<link rel="stylesheet" type="text/css" href="../../css/main.css" />
+	<link rel="stylesheet" href="../../css/mui.min.css">
+	<script src="../../js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/swiper-4.3.5.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/common.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+
+	<style>
+	*{padding:0; margin:0;}
+	.cc_star{ padding-left:10px; }
+		.cc_star span{ background: url(../images/star.png) left top no-repeat; display: inline-block; width: 16px; height: 16px; margin-right: 5px }
+		.cc_star span.on{ background-position: bottom center; }
+		.pj_txt{ background: #f8f8f8; padding:10px 0;  margin-top:10px;}
+		.pj_txt textarea{ width: 100%;background: #f8f8f8; padding:5px 10px; box-sizing: border-box; height: 90px; line-height: 20px; border:none; }
+		.jia_frame{ position: relative;}
+		.jia{width: 60px; height: 60px; padding:10px; }
+		.jia input{ opacity: 0; width: 100%; height: 100%; left: 0;top: 0; position: absolute; }
+		.pj_title{ line-height: 40px; font-size: 16px; padding-left:10px; }
+		.fl{float: left;}
+		.jia_txt{margin-left: 80px; line-height: 80px; color: #999;}
+		.pj_btn{margin: 15px 15px;
+    height: 36px;
+    line-height: 36px;
+    background: #7ED321;
+    color: #fff;
+    border-radius: 4px;
+    text-align: center;
+    margin-top: 15px;
+    padding: 0;}
+   .addtab{
+  		padding-left:10px;line-height: 35px;font-size: 14px;color: #0019ccf0;
+   }
+   	.addtab  .inputtab{
+   		height: 30px; width: 80%;
+    	 margin-bottom: 5px;
+    	 color:#666;
+   	}
+   	.addtabholder{
+   		font-size: 12px;padding-left: 14px
+   	}
+	</style>
+</head>
+
+<body>
+<div class="header">
+	<div class="container center">
+					<!--<span class="backBtn" style="    font-size: 13px;">-->
+                <!--<img src="../../images/back.png" width="10px" />-->
+                <!--返回-->
+            <!--</span>-->
+		<span class="til">询问</span>
+	</div>
+</div>
+<div style="overflow-y: scroll;">
+	
+	<div class="pj_txt">
+		<textarea id="textarea" placeholder="您有什么问题,请在此输入"></textarea>
+	</div>
+	<!--<div class="container" style="height: 20vh">
+                    <div class="jia_frame">
+                    <div class="jia fl">
+                        <img src="../images/phoneJia.png" width="60" id="img" class="img">
+                    </div>
+
+                    <div class="jia_txt" onclick="openCarcme()">
+                        添加照片
+                    </div>
+                </div>
+                </div>-->
+                
+                 <div class="jia_frame">
+                        <div id="Images"  id="img" class="img" style="height:75px;overflow: hidden;background: #f8f8f8;"  >
+
+                         <span onclick="openCarcme()" id="spanImg" style="width: 80px;float: left"  >
+                            <img src="../../images/addtab.png" height="70" width="70">
+                            </span>
+                        </div>
+
+
+                    </div>
+                
+                
+	
+
+	<div class="pj_btn" onclick="submitQ()">
+		提交
+	</div>
+</div>
+<script src="../../js/API.js"></script>
+<script>
+	
+	var userId=localStorage.getItem("yedao_id");
+	var zjId=localStorage.getItem("detailId");
+		var base64;
+	if(base64==""||base64==undefined){
+        base64="../../images/searchNoting.png";
+    }
+
+	function submitQ(){
+		var text=$("#textarea").val();//弹出textarea的值
+		   if(isEmptyObject(userId)==true){
+	            mui.toast("未获取到登录信息，请登录！")
+	            return
+	        }
+		var data={content,text,userId:userId,zjId:zjId,base64:base64};
+		apiAjax("expert/subQuestion",data);
+		var url = "http://kc.kgxj.haikou.gov.cn/yedao_int/expert/myquery";
+		$.ajax({
+		type: "POST",
+		url: url,
+		data: {
+			content: text,
+			userId:userId,
+			zjId:zjId,
+			base64:base64
+		},
+		dataType: "json",
+		success: function() {
+			showToast("提交成功"),
+			mui.back();
+		}
+	})
+}
+	
+	function methodName(jsonParams) {
+		$('#img').attr('src',jsonParams);
+		base64=jsonParams;
+}
+	
+	$(document).ready(function() {
+		$(".cc_star span").click(function(){
+			$(".cc_star span").removeClass("on");
+			var _index=$(this).index()+1;
+			//星星点击后数据要保存到全局
+            nums=_index;
+		for(var i=0;i<_index;i++){
+			$(".cc_star span").eq(i).addClass("on");
+		}
+	})
+})
+	
+
+</script>
+</body>
+
+</html>

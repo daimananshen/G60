@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+        <link rel="stylesheet" href="../../css/mui.min.css">
+        <link rel="stylesheet" href="../../css/list.css" />
+        <link rel="stylesheet" type="text/css" href="../../css/main.css"/>
+
+        <script src="../../js/flexible.js"></script>
+        <script src="../../js/jquery-3.3.1.min.js"></script>
+        <script src="../../js/mui.min.js"></script>
+        <script src="../../js/API.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../js/common.js" type="text/javascript" charset="utf-8"></script>
+        <title>title</title>
+    </head>
+
+    <body id="pullrefresh">
+        <div class="header">
+            <div class="container center">
+            <!--<span class="backBtn" style="font-size: 13px;">-->
+                <!--<img src="../../images/back.png" width="10px"/>-->
+                <!--返回-->
+            <!--</span>-->
+                <span class="til">服务申请</span>
+
+            </div>
+        </div>
+
+      <div class="container">
+        <div class="container_search">
+          <div class="left">
+            <span>请选择: </span>
+            <select name="status" id="status">
+              <option value="">审核状态</option>
+                <option value="0">待审核</option>
+                <option value="2">审核通过</option>
+                <option value="3">审核不通过</option>
+            </select>
+          </div>
+          <div class="button">
+            <a href="javascript:void(0)" onclick="dosearch();">搜索</a>
+
+          </div>
+
+        </div>
+        <ul class="container_list" id="result_list">
+          <!--<li>
+            <p>
+              <span>评估中</span>
+              <span>2017-12-10 12:24</span>
+              <span>李老三</span>
+              <span>1863304921</span>
+            </p>
+            <div class="">
+              <div class="img" style="display:none">
+                <img src="" alt="">
+              </div>
+              <span>申请金额</span>
+            </div>
+          </li>
+          <li><p><span>评估中</span><span>2017-12-10 12:24</span><span>李老三</span><span>1863304921</span>
+            </p><div class=""><div class="img" style="display:none"><img src="" alt=""></div><span>申请金额</span></div></li>-->
+        </ul>
+
+      </div>
+
+    <script>
+        var num = 0; //分页页码
+
+        mui.init({
+            pullRefresh: {
+                container: '#pullrefresh',
+                down: {
+                    callback: pulldownRefresh
+                },
+                up: {
+                    contentrefresh: '正在加载...',
+                    callback: pullupRefresh
+                }
+            }
+        });
+
+        function pulldownRefresh() {
+            $("#getList").empty();
+            show_items = [];
+            showLoading();
+            mui('#pullrefresh').pullRefresh().refresh(true);//重置上拉加载
+            num = 1;
+            setTimeout(function () {
+                getList(num);
+                mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+            }, 500);
+        }
+
+        function pullupRefresh() {
+            num = num + 1;
+            getList(num);
+        }
+
+        pullupRefresh(num);
+
+        var urll = "";
+        function getList(num) {
+            var status = $("#status option:selected").val();
+            urll = ip + "serverapp/query";
+            $.ajax({
+                url: urll,
+                type: 'post',
+                data: {
+                    size: 10,
+                    page: num,
+                    userId: "123456",
+                    status: status
+                },
+                dataType: "json",
+                success: function (data) {
+                    $("#result_list li").remove();
+                    setTimeout(function () {
+                        if(data.code=="1000"){
+                            mui('#pullrefresh').pullRefresh().endPullupToRefresh((true)); //参数为true代表没有更多数据了。
+                            return ;
+                        }
+                        if (data.content.total  > 0) {
+                            mui('#pullrefresh').pullRefresh().endPullupToRefresh((false)); //参数为true代表没有更多数据了。
+                            for (var i = 0; i < data.content.list.length ; i++) {
+                                var param = data.content.list[i];
+                                var status_res = "审核中";
+                                if(param.status =='0'){
+                                    status_res = "待审核";
+                                }else if(param.status =='2'){
+                                    status_res = "审核通过";
+                                }else if(param.status =='3'){
+                                    status_res = "审核不通过";
+                                }
+                                $("#result_list").append("<li><p><span>"+status_res+"</span><span>"+param.createTime+"</span><span>"+param.name+"</span><span>"+param.mobile+"</span>\n" +
+                                    "</p><div class=\"\"><div class=\"img\" style=\"display:none\"><img src=\"\" alt=\"\"></div><span>"+param.serviceName+"</span></div></li>");
+                            }
+                        } else {
+                            mui('#pullrefresh').pullRefresh().endPullupToRefresh((true)); //参数为true代表没有更多数据了。
+                        }
+                        hideLoading();
+                    }, 500);
+                }, error: function (msg) {
+                    console.log(msg)
+                }
+            });
+        }
+
+        function dosearch(){
+            getList(1);
+        }
+
+    </script>
+
+    </body>
+
+</html>

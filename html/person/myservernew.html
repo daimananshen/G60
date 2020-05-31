@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <link rel="stylesheet" href="../../css/Myservice.css" />
+    <link rel="stylesheet" href="../../util/dist/mescroll.min.css">
+    <link rel="stylesheet" href="../../util/dotJump/option/mescroll-option.css">
+    <script src="../../js/flexible.js"></script>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/API.js" type="text/javascript" charset="utf-8"></script>
+    <script src="http://g.alicdn.com/dingding/dingtalk-jsapi/2.6.41/dingtalk.open.js"></script>
+    <script src="../../util/dist/mescroll.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../util/dotJump/option/mescroll-option.js" type="text/javascript" charset="utf-8"></script>
+    <title>我的服务</title>
+</head>
+<style>
+    .Myservicelist li .name {
+        position: relative;
+    }
+    .Myservicelist li .name span:nth-child(3) {
+        position: absolute;
+        right: 0;
+    }
+    .Myservice ul.Myservicelist li > div.email {
+        display: flex;
+        justify-content: space-between;
+    }
+    .Myservice ul.Myservicelist li > div.email .arrow{
+        align-items: center;
+        font-size: 0.29333333rem;
+        text-align: center;
+        border: 2px solid #1975ff;
+        border-radius: 100px;
+        line-height: 0.66666667rem;
+        color: #1975ff;
+        padding:0 0.2rem;
+    }
+    .Myservice ul.Myservicelist li > div.email .btn {
+            left:0;
+        position: static;
+    }
+
+    .name {
+        margin-bottom: 0.3rem;
+    }
+    .Myservice ul.Myservicelist li p.content {
+        text-indent: 1em;
+        padding:0.2rem 0.1rem;
+    }
+    .Myservice ul.Myservicelist li P:nth-child(2) {
+        align-items: center;
+    }
+    .Myservice ul.Myservicelist li P:nth-child(2) span:nth-child(2){
+        padding-left: 25px;
+        width: 140px;
+        line-height: 0.25rem;
+        text-align: right;
+    }
+    .Myservice ul.Myservicelist li p:nth-child(2) span:nth-child(1) {
+        width:calc(100% - 140px);
+    }
+
+    .empty-icon {
+        display: inline-block
+    }
+    .Myservice ul.Myservicelist li > .name {
+        min-height: 19px;
+    }
+    .empty-btn {
+        display: none !important;
+    }
+    /*.Myservice ul.Myservicelist ul li {
+        display: flex;
+        align-items: center;
+        background: url('../../images/右箭头@2x.png') right center no-repeat;
+        background-size: 0.22666667rem 0.37333333rem;
+    }*/
+
+</style>
+<body>
+<!--<header>
+    <div class="img">
+        <img width="8px" src="../../images/back.png" alt="">
+        <span>返回</span>
+    </div>
+    <span>我的服务</span>
+    <img width="27px" height="21px" id="img"  src="../../images/微信图片_20190417181028.png" alt="" />
+</header>-->
+<div class="Myservice mescroll" id="mescroll" style="overflow-x:hidden">
+    <div>
+        <p id="num" style="width: 100vw;text-align: center; font-size:15px"></p>
+        <header>
+            <div class="left">
+                <span>审核状态</span>
+                <div class="all">
+                    <select name="status" id="status" onchange="changeselect()">
+                        <option value="">全部</option>
+                        <option value="0">未审核</option>
+                        <option value="1">审核中</option>
+                        <option value="2">审核通过</option>
+                        <option value="3">审核不通过</option>
+                    </select>
+                </div>
+            </div>
+            <div class="img" style="padding: 5px 0">
+                <span>筛选</span>
+                <img id="img"  src="../../images/G60切图补充/../G60切图补充/微信图片_20190417181028.png" alt="" />
+            </div>
+        </header>
+
+        <input type="hidden" id="hiddentype" value="">
+        <ul class="Myservicelist" id="Myservicelist">
+            <!--<li><p class="title">需要维权的标题显示在这里对应专利维权题字段</p>
+                <p><span>个人/企业名称企业名称</span> <span>2019/04/16</span></p>
+                <div class="name"><div class="icon"><img src="../images/通讯录@2x.png" alt="" /></div><span>赵先生</span></div>
+                <div class="phone"><div class="icon"><img src="../images/手机@2x.png" alt="" /></div><span>18812345678</span></div>
+                <div class="email"><div class="icon"><img src="../images/邮件@2x.png" alt="" /></div><span>example@qq.com</span>
+                <span class="btn ">查看详情</span></div><p class="content">维权是动</p></li>-->
+        </ul>
+
+    <div class="switcher" id="switcher">
+        <div class="left">
+            <ul id="secondul">
+                <!--<li class="active">机构1</li>
+                <li>机构2</li>
+                <li>机构3</li>-->
+            </ul>
+        </div>
+        <div class="right">
+            <ul>
+                <li>
+                    <a href="javascript:;" onclick="changeUl('1');">
+                        <div class="icon">
+                            <img src="../../images/专利服务维权@2x.png" alt="" />
+                        </div>
+                        <span>专利服务维权</span>
+                    </a>
+                </li>
+                <!--<li>
+                    <a href="javascript:;" onclick="changeUl('2');">
+                        <div class="icon">
+                            <img src="../../images/专利申报@2x.png" alt="" />
+                        </div>
+                        <span>专利申报</span>
+                    </a>
+                </li>-->
+                <li>
+                    <a href="javascript:;" onclick="changeUl('3');">
+                        <div class="icon">
+                            <img src="../../images/第三方服务@2x.png" alt="" />
+                        </div>
+                        <span>第三方服务</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:;" onclick="changeUl('4');">
+                        <div class="icon">
+                            <img src="../../images/科创资源@2x.png" alt="" />
+                        </div>
+                        <span>科创资源共享</span>
+                    </a>
+                </li>
+                <!--<li>
+                    <a href="javascript:;" onclick="changeUl('5');">
+                        <div class="icon">
+                            <img src="../../images/科普服务@2x.png" alt="" />
+                        </div>
+                        <span>科普服务</span>
+                    </a>
+                </li>-->
+                <li>
+                    <a href="javascript:;" onclick="changeUl('6');">
+                        <div class="icon">
+                            <img src="../../images/人才服务@2x.png" alt="" />
+                        </div>
+                        <span>人才服务</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+<!--<script src="../../js/slideout.min.js"></script>-->
+<script>
+    $(function() {
+
+        dd.biz.navigation.setTitle({
+            title : '我的服务' ,//控制标题文本，空字符串表示显示默认文本
+            onSuccess : function(result) {},
+            onFail : function(err) {}
+        });
+
+        var switcherlength = $('.switcher').width();
+        $('.img').click(function () {
+            var width = $(window).width() - $("#switcher").offset().left;
+            if ($(window).width() - $("#switcher").offset().left == 0) {
+                $('#switcher').animate({
+                    right: switcherlength
+                }, 'slow')
+                $('.Myservicelist').animate({
+                    right: switcherlength
+                }, 'slow')
+            } else {
+                $('#switcher').animate({
+                    right: 0
+                }, 'slow')
+                $('.Myservicelist').animate({
+                    right: 0
+                }, 'slow')
+            }
+
+        });
+
+        setType();
+
+        function click() {
+            $('.email .btn').click(function() {
+                if ($(this).hasClass('active')) {
+                    $(this).removeClass('active')
+                    $(this).text('留言信息')
+                } else {
+                    $(this).addClass('active')
+                    $(this).text('收起')
+                }
+                $(this)
+                    .parent()
+                    .next()
+                    .slideToggle()
+            })
+
+            $('.switcher .left li').click(function() {
+                $('.switcher .left li').removeClass('active')
+                $(this).addClass('active')
+            })
+        }
+    });
+    var num = 0; //分页页码
+    var page=10;
+
+    //创建MeScroll对象
+    var mescroll = initMeScroll("mescroll", {
+        down: {
+            autoShowLoading: true, //如果在初始化完毕之后自动执行下拉回调,是否显示下拉刷新进度; 默认false. (需配置down的callback才生效)
+            callback: function (mescroll) {
+                //下拉刷新的回调,加载轮播数据
+                //loadSwiper();
+                num = 0;
+                //重置上拉加载列表为第一页
+                mescroll.resetUpScroll();
+            }
+        },
+        up: {
+            clearEmptyId: "Myservicelist",
+            isBoth: true, //上拉加载时,如果滑动到列表顶部是否可以同时触发下拉刷新;默认false,两者不可同时触发; 这里为了演示改为true,不必等列表加载完毕才可下拉;
+            isBounce: false, //此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
+            callback: getListData, //上拉加载的回调
+            toTop: { //配置回到顶部按钮
+                src: "http://kczl.g60.kechuang.cn/web/util/dotJump/option/mescroll-totop.png", //默认滚动到1000px显示,可配置offset修改
+                //offset : 1000
+            },
+            lazyLoad: {
+                use: true // 是否开启懒加载,默认false
+            }
+        }
+    });
+
+    /*
+        选择审核状态
+     */
+    function changeselect(){
+        num = 0;
+        getListData();
+    }
+
+    function getListData() {
+        num = num + 1;
+//        getList(num);
+        getListDataFromNet(function (curPageData) {
+            if(curPageData!=undefined){
+                mescroll.endSuccess(curPageData.length, curPageData.length >= page);
+            }
+            //设置列表数据
+            setListData(curPageData);
+        }, function () {
+            //联网失败的回调,隐藏上拉加载的状态
+            mescroll.endErr();
+        });
+    }
+
+    function setListData(curPageData) {
+        if (curPageData.length > 0) {
+            for (var i = 0; i < curPageData.length; i++) {
+                var param = curPageData[i];
+                var status_res = "审核中";
+                if(param.status =='0'){
+                    status_res = "待审核";
+                }else if(param.status =='2'){
+                    status_res = "审核通过";
+                }else if(param.status =='3'){
+                    status_res = "审核不通过";
+                }
+                var str ="";
+                var strtime = "";
+                var strcontent = "";
+                var lidetail ="";
+                if(isEmpty(param.ext3)){
+                    str += "  <p><span>"+param.name+"</span> <span>"+ param.createTime.substring(0,10) +"</span></p>" ;
+                }else{
+                    str += "  <p><span>"+param.ext3+"</span> <span>"+ param.createTime.substring(0,10) +"</span></p>";
+
+                }
+                if(isEmpty(param.ext1) || isEmpty(param.ext2)){
+                    if(param.type != "13"){
+                        strtime +="  <div class=\"name\"><div class=\"icon\"></div><span></span></span><span>"+status_res+"</span></div>" ;
+                    }else{
+                        strtime +="  <div class=\"name\"><div class=\"icon\"></div><span></span></span></div>" ;
+                    }
+                }else{
+                    strtime +="  <div class=\"name\"><div class=\"icon\"><img src=\"../../images/通讯录@2x.png\" alt=\"\" /></div><span>"+param.ext1 + " ~  "+ param.ext2 + "</span><span id='status'>"+status_res+"</span></div>";
+
+                }
+                if(param.type != "11" && param.type != "22"){
+                    lidetail =  "<span class='arrow' id='"+param.tableId+"' onclick='toDetail("+param.type+" , "+param.tableId+")'> 查看详情 <span>";
+                }
+                if(isEmpty(param.content)){
+                    strcontent +="<div class='email'> <span class=\"btn \">留言信息</span>"+lidetail+"</div><p class=\"content\"></p>";
+                }else{
+                    strcontent +="<div class='email'> <span class=\"btn \">留言信息</span>"+lidetail+"</div><p class=\"content\">"+param.content+"</p>";
+                }
+
+//                lidetail = "<li onclick='toDetail("+param.type+" , "+param.tableId+")'>";
+                $("#Myservicelist").append(
+                        "<li><p class=\"title\">"+param.serviceName+"</p>\n" +
+                        str +
+                        strtime +
+                        strcontent +
+                    " </li></div>");
+            }
+
+            $('.email .btn').click(function() {
+                if ($(this).hasClass('active')) {
+                    $(this).removeClass('active')
+                    $(this).text('留言信息')
+
+                } else {
+                    $(this).addClass('active')
+                    $(this).text('收起')
+
+                }
+                $(this)
+                    .parent()
+                    .next()
+                    .slideToggle()
+            });
+
+            $('.switcher .left li').click(function() {
+                $('.switcher .left li').removeClass('active')
+                $(this).addClass('active')
+            });
+        }
+    }
+
+    function getListDataFromNet(successCallback, errorCallback) {
+        //延时一秒,模拟联网
+        setTimeout(function () {
+            var dataid = localStorage.getItem("userID");
+            var status = $("#status option:selected").val();
+            var hiddentype = $("#hiddentype").val();
+            $.ajax({
+                type: 'post',
+                url: ip + "serverapp/query",
+                data: {
+                    pageSize: page,
+                    currentPage: num,
+                    userId: dataid,
+                    status: status,
+                    type:hiddentype
+                },
+                success: function (data) {
+                    var listData = data.content.list;
+
+                    //回调
+                    successCallback(listData);
+                    $("#num").html("共检索到:"+data.content.total+"条")
+                },
+                error: errorCallback
+            });
+        }, 500)
+    }
+
+    var p = {"1":{"name":"我的维权","url":"../../../g60kc/mobile/patent-my-protectpower.html"},
+        
+        "3":{"name":"我的服务","url":"../../../g60kc/mobile/service-myservice.html"},
+        "4":[
+            {"name":"仪器共享","url":"","type":"1"},
+            {"name":"实验室共享","url":"","type":"2"},{"name":"研究平台","url":"","type":"3"},
+            {"name":"众创空间","url":"","type":"4"},{"name":"孵化器","url":"","type":"5"},
+            {"name":"企业信息","url":"","type":"6"},
+//            {"name":"项目信息","url":"","type":"7"},
+            {"name":"科技活动","url":"","type":"13"},
+            {"name":"投融资活动","url":"","type":"23"}],
+        
+        "6":[
+            /*{"name":"专家人才","url":"","type":"9"},*/
+//            {"name":"院士合作","url":"","type":"10"},
+            {"name":"我的自荐","url":"","type":"11"}]};
+
+    function changeUl(key){
+        $("#secondul li").remove();
+        var li = p[key];
+        var param = "";
+        if(li instanceof Array){
+            for(var i = 0; i<li.length ;i++){
+                if(isEmpty(li[i].type)){
+                    param += "<li onclick='window.location.href =\""+ li[i].url +"\"'>"+ li[i].name +"</li>";
+                }else{
+                    param += "<li class='litype' onclick='queryType("+li[i].type + ",\""+li[i].name+"\");'>"+ li[i].name +"</li>";
+                }
+            }
+        }else{
+            if(isEmpty(li.type)){
+//                param += "<li onclick='window.location.href =\'"+ li.url +"\">"+ li.name +"</li>";
+                param += '<li onclick="window.location.href =\''+ li.url +'\'">'+ li.name +'</li>';
+            }else{
+                param += "<li class='litype' onclick='queryType("+li.type + ", \""+li.name+"\");'>"+ li.name +"</li>";
+            }
+        }
+        $("#secondul").append(param);
+       /* $(".litype").on("click",function(){
+            slideout.toggle();
+        });*/
+
+    }
+
+    function queryType(type,title){
+        dd.biz.navigation.setTitle({
+            title : title ,//控制标题文本，空字符串表示显示默认文本
+            onSuccess : function(result) {
+
+            },
+            onFail : function(err) {}
+        });
+        var switcherlength = $('.switcher').width();
+        var width = $(window).width() - $("#switcher").offset().left;
+        if ($(window).width() - $("#switcher").offset().left == 0) {
+            $('#switcher').animate({
+                right: switcherlength
+            }, 'slow')
+            $('.Myservicelist').animate({
+                right: switcherlength
+            }, 'slow')
+        } else {
+            $('#switcher').animate({
+                right: 0
+            }, 'slow')
+            $('.Myservicelist').animate({
+                right: 0
+            }, 'slow')
+        }
+        $("#hiddentype").val(type);
+
+        num =0;
+        getListData();
+    }
+
+    function setType(){
+        var typeVal  = getQueryVariable("type");
+        if(!isEmpty(typeVal)){
+            $("#hiddentype").val(typeVal);
+        }
+
+    }
+
+
+    function isEmpty(obj){
+        if(typeof obj == "undefined" || obj == null || obj == ""){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    function getQueryVariable(variable)
+    {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+        }
+        return;
+    }
+
+    function toDetail(type , tableId){
+        var url;
+        localStorage.removeItem("data-id");
+        localStorage.setItem("data-id",tableId);
+        switch (type)
+            {
+                case 1:
+                    url = "../zygx/zygxInstrumentDetail.html";
+                    break;
+                case 2:
+                    url = "../zygx/zygxLabDetail.html";
+                    break;
+                case 3:
+                    localStorage.setItem("indexType","3"); //列表页表示，
+                    url = "../zygx/zygxCarrarDetail.html";
+                    break;
+                case 4:
+                    localStorage.setItem("indexType","4"); //列表页表示，
+                    url = "../zygx/zygxCarrarDetail.html";
+                    break;
+                case 5:
+                    localStorage.setItem("indexType","5"); //列表页表示，
+                    url = "../zygx/zygxCarrarDetail.html";
+                    break;
+                case 6:
+                    localStorage.removeItem("detailId");
+                    localStorage.setItem("detailId", tableId);
+                    url = "../module/enterpriseDetail.html";
+                    break;
+                case 7:
+                    url = "../module/projectDetail.html";
+                    break;
+                case 9:
+                    url = "../module/expertDetail.html";
+                    break;
+                case 13:
+                    url = "../kjhd/kjhdDetail.html";
+                    break;
+                case 21:
+                    url = "http://kczl.g60.kechuang.cn/g60kc/mobile/service-detail.html?id="+tableId;
+                    break;
+                case 23:
+                    url = "http://kczl.g60.kechuang.cn/g60kc/mobile/invest-service-details.html?id="+tableId;
+                    break;
+            }
+        window.location.href= url;
+
+    }
+
+</script>
+</body>
+</html>

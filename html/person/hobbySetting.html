@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>兴趣设置</title>
+    <link rel="stylesheet" href="../../css/setInterest.css">
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <script src="../../js/flexible.js"></script>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/API.js" type="text/javascript" charset="utf-8"></script>
+    <script src="http://g.alicdn.com/dingding/dingtalk-jsapi/2.6.41/dingtalk.open.js"></script>
+    <script src="../../js/mui.min.js"></script>
+    <style lang="less" scoped>
+        .mui-popup-button {
+            color: #1975ff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container_Interest">
+        <ul id="xingqu">
+            <li>医疗健康</li>
+            <li>航空航天</li>
+            <li>汽车工程</li>
+            <li>生物医学</li>
+            <li>环境科学</li>
+            <li>气象科技</li>
+            <li>水产养殖</li>
+            <li>食品科技</li>
+            <li>通信科技</li>
+            <li>水利科学</li>
+            <li>核能利用</li>
+            <li>体育科学</li>
+            <li>化工科技</li>
+            <li>电子信息</li>
+            <li>心理健康</li>
+            <li>其他</li>
+        </ul>
+
+        <div class="btn">
+            <a href="javascript:void(0)" id="saveHobby" onclick="saveHobby()">确定</a>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $('.container_Interest ul li').click(function () {
+                if ($(this).hasClass('active')) {
+                    $(this).removeClass('active')
+                } else {
+                    $(this).addClass('active')
+                }
+            });
+
+            dd.biz.navigation.setTitle({
+                title: '兴趣设置',//控制标题文本，空字符串表示显示默认文本
+                onSuccess: function (result) {
+
+                },
+                onFail: function (err) { }
+            });
+
+            pushHobby();
+        })
+
+    </script>
+    <script>
+        /*dd.biz.navigation.setRight({
+            show: false,//控制按钮显示， true 显示， false 隐藏， 默认true
+            control: true,//是否控制点击事件，true 控制，false 不控制， 默认false
+            text: '保存',//控制显示文本，空字符串表示显示默认文本
+            onSuccess : function(result) {
+                //如果control为true，则onSuccess将在发生按钮点击事件被回调
+                /!*
+                {}
+                *!/
+            },
+            onFail : function(err) {}
+        });*/
+
+        function getHobby() {
+            var ul = $("#xingqu .active");
+            var li = '';
+            for (var i = 0; i < ul.length; i++) {
+                if (i == ul.length - 1) {
+                    li += ul[i].innerText;
+                } else {
+                    li += ul[i].innerText + ",";
+                }
+            }
+            //if(li==''){
+            //alert("请选择您偏爱的兴趣");
+            //return;
+            //}
+            return li;
+        }
+
+        document.getElementById("saveHobby").addEventListener('tap', function () {
+
+            var hobbyParam = getHobby();
+            var dataid = localStorage.getItem("userID");
+            $.ajax({
+                url: ip + "userLabel/savelabel",
+                type: 'post',
+                data: {
+                    userId: dataid,
+                    hobbyType: hobbyParam
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.msg == "ok") {
+                        mui.alert('更新成功', '', function () {
+                        });
+                    }
+                }, error: function (msg) {
+                    console.log(msg)
+                }
+            });
+
+        });
+
+
+        function pushHobby() {
+            var dataid = localStorage.getItem("userID");
+            $.ajax({
+                url: ip + "userLabel/selectlabel",
+                type: 'post',
+                data: {
+                    userId: dataid
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == '0') {
+                        var result = " " + data.content.hobbyType;
+                        var ul = $("#xingqu li");
+                        console.log(ul[1].innerText)
+                        for (var i = 0; i < ul.length; i++) {
+                            if (result.indexOf(ul[i].innerText) > 0) {
+                                $(ul[i]).addClass('active');
+                            }
+                        }
+                    }
+                }, error: function (msg) {
+                    console.log(msg)
+                }
+            });
+        }
+
+    </script>
+</body>
+
+</html>

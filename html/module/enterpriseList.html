@@ -1,0 +1,352 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>企业信息</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="../../util/dist/mescroll.min.css">
+    <link rel="stylesheet" href="../../util/dotJump/option/mescroll-option.css">
+    <link rel="stylesheet" href="../../html/index/css/main.css">
+    <link rel="stylesheet" href="../../html/index/js/swiper/css/swiper.min.css">
+
+    <!--下拉框-->
+    <link rel="stylesheet" href="../../css/mobile-select.css">
+    <script src="../../js/mobile-select.js"></script>
+
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/vue.min.js"></script>
+    <script src="../../js/API.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../html/index/js/flexible.js"></script>
+    <script src="../../html/index/js/swiper/js/swiper.min.js"></script>
+    <script src="../../util/dist/mescroll.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../util/dotJump/option/mescroll-option.js" type="text/javascript" charset="utf-8"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: white
+        }
+
+        ul {
+            list-style-type: none
+        }
+
+        a {
+            text-decoration: none;
+            color: #18B4FE;
+        }
+
+
+
+        .nav p {
+            display: inline-block;
+            width: 30%;
+            padding: 10px 0;
+        }
+
+        .nav .active {
+            border-bottom: 1px solid #FF6990;
+            color: #FF6990;
+        }
+
+        /*展示上拉加载的数据列表*/
+        #dataList li {
+            position: relative;
+            padding: 10px 25px;
+            border-bottom: 1px solid #eee;
+        }
+
+        #dataList .pd-img {
+            position: absolute;
+            left: 18px;
+            top: 18px;
+            width: 80px;
+            height: 80px;
+        }
+
+        #dataList .pd-name {
+            font-size: 12px;
+            line-height: 20px;
+            height: 40px;
+            overflow: hidden;
+        }
+
+        #dataList .pd-price {
+            width: 50vw;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-top: 8px;
+        }
+
+        #dataList .pd-sold {
+            font-size: 12px;
+            margin-top: 8px;
+            color: gray;
+        }
+
+        * {
+            font-size: 14px;
+        }
+
+        #dataList li p {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+        }
+
+        .commonHeader .top {
+            background-color: #F3F3F3;
+        }
+
+        .commonHeader .top a {
+            color: rgba(102, 102, 102, 1);
+        }
+
+        .commonHeader .searchheader .triggerstyle {
+            padding-left: 4px;
+            padding-right: 4px;
+            background: #f8f8f8 url('../../images/selectImg.png') 65px center no-repeat;
+            background-size: 10px 6px;
+            width: 80px;
+            height: 30px;
+            border-radius: 6px;
+            margin-right: 5px;
+            font-size: 14px;
+            line-height: 30px;
+            text-align: left;
+        }
+    </style>
+
+</head>
+
+<body>
+    <header class="commonHeader">
+        <div class="top">
+            <input style="-webkit-user-select: text !important;" type="text" id="TempName" placeholder="请输入搜索关键字">
+            <a href="javascript:;" onclick="updates()">搜索</a>
+        </div>
+        <div class="searchheader">
+            <!--        <select name="cityResult1" id="cityResult1">-->
+            <!--            <option value="">选择地区</option>-->
+            <!--            <option value="上海">上海</option>-->
+            <!--            <option value="嘉兴">嘉兴</option>-->
+            <!--            <option value="杭州">杭州</option>-->
+            <!--            <option value="金华">金华</option>-->
+            <!--            <option value="苏州">苏州</option>-->
+            <!--            <option value="湖州">湖州</option>-->
+            <!--            <option value="宣城">宣城</option>-->
+            <!--            <option value="芜湖">芜湖</option>-->
+            <!--            <option value="合肥">合肥</option>-->
+            <!--        </select>-->
+            <div id="cityResult1" class="triggerstyle">选择地区</div>
+        </div>
+    </header>
+    <!--下拉刷新容器-->
+    <div id="mescroll" class="mescroll">
+        <div class="mui-scroll">
+
+
+            <p id="num" style="width: 100vw;text-align: center"></p>
+
+
+            <!--数据列表-->
+            <div class="detailslistBox infoBoxIndex ">
+                <ul id="dataList" class="mui-table-view">
+                    <li v-for="item in show_item" v-bind:data-id="item.id" onclick="toURL(this)">
+                        <!--                    <img class="pd-img"  src="http://47.101.195.208:10000/ImageNotFound.png"   onerror="javascript:this.src='http://47.101.195.208:10000/ImageNotFound.png';" />-->
+                        <p><b>企业名称：</b><span class="pd-name" v-html="item.enterpriseName"></span></p>
+                        <p><b>经营范围：</b><span class="pd-name" v-html="item.manageRange"></span></p>
+                        <p><b>企业地址：</b><span class="pd-name" v-html="item.residence"></span></p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+
+    </script>
+    <script>
+
+        $("#cityResult1").on("change", function () {
+            updates()
+        });
+
+        var strItem = [];
+        var show_items = []; //页面展示信息
+        var num = 0;
+        var page = 20;
+        //创建MeScroll对象
+        var mescroll = initMeScroll("mescroll", {
+            down: {
+                autoShowLoading: true, //如果在初始化完毕之后自动执行下拉回调,是否显示下拉刷新进度; 默认false. (需配置down的callback才生效)
+                callback: function (mescroll) {
+                    //下拉刷新的回调,加载轮播数据
+                    //loadSwiper();
+                    num = 0;
+                    //重置上拉加载列表为第一页
+                    mescroll.resetUpScroll();
+                }
+            },
+            up: {
+                clearEmptyId: "dataList",
+                isBoth: true, //上拉加载时,如果滑动到列表顶部是否可以同时触发下拉刷新;默认false,两者不可同时触发; 这里为了演示改为true,不必等列表加载完毕才可下拉;
+                isBounce: false, //此处禁止ios回弹,解析(务必认真阅读,特别是最后一点): http://www.mescroll.com/qa.html#q10
+
+                callback: getListData, //上拉加载的回调
+                toTop: { //配置回到顶部按钮
+                    src: "http://47.101.195.208/web/util/dotJump/option/mescroll-totop.png", //默认滚动到1000px显示,可配置offset修改
+                    //offset : 1000
+                },
+                lazyLoad: {
+                    use: true // 是否开启懒加载,默认false
+                }
+            }
+        });
+
+
+        function updates() {
+            num = 0
+            mescroll.resetUpScroll();
+        }
+        /*联网加载列表数据  page = {num:1, size:10}; num:当前页 从1开始, size:每页数据条数 */
+        function getListData() {
+            num = num + 1
+            //联网加载数据
+            getListDataFromNet(function (curPageData) {
+                //联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+                //mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
+
+                //方法一(推荐): 后台接口有返回列表的总页数 totalPage
+                //mescroll.endByPage(curPageData.length, totalPage); //必传参数(当前页的数据个数, 总页数)
+
+                //方法二(推荐): 后台接口有返回列表的总数据量 totalSize
+                //mescroll.endBySize(curPageData.length, totalSize); //必传参数(当前页的数据个数, 总数据量)
+
+                //方法三(推荐): 您有其他方式知道是否有下一页 hasNext
+                //mescroll.endSuccess(curPageData.length, hasNext); //必传参数(当前页的数据个数, 是否有下一页true/false)
+
+                //方法四 (不推荐),会存在一个小问题:比如列表共有20条数据,每页加载10条,共2页.如果只根据当前页的数据个数判断,则需翻到第三页才会知道无更多数据,如果传了hasNext,则翻到第二页即可显示无更多数据.
+                if (curPageData.content.list != undefined) {
+                    mescroll.endSuccess(curPageData.content.list.length, curPageData.content.list.length >= page);
+                }
+
+                //设置列表数据
+                setListData(curPageData.content.list);
+            }, function () {
+                //联网失败的回调,隐藏上拉加载的状态
+                mescroll.endErr();
+            });
+        }
+
+        /*设置列表数据*/
+        function setListData(curPageData) {
+            if (curPageData.length > 0) {
+                for (var i = 0; i < curPageData.length; i++) {
+                    strItem.push(curPageData[i])
+                }
+            }
+
+        }
+
+
+        var vm = new Vue({
+            el: "#dataList",
+            data: {
+                item: strItem,
+                show_item: show_items,
+            },
+            created: function () {
+                this.show_item = this.item;
+            },
+            methods: {
+                imgError: function (item) {
+                    console.log(item)
+                    item.img = require('../../images/企业1.png');
+                }
+            }
+        })
+
+        /*联网加载列表数据
+         在您的实际项目中,请参考官方写法: http://www.mescroll.com/api.html#tagUpCallback
+         请忽略getListDataFromNet的逻辑,这里仅仅是在本地模拟分页数据,本地演示用
+         实际项目以您服务器接口返回的数据为准,无需本地处理分页.
+         * */
+        function getListDataFromNet(successCallback, errorCallback) {
+            var cityResult1 = document.getElementById('cityResult1').textContent;
+            if (cityResult1 == "全部" || cityResult1 == '选择地区') {
+                cityResult1 = '';
+            }
+            //延时一秒,模拟联网
+            setTimeout(function () {
+                $.ajax({
+                    type: 'post',
+                    url: ip + 'enierpriseAnalysis/queryPage',
+                    data: {
+                        pageSize: page,
+                        currentPage: num,
+                        name: $("#TempName").val(),
+                        type: 0,
+                        city: cityResult1
+                    },
+                    success: function (data) {
+                        if (data.code == '0') {
+                            var listData = data;
+                            $("#num").html("共检索到:" + listData.content.total + "条")
+                            //回调
+                            successCallback(listData);
+                        } else {
+                            $("#num").html("共检索到:0条")
+                            mescroll.endErr();
+                        }
+
+                    },
+                    error: errorCallback
+                });
+            }, 500)
+
+
+        }
+        function toURL(obj) {
+            var arrUrl = location.href.split("/");
+            var pageName = arrUrl[arrUrl.length - 1];
+            if (!localStorage.getItem("token") && pageName != "login.html") {
+                location.href = "http://kzcloud.g60.kechuang.cn/g60-h5/html/login.html?redirect=module/enterpriseDetail.html";
+            } else {
+                localStorage.removeItem("data-id");
+                localStorage.setItem("data-id", $(obj).attr("data-id"));
+                window.location.href = 'enterpriseDetail.html';
+            }
+        }
+
+        //初始化下拉框
+        var mobileSelect1 = new MobileSelect({
+            trigger: '#cityResult1',
+            title: '选择地区',
+            wheels: [{
+                data: ['全部', '上海', '嘉兴', '杭州', '金华', '苏州', '湖州', '宣城', '芜湖', '合肥']
+            }],
+            position: [0],//初始化定位
+            callback: function () {
+                num = 0;
+                getListData();
+            }
+
+        });
+    </script>
+</body>
+
+</html>

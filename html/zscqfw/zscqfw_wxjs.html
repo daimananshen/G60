@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html xmlns:v-bind="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <title>文献检索</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <link rel="stylesheet" type="text/css" href="../../css/swiper-4.3.5.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/swiper.css"/>
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <script src="../../js/swiper.js"></script>
+    <!--<script src="../../js/mui.min.js"></script>-->
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <!--App自定义的css-->
+    <link rel="stylesheet" type="text/css" href="../../css/app.css" />
+    <!--<link href="../../css/mui.picker.css" rel="stylesheet" />-->
+    <!--&lt;!&ndash;<link href="../../css/mui.poppicker.css" rel="stylesheet" />&ndash;&gt;-->
+    <script src="../../js/common.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/API.js" type="text/javascript" charset="utf-8"></script>
+    <style>
+        table tr:nth-child(even) {
+            background: #e5e5e5;
+        }
+
+        .detailslistBox li {
+            line-height: 28px;
+            height: auto;
+            border-bottom: 1px solid #eee;
+            padding: 6px 0;
+            position: relative;
+        }
+
+        .detailslistBox li span:first-child {
+            overflow: auto;
+            white-space: normal;
+            display: block;
+            color: #777;
+            width: 85%;
+        }
+
+        .timeDes label {
+            color: #999;
+            margin-right: 10px;
+            font-size: 12px;
+            display: inline;
+            float: left;
+        }
+
+        #test .active {
+            border-bottom: 3px solid #7ED321
+        }
+
+        #test2 .active {
+            border-bottom: 1px solid #7ED321
+        }
+
+        .swiper-slide {
+            width: 50vw;
+        }
+
+        .mui-scroll .mainTab {
+            overflow: hidden;
+            /* margin-bottom: 10px; */
+            background: #fff;
+        }
+
+        .mui-scroll .mainTab li {
+            float: left;
+            border-bottom: 3px solid transparent;
+            width: 40%;
+            margin: 0 5%;
+            background: #fff;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 15px;
+            color: #4C4848;
+        }
+
+        .mui-scroll .mainTab li.active {
+            border-bottom: 3px solid #7ED321;
+            color: #4C4848;
+        }
+
+        .detailslistBox .textTitle {
+            float: left;
+            white-space: nowrap;
+            display: inline-block;
+            width: calc(100% - 100px);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
+            margin-bottom: 5px;
+            text-overflow: ellipsis;
+        }
+
+        .detailslistBox li {
+            line-height: 28px;
+            height: auto;
+            border-bottom: 1px solid #eee;
+            padding: 6px 0;
+            position: relative;
+            list-style: none;
+        }
+        .mui-h2, h2 {
+            font-size: 16px;
+            color:#000 ;
+           line-height: 24px;
+            /*标题收缩*/
+            margin-left:20px;
+            margin-right:20px;
+        }
+        .lingyu-name{
+            color:#a6a6a6;
+            font-size: 12px;
+            line-height: 24px;
+            /*作者收缩*/
+            padding-right: 20px!important;;
+            padding-left: 20px;
+
+        }
+        .paragraph .part .abstract h3{
+            font-size: 12px;
+            color: rgba(50,50,50,1);
+            line-height: 24px;
+            /*内容收缩*/
+            padding-right: 20px!important;;
+            padding-left: 20px;
+
+        }
+        .info {
+            font-size: 12px;
+            line-height: 24px;
+            display: -webkit-inline-box;
+            color: #1975ff;
+            padding-right: 20px!important;;
+            padding-left: 20px;
+        }
+        .paragraph a{
+            display: block;
+        }
+        a:hover{
+            cursor:pointer
+        }
+    </style>
+
+</head>
+
+<body style="padding-top: 0;">
+
+<!--下拉刷新容器-->
+<!--<div id="pullrefresh" class="mui-content mui-scroll-wrapper" style="margin-top: 48px">-->
+<div style="overflow-y: scroll">
+    <div  style="background-color: #fff;">
+        <input type="search" class="mui-input-clear" id="TempName" placeholder="请输入..." style="width: 75%;margin-top: 5px;margin-left: 10px;margin-right: 5px;-webkit-user-select: text !important;">
+        <button id="searchBtn" type="button" class="mui-btn mui-btn-primary" style="display:block;float: right;margin-top: 5px;background-color:#1975ff!important;border: 1px solid #1975ff!important;margin-right: 10px;"
+               >搜索
+        </button>
+        <!--<a href="javascript:;" id="searchBtn" class="mui-btn mui-btn-primary" style="float: right;margin-top: 5px;background-color:#1975ff!important;border: 1px solid #1975ff!important;margin-right: 5px;">搜索</a>-->
+
+        <div class="title" style="margin-left:10px;color: #1975ff;margin-bottom: 10px;font-weight: bold">热点推荐</div>
+        <!--数据列表-->
+        <div class="detailslistBox infoBoxIndex detailslistBox zhengceBoxIndex" id="app"  style="overflow-y: scroll;">
+            <!--<ul id="getList" class="mui-table-view">-->
+                <!--<li class="aside_my" style="padding: 5vw 2vh" v-for="item in item" v-bind:data-id="item.id"  @click="detail(item)">-->
+                    <!--<a>-->
+                        <!--<div class="ttnews">-->
+                            <!--&lt;!&ndash;<div class="newsimg"><img :src="item.previewImage"></div>&ndash;&gt;-->
+                            <!--<div class="newsinfo">-->
+                                <!--<div>{{item.createTime}}</div>-->
+                                <!--<div href="item.content" class="newstext"></div>-->
+                                <!--&lt;!&ndash;<span></span>&ndash;&gt;-->
+                                <!--<p v-html="item.data">{{item.data}}</p>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</a>-->
+                <!--</li>-->
+            <!--</ul>-->
+            <div v-html="item" style="overflow-y: scroll;">{{item}}</div>
+
+        </div>
+
+    </div>
+</div>
+<!-- 弹出 -->
+<!--&lt;!&ndash;<script src="../../js/mui.picker.js"></script>&ndash;&gt;-->
+<!--&lt;!&ndash;<script src="../../js/mui.poppicker.js"></script>&ndash;&gt;-->
+<!--<script src="../../js/city.data.js" type="text/javascript" charset="utf-8"></script>-->
+<!--<script src="../../js/city.data-3.js" type="text/javascript" charset="utf-8"></script>-->
+<script>
+
+    var TempName = "";
+    var astrItem="";
+    var show_items = []
+    var num = 0; //分页页码
+
+    showLoading()
+    //
+    // mui.init({
+    //     pullRefresh: {
+    //         container: '#pullrefresh',
+    //         down: {
+    //             callback: pulldownRefresh
+    //         },
+    //         up: {
+    //             contentrefresh: '正在加载...',
+    //             callback: pullupRefresh
+    //         }
+    //     }
+    // });
+    /**
+     * 下拉刷新具体业务实现
+     */
+
+    // function pulldownRefresh(i) {
+    //     $("#getList").empty()
+    //     $("#getLists").empty()
+    //     show_items = []
+    //     showLoading()
+    //     mui('#pullrefresh').pullRefresh().refresh(true);//重置上拉加载
+    //     num = 1;
+    //     setTimeout(function () {
+    //         getList(num)
+    //         mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+    //     }, 500);
+    // }
+    /**
+     * 上拉加载具体业务实现
+     */
+    var data = {};
+    // function pullupRefresh() {
+    //     num = num + 1
+    //     getList(num);
+    // }
+$(function () {
+    getList();
+    $("#searchBtn").on("click",function(){
+        tempName();
+    });
+})
+    // pullupRefresh(num)
+    var userid = localStorage.getItem("yedao_id");
+    var urll = "";
+    function getList(num) {
+        // urll = "http://47.101.195.208/ht/cms/getCmsNews";
+        urll="CnkiPeriodical/selectDesc";
+        $.ajax({
+            url: ip+urll,
+            type: 'post',
+            data: {
+                size: 20,
+                page: num,
+                columnId:25,//通知公告
+                channelId:"",
+                areaCode:$("#cityResult1").val(),
+                keyword:$("#TempName").val()
+            },
+            dataType: "json",
+            success: function (data) {
+                setTimeout(function () {
+                    if (data.content!="") {
+                        // mui('#pullrefresh').pullRefresh().endPullupToRefresh((false)); //参数为true代表没有更多数据了。
+                        // strItem.push(data.content)
+                        vm.item=data.content.data;
+                    } else {
+                        // mui('#pullrefresh').pullRefresh().endPullupToRefresh((true)); //参数为true代表没有更多数据了。
+                    }
+                    hideLoading()
+                }, 500);
+            }, error: function (msg) {
+                console.log(msg)
+            }
+        });
+    }
+
+
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            item: astrItem,
+            show_item: show_items
+        }
+    })
+
+    function tempName() {
+
+        TempName = $("#TempName").val();
+        // var webview = mui.openWindow({
+        //     url: '  http://wap.cnki.net/touch/web/Article/Search/?kw='+TempName+"&field=5",
+        //     id: "Search.html",
+        //     extras: {
+        //         name: 'mui'  //扩展参数
+        //     }
+        // })
+        window.location.href='http://wap.cnki.net/touch/web/Article/Search/?kw='+TempName+"&field=5";
+    }
+    // mui(".paragraph a").on('tap','a', function () {
+    //     localStorage.removeItem("data-id");
+    //     localStorage.setItem("data-id",$(this).attr("data-id"));
+    //     var webview = mui.openWindow({
+    //         url: 'articleDetails.html',
+    //         id: "articleDetails.html",
+    //         extras: {
+    //             name: 'mui'  //扩展参数
+    //         }
+    //     });
+    // })
+    // mui(".paragraph").on('tap', 'a', function() {
+    //     var a = document.createElement('a');
+    //     a = this.cloneNode(true);
+    //     a.click();
+    // })
+
+
+
+
+
+</script>
+</body>
+
+</html>

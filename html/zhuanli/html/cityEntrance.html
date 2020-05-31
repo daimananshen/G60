@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>专利区域监控</title>
+    <link rel="stylesheet" href="../css/cityEntrance.css">
+    <script src="../js/flexible.js"></script>
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <style>
+        #alert {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            font-size: 14px;
+            padding: 4px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="contaniner_city">
+        <p class="title">
+            <span></span>
+            <span>G60城市快闪分析</span>
+        </p>
+        <header>
+            <a href="./songjiang.html" class="img">
+                <img src="../images/songjiangqu.png" alt="">
+            </a>
+            <a href="./suzhou.html" class="img">
+                <img src="..//images/shouzhou.png" alt="">
+            </a>
+            <a href="./wuhu.html" class="img">
+                <img src="../images/wuhu.png" alt="">
+            </a>
+            <a href="./hangzhou.html" class="img">
+                <img src="../images/hangzhou.png" alt="">
+            </a>
+            <a href="./hefei.html" class="img">
+                <img src="../images/hefei.png" alt="">
+            </a>
+            <a href="./huzhou.html" class="img">
+                <img src="../images/huzhou.png" alt="">
+            </a>
+            <a href="./jiaxing.html" class="img">
+                <img src="../images/jiaxing.png" alt="">
+            </a>
+            <a href="./jinhua.html" class="img">
+                <img src="../images/jinhua.png" alt="">
+            </a>
+            <a href="./xuancheng.html" class="img">
+                <img src="../images/xuancheng.png" alt="">
+            </a>
+        </header>
+        <div class="color">
+
+        </div>
+        <p class="title" style="margin-bottom:10px;">
+            <span></span>
+            <span>区域监控系统</span>
+        </p>
+        <div class="map">
+            <div class="imgbgc">
+                <img src="../images/newmap.png" alt="">
+                <a href="javascript:;" class="hefei">合肥</a>
+                <a href="javascript:;" class="wuhu">芜湖</a>
+                <a href="javascript:;" class="xuancheng">宣城</a>
+                <a href="javascript:;" class="huzhou">湖州</a>
+                <a href="http://2g.zhihuiya.com/rims-mockup/dark/#/patent/auth?token=8CEEDC441D8660DF049408BC1D20E2B4"
+                    class="suzhou">苏州</a>
+                <a href="javascript:;" class="jiaxing">嘉兴</a>
+                <a href="javascript:;" class="hangzhou">杭州</a>
+                <a href="javascript:;" class="songjiang">松江</a>
+                <a href="javascript:;" class="jinhua">金华</a>
+            </div>
+        </div>
+    </div>
+    <div id="alert" style="display: none">
+        <span>没有更多数据</span>
+    </div>
+    <script>
+        $('.map a').click(function () {
+            $('#alert')
+                .fadeToggle()
+                .delay(1000)
+                .fadeToggle()
+        })
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>科普机构地图</title>
+    <link rel="stylesheet" href="../css/mapupdate.css">
+    <script src="../js/flexible.js"></script>
+    <script src="../../../js/mui.min.js"></script>
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <script src="../../../js/API.js"></script>
+
+</head>
+
+<body>
+<div class="container_map">
+    <p class="title">
+        <span></span>
+        <span>科普机构地图</span>
+    </p>
+    <div class="content">
+        <div class="map">
+            <div class="img">
+                <img src="../images/newmapimg.png" alt="">
+            </div>
+            <a href="javascript:;" class="hefei" onclick="openMyPage('合肥')">
+                    <span>合肥(<span id="hefei">0</span>家)<span></span>
+            </a>
+            <a href="javascript:;" class="wuhu" onclick="openMyPage('芜湖')">
+                    <span>芜湖(<span id="wuhu">0</span>家)<span></span>
+            </a>
+            <a href="javascript:;" class="xuancheng" onclick="openMyPage('宣城')">
+                    <span>宣城(<span id="xuancheng">0</span>家)<span></span>
+            </a>
+            <a href="javascript:;" class="suzhou" onclick="openMyPage('苏州')">
+                    <span>苏州(<span id="suzhou">0</span>家)<span></span>
+            </a>
+            <a href="javascript:;" class="shanghai" onclick="openMyPage('上海')">
+                    <span>上海(<span id="shanghai">0</span>家)<span></span>
+            </a>
+            <a href="javascript:;" class="jaixing" onclick="openMyPage('嘉兴')">
+                    <span>嘉兴(<span id="jaixing">0</span>家)<span></span>
+            </a>
+            <a href="javascript:;" class="huzhou" onclick="openMyPage('湖州')">
+                    <span>湖州(<span id="huzhou">0</span>家)<span></span>
+            </a>
+            <a href="javascript:;" class="hangzhou" onclick="openMyPage('杭州')">
+                    <span>杭州(<span id="hangzhou">0</span>家)<span></span>
+            </a>
+            <a href="javascript:;" class="jinhua" onclick="openMyPage('金华')">
+                    <span>金华(<span id="jinhua">0</span>家)<span></span>
+            </a>
+
+        </div>
+
+    </div>
+</div>
+</body>
+<script>
+    $(function () {
+        //初始化获取G60城市科普机构数量
+        $.ajax({
+            type: 'post',
+            url: ip + 'ScienceOrganization/getCountByCity',
+            success: function (data) {
+                var listData = data.content;
+                for (var i = 0; i < listData.length; i++) {
+                    switch (listData[i].key) {
+                        case "合肥":
+                            $("#hefei").text(listData[i].value)
+                            break;
+                        case "芜湖":
+                            $("#wuhu").text(listData[i].value)
+                            break;
+                        case "宣城":
+                            $("#xuancheng").text(listData[i].value)
+                            break;
+                        case "苏州":
+                            $("#suzhou").text(listData[i].value)
+                            break;
+                        case "上海":
+                            $("#shanghai").text(listData[i].value)
+                            break;
+                        case "嘉兴":
+                            $("#jaixing").text(listData[i].value)
+                            break;
+                        case "湖州":
+                            $("#huzhou").text(listData[i].value)
+                            break;
+                        case "杭州":
+                            $("#hangzhou").text(listData[i].value)
+                            break;
+                        case "金华":
+                            $("#jinhua").text(listData[i].value)
+                            break;
+
+                    }
+                }
+            },
+            error: function (e) {
+                console(JSON.stringify(e))
+            }
+        });
+    })
+
+    function openMyPage(page) {
+        localStorage.removeItem("KepjgCity");
+        localStorage.setItem("KepjgCity", page);
+        var webview = mui.openWindow({
+            url: 'kpjgList.html',
+            id: "kpjgList.html",
+            extras: {
+                name: 'mui' //扩展参数
+            }
+        });
+    }
+</script>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>5G应用</title>
+    <link rel="stylesheet" href="../../css/newfile.css">
+
+</head>
+
+<body>
+    <div class="container_5G">
+        <img src="../../images/g60/GroupCopy5.png" alt="">
+        <img src="../../images/g60/GroupCopy.png" alt="">
+        <img src="../../images/g60/GroupCopy2.png" alt="">
+        <img src="../../images/g60/GroupCopy3.png" alt="">
+        <img src="../../images/g60/GroupCopy4.png" alt="">
+    </div>
+
+    <div style="padding: 15px 15px;text-align: center;font-size: 18px">
+        <!-- href="tel:400-920-5940" -->
+        联系电话：<a onclick="call('400-920-5940')" href="tel:400-920-5940" style="color: #333333;">400-920-5940</a> </div>
+
+</body>
+<script>
+    // 服务热线
+    function call(tel) {
+        var u = navigator.userAgent;
+        if (u.toLowerCase().indexOf("androidapp") !== -1) {
+            window.android.callTel(tel);
+        }
+    };
+</script>
+
+</html>

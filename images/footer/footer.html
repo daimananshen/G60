@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta name="format-detection" content="email=no" />
+		<title></title>
+		<style type="text/css">
+			*{margin:0;padding: 0;}
+			ul li{list-style: none;}
+			img{vertical-align: middle;}
+			.noShow{display: none;}
+			.footer{color:#777;width: 100%;position: fixed;background: #fff;box-shadow: 0 0 15px #eee;bottom:0;text-align: center;}
+			.footer img{height:20px;}
+			.footer li{float: left;width:20%;text-align: center;font-size: 12px;padding:2px 0;}
+			.footer li p{line-height: 24px;}
+			.footer li.vioce{position: relative;}
+			.footer li.vioce img{height:56px;position: absolute;top:-28px;left:50%;transform: translateX(-50%);}
+			.footer li.active{color:#5DCB68}
+			.footer li.active .noShow{display: inline-block;}
+			.footer li.active p img{display: none;}
+		</style>
+	</head>
+	<body>
+		<div class="footer">
+			<ul>
+				<!--选中状态时在li上加class：active-->
+				<li class="active">
+					<p>
+						<img src="../images/footer/index.png"/>
+						<img src="../images/footer/index_on.png" class="noShow"/>
+					</p>
+					<p>首页</p>
+				</li>
+				<li>
+					<p>
+						<img src="../images/footer/hotLine.png"/>
+						<img src="../images/footer/hotLine_on.png" class="noShow"/>
+					</p>
+					<p>农民热线</p>
+				</li>
+				<li class="vioce">
+					<p>
+						<img src="../images/footer/voice.png"/>
+					</p>
+				</li>
+				<li>
+					<p>
+						<img src="../images/footer/note.png"/>
+						<img src="../images/footer/note_on.png" class="noShow"/>
+					</p>
+					<p>语音记事本</p>
+					
+				</li>
+				<li>
+					<p>
+						<img src="../images/footer/user.png"/>
+						<img src="../images/footer/user_on.png" class="noShow"/>
+					</p>
+					<p>我的</p>
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>

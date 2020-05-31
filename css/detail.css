@@ -1,0 +1,160 @@
+﻿
+*{padding:0; margin:0;}
+.cc_star span{ background: url(../images/wenyu/star.png) left top no-repeat; display: inline-block; width: 16px; height: 16px; margin-right: 5px }
+.cc_star span.on{ background-position: bottom center; }
+.jia input{ opacity: 0; width: 100%; height: 100%; left: 0;top: 0; position: absolute; }
+html {
+	font-size: 14px;
+}
+@media only screen and (min-width: 360px) {
+	html {
+		font-size: 16.08px !important;
+	}
+}
+html,
+body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+}
+body {
+	height: 100%;
+	/*  max-width: 640px;*/
+	margin: 0 auto;
+	padding: 0;
+	/* font-family: "Microsoft YaHei"; */
+	font-family:PingFang Medium;
+	font-size: 0.75rem !important;
+	color: #111111;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+	margin: 0;
+}
+a {
+	text-decoration: none;
+}
+ul {
+	margin: 0;
+	padding: 0;
+}
+li {
+	list-style: none;
+}
+input {
+	outline: none;
+}
+textarea {
+	outline: none;
+	resize: none;
+}
+input,
+textarea,
+keygen,
+select,
+button {
+	/* font-family: "Microsoft YaHei"; */
+	font-family:PingFang Medium;
+}
+/****************/
+input{
+	margin:0;padding:0;
+	font-size: 0.75rem;
+}
+
+.imgbox img {
+	width: 100%;
+}
+img {
+	vertical-align:middle;
+	border:medium none;
+}
+
+a,
+img,
+button,
+input,
+textarea {
+	-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+	-ms-tap-highlight-color: rgba(255, 255, 255, 0);
+	-moz-tap-highlight-color: rgba(255, 255, 255, 0);
+	-o-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+button,
+input,
+textarea,
+select {
+	border: medium none;
+	outline: medium none;
+	/*取消chrome下input和textarea的聚焦边框*/
+	-webkit-appearance: none;
+	-ms-appearance: none;
+	-moz-appearance: none;
+	-o-appearance: none;
+}
+.n-box{ padding-bottom:10px;}
+/*取消滚动条*/
+.bg-white{ background: #fff}
+
+
+
+.m-lmbox1 ul{padding:0.7rem;}
+
+.m-lmbox1 ul li.u-lmlist .n-text8 .n-tt13 em{font-style:normal;color:#f11d27;}
+
+
+.m-lmbox1 ul li.u-lmlist .n-text9 .n-tt13 em{font-style:normal;color:#f11d27;}
+
+
+.n-menu ul{width:82%;margin:0 auto;}
+.n-menu ul li{display:inline;padding:0;margin-left:-0.25rem;}
+.n-menu ul li a{display:inline-block;font-size:1rem;color:#fff;padding:0 13px;background:#bbbbbb;border-radius:15px; margin:2px; line-height:1.6rem;}
+.n-menu ul li:nth-child(6){border-right:0px solid #a5bed7;}
+.n-menu ul li a:hover{background:#7db4e2;}
+
+/**列表详情**/
+.m-menu2-01 ul li{float:left;width:33.33%;text-align:center;box-sizing:border-box;-webkit-box-sizing:border-box;height:2.7rem;}
+.m-menu2-01 ul li a{width:100%;display:inline-block;color:#000;font-size:0.9rem;line-height:2.7rem;}
+
+.m-list7{display:none;}
+.u-bl{display:block; position:relative;}
+
+.m-htbox2{background:#fff;}
+.table3{border-right:0;border-bottom:0;width:100%;border-bottom:1px dotted #BFBBBB;}
+.tr3{width:100%;display:flex;justify-content:space-between;border-top:1px dotted #BFBBBB;border-left:1px dotted #BFBBBB;border-right:1px dotted #BFBBBB;}
+.th3,.td3{padding:5px;text-align:left;color:#838080;width:80%;}
+.th3{font-weight:0.75rem;color:#838080;}
+.th-04{text-align:right;width:34%; border-right:1px solid #BFBBBB; line-height: 28px;white-space: nowrap; font-size: 14px; overflow: hidden;text-overflow: ellipsis; position: relative;}
+.th-05{width:78%;word-wrap: break-word;overflow: hidden;line-height: 28px; font-size: 14px;}
+
+
+
+.header {
+	height: 44px;
+	line-height: 44px;
+	color: #fff;
+	background: #7ED321;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	z-index: 10;
+}
+.priceMonBox .mainTab li {
+	width: 23%!important;
+}
+.header {
+	height: 44px;
+	line-height: 44px;
+	color: #fff;
+	background: #7ED321;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	z-index: 10;
+}
+

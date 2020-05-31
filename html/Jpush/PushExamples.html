@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">12
+    <title>Hello MUI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="../../css/cssreset-min.css" />
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/cc.css" />
+    <script src="../../js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/common.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/jquery.citys.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+
+    <!--标准mui.css-->
+    <!--App自定义的css-->
+    <!-- <link rel="stylesheet" type="text/css" href="../css/app.css" /> -->
+    <style>
+        h5 {
+            margin: 5px 7px;
+        }
+        h2{
+            font-size: 100%;
+        }
+    </style>
+</head>
+
+<body>
+<div class="header">
+    <div class="container center">
+				<span class="backBtn">
+					<img src="../../images/back.png" width="10px" />返回
+				</span>
+        <span class="til">推送示例</span>
+    </div>
+</div>
+<div class="mui-content">
+
+    <div class="mui-content-padded" style="margin: 5px;height: 70vh">
+        <div class="mui-input-row" style="margin-left:4vh;padding-top:20px;margin-right: 4vh;">
+            <textarea id="msg_title" rows="5" placeholder="推送标题"></textarea>
+        </div>
+        <div class="mui-input-row" style="margin-left:4vh;padding-top:20px;margin-right: 4vh;">
+            <textarea id="textarea" rows="5" placeholder="推送内容"></textarea>
+        </div>
+    </div>
+</div>
+<center>
+<input type="button" value="全部推送" onclick="allPush()"/>
+<input type="button" value="推送给自己" onclick="pushOwn()"/>
+</center>
+<script>
+
+ function allPush() {
+     var message=$("#textarea").val();
+     var msg_title=$("#msg_title").val();
+    if(message!=''){
+        // 群发
+        // var url = "http://kc.kgxj.haikou.gov.cn/yedao_int/jpush/jpushAll";
+        var url = "http://kc.kgxj.haikou.gov.cn/yedao_int/jpush/jpushAll";
+        $.ajax({
+            type: "post",
+            url: url,
+            data: {
+                Message: message,
+                msg_title:msg_title
+            },
+            dataType: "json",
+            success: function(data) {
+                if(data.code==1){
+                    mui.toast("发送成功",2000);
+                }
+            }
+        })
+
+    }else{
+        mui.toast("不能发送空消息",1000);
+    }
+ }
+ function pushOwn() {
+     var message=$("#textarea").val();
+     var msg_title=$("#msg_title").val();
+    var RegistrationID= getregId();
+     if(message!=''){
+     // 发送给自己 ，要先做获取当前app的RegistrationID
+         if(RegistrationID){
+             // 发给当前设备
+             var url = "http://kc.kgxj.haikou.gov.cn/yedao_int/jpush/jpushNominee";
+             $.ajax({
+                 type: "post",
+                 url: url,
+                 data: {
+                     Message: message,
+                     msg_title:msg_title,
+                     RegistrationID:RegistrationID
+                 },
+                 dataType: "json",
+                 success: function(data) {
+                     if(data.code==1){
+                         mui.toast("发送成功",2000);
+                     }
+                 }
+             })
+         }else{
+             mui.toast("没有获取到对应设备id",1000);
+         }
+     }else{
+         mui.toast("不能发送空消息",1000);
+     }
+
+ }
+</script>
+</body>
+
+</html>

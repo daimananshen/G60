@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <link rel="stylesheet" href="../../css/list.css" />
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <script src="../../js/flexible.js"></script>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/API.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/mui.min.js"></script>
+    <title>设置</title>
+    <style>
+        body {
+            background-color: #fff;
+        }
+
+        .select {
+            margin-top: 30px;
+            height: 60px;
+            position: relative;
+        }
+
+        .update_input .select select {
+            padding-left: 10px;
+            padding-right: 10px;
+            appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            border: none;
+            background: #f8f8f8 t;
+            width: 100%;
+            height: 50px;
+            font-size: 16px;
+            border: 1px solid #e5e5e5;
+            margin-right: 5px;
+        }
+
+        .update_input .select img {
+            display: inline-block;
+            width: 16px;
+            height: 10px;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .container .update_input .button {
+            margin-top: 30px;
+        }
+
+        .container .update_input .button a {
+            width: 150px;
+            height: 45px;
+            line-height: 45px;
+            text-align: center;
+            padding: 0;
+            font-size: 16px;
+        }
+
+        #alert {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            font-size: 14px;
+            padding: 4px 6px;
+            border-radius: 4px;
+        }
+    </style>
+    <script src="http://g.alicdn.com/dingding/dingtalk-jsapi/2.6.41/dingtalk.open.js"></script>
+</head>
+
+<body>
+<div class="container">
+    <div class="update_input">
+        <div class="select">
+            <select id="hangye">
+                <option value="农、林、牧、渔业">农、林、牧、渔业</option>
+                <option value="采矿业">采矿业</option>
+                <option value="制造业">制造业</option>
+                <option value="电力、热力、燃气及水的生产和供应业">电力、热力、燃气及水的生产和供应业</option>
+                <option value="环境和公共设施管理业">环境和公共设施管理业</option>
+                <option value="建筑业">建筑业</option>
+                <option value="交通运输、仓储业和邮政业">交通运输、仓储业和邮政业</option>
+                <option value="信息传输、计算机服务和软件业">信息传输、计算机服务和软件业</option>
+                <option value="批发和零售业">批发和零售业</option>
+                <option value="住宿、餐饮业">住宿、餐饮业</option>
+                <option value="金融、保险业">金融、保险业</option>
+                <option value="房地产业">房地产业</option>
+                <option value="租赁和商务服务业">租赁和商务服务业</option>
+                <option value="科学研究、技术服务和地质勘查业">科学研究、技术服务和地质勘查业</option>
+                <option value="水利、环境和公共设施管理业">水利、环境和公共设施管理业</option>
+                <option value="居民服务和其他服务业">居民服务和其他服务业</option>
+                <option value="教育">教育</option>
+                <option value="卫生、社会保障和社会服务业">卫生、社会保障和社会服务业</option>
+                <option value="文化、体育、娱乐业">文化、体育、娱乐业</option>
+                <option value="综合（含投资类、主业不明显）">综合（含投资类、主业不明显）</option>
+                <option value="其它">其它</option>
+            </select>
+            <img style="display: inline-block" width="12px" height="8px" src="../../images/selectImg.png" alt="">
+        </div>
+        <div class="button">
+            <a href="javascript:void(0)" onclick="submitUpdate()">
+                完成
+            </a>
+        </div>
+    </div>
+</div>
+<div id="alert" style="display: none">
+    <span>弹出效果</span>
+</div>
+<script>
+    $(function () {
+        //            var key = getQueryVariable("key");
+        var param;
+        dd.biz.navigation.setTitle({
+            title: '修改行业', //控制标题文本，空字符串表示显示默认文本
+            onSuccess: function (result) {},
+            onFail: function (err) {}
+        })
+        var value = getQueryVariable('value')
+        var decode = decodeURIComponent(value)
+        var ul = $("#hangye option");
+        for(var i = 0; i< ul.length; i++) {
+            var test = ul[i].innerText;
+            if(decode == ul[i].innerText){
+                $(ul[i]).attr("selected", "selected");
+            }
+        }
+    })
+
+    function submitUpdate() {
+        var dataid = localStorage.getItem("userID");
+        var key = getQueryVariable("key");
+        var value = $("#hangye option:selected").val();
+        if (!isEmpty(key) && !isEmpty(value) && !isEmpty(dataid)) {
+            $.ajax({
+                url: ip + 'personcentre/updateForMap',
+                type: 'post',
+                data: {
+                    userId: dataid,
+                    key: key,
+                    value: value
+                },
+                dataType: 'json',
+                success: function (data) {
+                    // $('#alert')
+                    //     .fadeToggle()
+                    //     .delay(1000)
+                    //     .fadeToggle();
+                   
+                    if (data.msg == "ok") {
+                        mui.alert('更新成功', '', function () {
+                        });
+                    }
+                    // window.location.href = 'changInfo.html';
+                },
+                error: function (msg) {
+                    console.log(msg)
+                }
+            })
+        }
+    }
+
+    function isEmpty(obj) {
+        if (typeof obj == 'undefined' || obj == null || obj == '') {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1)
+        var vars = query.split('&')
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split('=')
+            if (pair[0] == variable) {
+                return pair[1]
+            }
+        }
+        return
+    }
+</script>
+</body>
+
+</html>

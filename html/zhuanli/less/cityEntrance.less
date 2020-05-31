@@ -1,0 +1,135 @@
+// 浏览器统一样式
+@import 'normalize';
+// 重置一些我们不需要的样式
+@import 'base';
+@design: 750;
+@base: @design/10;
+@Color: rgba(25, 117, 255, 1);
+
+.contaniner_city {
+    width: 100%;
+
+    .title {
+        display: flex;
+        align-items: center;
+        padding: 10px 10px 0;
+
+        span {
+
+
+            &:nth-child(1) {
+                width: 5px;
+                height: 13px;
+                background-color: #1975FF;
+                margin-right: 5px;
+            }
+
+            &:nth-child(2) {
+                font-size: 14px;
+                color: #333333;
+                font-weight: 600;
+            }
+
+        }
+    }
+
+    header {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 5px;
+
+        .img {
+            width: 33%;
+        }
+
+
+    }
+
+    .color {
+        height: 10px;
+        width: 100%;
+        background-color: #F3F3F3;
+    }
+
+    .map {
+        padding: 0 10px 20px;
+
+        .imgbgc {
+            width: 710rem/@base;
+            height: 440rem/@base;
+            position: relative;
+
+            img {
+                width: 710rem/@base;
+                height: 440rem/@base;
+            }
+
+            a {
+                padding: 4rem/@base 6rem/@base;
+                background-color: #E34A38;
+                color: #fff;
+                font-size: 24rem/@base;
+                font-weight: 600;
+                border-radius: 6rem/@base;
+            }
+
+            .hefei {
+                position: absolute;
+                left: 213rem/@base;
+                top: 95rem/@base;
+            }
+
+            .wuhu {
+                position: absolute;
+                left: 323rem/@base;
+                top: 115rem/@base;
+            }
+
+            .xuancheng {
+                position: absolute;
+                left: 393rem/@base;
+                top: 135rem/@base;
+            }
+
+            .huzhou {
+                position: absolute;
+                left: 453rem/@base;
+                top: 110rem/@base;
+            }
+
+            .suzhou {
+                position: absolute;
+                left: 523rem/@base;
+                top: 65rem/@base;
+            }
+
+            .jiaxing {
+                position: absolute;
+                left: 523rem/@base;
+                top: 190rem/@base;
+            }
+
+            .hangzhou {
+                position: absolute;
+                left: 453rem/@base;
+                top: 260rem/@base;
+            }
+
+            .songjiang {
+                position: absolute;
+                left: 580rem/@base;
+                top: 125rem/@base;
+            }
+
+            .jinhua {
+                position: absolute;
+                left: 453rem/@base;
+                top: 315rem/@base;
+            }
+
+        }
+
+    }
+}

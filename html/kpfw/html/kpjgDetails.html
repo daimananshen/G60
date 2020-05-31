@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+
+
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no" />
+
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,viewport-fit=cover">
+
+    <title>科研机构详情页</title>
+
+    <link rel="stylesheet" href="../../../css/popup.css">
+
+    <link rel="stylesheet" href="../css/mapScienceList.css">
+
+    <script src="../js/flexible.js"></script>
+
+    <script src="../../detail/js/jquery-3.3.1.min.js"></script>
+
+    <!--<script src="../js/jquery-3.3.1.min.js"></script>-->
+
+    <script src="../../../js/common.js" type="text/javascript" charset="utf-8"></script>
+
+    <script src="../../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+
+    <script src="../../../js/API.js" type="text/javascript" charset="utf-8"></script>
+
+    <script src="//g.alicdn.com/dingding/dingtalk-jsapi/2.6.41/dingtalk.open.js"></script>
+
+    <!--<script src="../../../js/mui.min.js"></script>-->
+
+
+
+
+
+</head>
+
+<style>
+    .tickets-guide-tit2,
+    .tickets-guide-tit,
+    .ivu-table-cell,
+    .tickets-guide-bottom {
+
+        font-size: 12px;
+
+        line-height: 24px;
+
+    }
+
+    .bottomBtn {
+        display: flex;
+    }
+
+    .bottomBtn a {
+        height: 100%;
+        color: #ffffff;
+        font-size: 16px;
+        line-height: 45px;
+        text-align: center;
+        line-height: 35px;
+        width: 100%;
+        background-color: #1975ff;
+    }
+</style>
+
+
+
+<body>
+
+    <div id="app" class="container_ScienceParticular">
+
+        <div class="headerImg">
+
+            <img img :src="data.pic" alt="">
+
+            <span>{{data.name}}</span>
+
+        </div>
+
+        <div class="content" style="padding-bottom: 45px">
+
+            <div class="tabheader">
+
+                <ul>
+
+                    <li><a href="javascript:;"><span class="active">图文介绍</span></a></li>
+
+                    <li><a href="javascript:;"><span>预约指南</span></a></li>
+
+                    <li><a href="javascript:;"><span>常见问题</span></a></li>
+
+                </ul>
+
+            </div>
+
+            <div class="tabContent">
+
+                <div class="recommend" id="page1">
+
+                    <p class="intro">简介:</p>
+
+                    <!--<p>上海地质科普馆又名月亮湾宝石城，坐落上海浦东国际机场后花园的浦东凌空农艺大观园内，科普馆主厅3600平方米，次厅1000多平方米，室外奇石展面积500亩。馆内分为地球厅、地球构造厅、矿物岩石厅、古生物厅、地质地貌厅、国土资源厅、宝石厅、关怀厅、奇石馆9个厅馆。-->
+
+                    <!--</p>-->
+
+                    <p v-html="data.introduction">
+
+                        {{data.introduction}}
+
+                    </p>
+
+                    <!--<img src="../images/科研机构-详情页.png" alt="">-->
+
+                    <!--<p>上海地质科普馆又名月亮湾宝石城，坐落上海浦东国际机场后花园的浦东凌空农艺大观园内，科普馆主厅3600平方米，次厅1000多平方米，室外奇石展面积500亩。馆内分为地球厅、地球构造厅、矿物岩石厅、古生物厅、地质地貌厅、国土资源厅、宝石厅、关怀厅、奇石馆9个厅馆。-->
+
+                    <!--上海地质科普馆又名月亮湾宝石城，坐落上海浦东国际机场后花园的浦东凌空农艺大观园内，科普馆主厅3600平方米，次厅1000多平方米，室外奇石展面积500亩。馆内分为地球厅、地球构造厅、矿物岩石厅、古生物厅、地质地貌厅、国土资源厅、宝石厅、关怀厅、奇石馆9个厅馆-->
+
+                    <!--上海地质科普馆又名月亮湾宝石城，坐落上海浦东国际机场后花园的浦东凌空农艺大观园内，科普馆主厅3600平方米，次厅1000多平方米，室外奇石展面积500亩。馆内分为地球厅、地球构造厅、矿物岩石厅、古生物厅、地质地貌厅、国土资源厅、宝石厅、关怀厅、奇石馆9个厅馆-->
+
+                    <!--</p>-->
+
+                </div>
+
+                <div class="appointment" v-html="data.guide" hidden>{{data.guide}}</div>
+
+                <div class="problem" v-html="data.question" hidden>{{data.question}}</div>
+
+            </div>
+
+            <!--<input type="text" id="phone"  v-bind: value="data.phone" style="display: none">-->
+
+        </div>
+        <div class="alertinfo" style="display:none">
+            <div class="content">
+                <p class="phone">
+                    <span>号码：</span>
+                    <!-- <span>021-68542000</span> -->
+                    <a :href="tel" >{{data.phone}}</a>
+                </p>
+                <p class="close">点击拨打电话</p>
+            </div>
+        </div>
+        <div class="bottomBtn">
+            <!--  :href="tel"  onclick="callPhone() -->
+
+            <a onclick="call(tel)" :href="tel">我要预约</a>
+
+        </div>
+
+
+    </div>
+
+    <!------- 我要咨询弹窗-------- -->
+
+    <div class="model" id="model" style="display:none">
+
+        <div class="content">
+
+            <div class="header">
+
+                <p class="title">姓名</p>
+
+                <input id="applyUserName" type="text" placeholder="姓名">
+
+                <p class="phone">联系电话</p>
+
+                <input id="applyUserPhone" type="number" placeholder="13900393921">
+
+                <p>电子邮箱</p>
+
+                <input id="applyUserEmail" type="email">
+
+                <p>留言信息</p>
+
+                <input id="applyUserRemark" type="text" placeholder="留言">
+
+                <p>申请服务开始时间</p>
+
+                <input readonly="readonly" type="text" id="startTime" placeholder="请选择开始时间"
+                    style="border: 0px;width:50%" />
+
+                <p>申请服务结束时间</p>
+
+                <input readonly="readonly" type="text" id="endTime" placeholder="请选择结束时间"
+                    style="border: 0px;width:50%" />
+
+            </div>
+
+            <div class="button">
+
+                <div onclick="closeModel()" class="leftBtn">取消</div>
+
+                <div onclick="submit_qr()" class="rightBtn">确定</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- <div class="bottomBtn">
+
+        <a :href="tel" onclick="callPhone()">我要预约</a>
+
+    </div> -->
+
+
+
+
+
+    <script>
+        var phone = ""
+
+        var data = JSON.parse(localStorage.getItem("data-content"));
+
+        phone = data.phone;
+
+        new Vue({
+
+            el: "#app",
+
+            data: data,
+            computed: {
+
+                tel: function () {
+                    return 'tel:' + data.phone
+                }
+            }
+
+
+        })
+
+
+        console.log(data.phone);
+
+        var tel = 'tel:' + data.phone
+
+        $('bottomBtn a').attr('href', tel)
+
+
+        function callPhone() {
+
+            // $('#model').css("display","block")
+
+            // $('.model').fadeToggle()
+
+            // 初始化，钉钉
+
+            // dd.ready(function() {
+            //
+            //     // dd.ready参数为回调函数，在环境准备就绪时触发，jsapi的调用需要保证在该回调函数触发后调用，否则无效。
+            //
+            //     console.log('初始化钉钉');
+            //
+            //     dd.runtime.permission.requestAuthCode({
+            //
+            //         corpId: "corpid",
+            //
+            //         onSuccess: function(result) {
+            //
+            //             dd.biz.telephone.showCallMenu({
+            //
+            //                 phoneNumber: phone, // 期望拨打的电话号码
+            //
+            //                 code: '+86', // 国家代号，中国是+86
+            //
+            //                 showDingCall: true, // 是否显示钉钉电话
+            //
+            //                 onSuccess : function() {
+            //
+            //                     console.log('成功唤起拨号盘');
+            //
+            //                 },
+            //
+            //                 onFail : function() {
+            //
+            //                     console.log('唤起拨号盘失败！');
+            //
+            //                 }
+            //
+            //             })
+            //
+            //         },
+            //
+            //         onFail : function(err) {
+            //
+            //             console.log('初始化钉钉失败！');
+            //
+            //         }
+            //
+            //
+            //
+            //     });
+            //
+            // });
+
+        }
+
+
+        $(function () {
+
+            $('.close').click(function () {
+                $('.alertinfo').hide()
+            })
+
+
+            $('.tabheader ul li ').click(function () {
+
+                // 文字高亮
+
+                $('.tabheader ul li ').find('span').removeClass('active');
+
+                $(this).find('span').addClass('active');
+
+
+
+                // 内容切换
+
+                let i = $(this).index();
+
+                $('.tabContent>div').eq(i).show().siblings().hide();
+
+            })
+
+            // $('.bottomBtn p').click(function() {
+
+            //     $('.model').fadeToggle()
+
+            // })
+
+
+
+        })
+
+
+        function closeModel() {
+
+            $('.model').hide();
+
+        }
+
+
+
+        function submit_qr() {
+
+            // if (submitCount > 0) {
+
+            //     mui.toast("请勿重新提交！")
+
+            //     return;
+
+            // }
+
+            var userId = localStorage.getItem("userID");
+
+            if (userId == null || userId == "") {
+
+                userId = "123";
+
+            }
+
+            // var userId = "123"  //钉钉表用户ID
+
+
+
+            var dataId = localStorage.getItem("data-id"); //数据id
+
+
+
+            var applyUserName = $('#applyUserName').val();
+
+            var applyUserPhone = $('#applyUserPhone').val();
+
+            var applyUserEmail = $('#applyUserEmail').val();
+
+            var applyUserRemark = $('#applyUserRemark').val();
+
+
+
+            var startTime = $("#startTime").val();
+
+            var endTime = $("#endTime").val();
+
+
+
+            //
+
+            // if (applyUserName == null || applyUserName == "") {
+
+            //     mui.toast("联系人姓名不能为空")
+
+            //     return;
+
+            // }
+
+            //
+
+            // if (applyUserPhone == null || applyUserPhone == ""||applyUserPhone.length>11) {
+
+            //     mui.toast("联系电话输入错误")
+
+            //     return;
+
+            // }
+
+            //
+
+            // if (startTime==null||startTime==""){
+
+            //     mui.toast("开始时间不能为空")
+
+            //     return;
+
+            // }
+
+            //
+
+            // if (endTime==null||endTime==""){
+
+            //     mui.toast("结束时间不能为空")
+
+            //     return;
+
+            // }
+
+            //
+
+            // if (startTime<nowDate||startTime>endTime) {
+
+            //     mui.toast("开始时间和结束时间选择不合理")
+
+            //     return;
+
+            // }
+
+            //
+
+            //
+
+            // var requestData = {
+
+            //     userId: userId,
+
+            //     serviceName: '仪器服务申请',
+
+            //     type: "1",
+
+            //     tableName: "zygx_share_instrument_new",
+
+            //     tableId: dataId,
+
+            //     name: applyUserName,
+
+            //     mobile: applyUserPhone,
+
+            //     email: applyUserEmail,
+
+            //     content: applyUserRemark,
+
+            //     ext1:startTime,
+
+            //     ext2:endTime
+
+            // }
+
+            alert("提交成功");
+
+            $('.model').hide();
+
+            // mui.toast("提交成功")
+
+            // apiAjax("serverapp/save", requestData);
+
+            // if (API_result.code == 0) {
+
+            //     submitCount++;
+
+            //     mui.toast("提交成功")
+
+            //     closeModel()
+
+            // } else {
+
+            //     if(API_result.tag!=""){
+
+            //         mui.toast(API_result.tag)
+
+            //     }else{
+
+            //         mui.toast("提交失败，请稍后重试！")
+
+            //     }
+
+            // }
+
+        }
+
+        
+        // 服务热线
+        function call(tel) {
+            var u = navigator.userAgent;
+            if (u.toLowerCase().indexOf("androidapp") !== -1) {
+                window.android.callTel(tel);
+            }
+        };
+        
+        
+    </script>
+
+</body>
+
+
+
+</html>

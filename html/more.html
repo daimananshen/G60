@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html xmlns:v-bind="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/mui.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/cssreset-min.css" />
+    <link rel="stylesheet" type="text/css" href="../css/main.css" />
+    <!--<link rel="stylesheet" href="index/css/main.css">-->
+    <script src="../js/vue.min.js"></script>
+    <script src="../js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/flexible.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/jquery.citys.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/API.js" type="text/javascript" charset="utf-8"></script>
+    <title>所有服务</title>
+    <style type="text/css">
+        .header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+        }
+
+        footer ul li img {
+            width: 100%;
+            height: 100%;
+        }
+
+        footer ul li a p {
+            color: #666666;
+            font-size: 12px;
+            line-height: 24px;
+        }
+
+        .allService {
+            padding-bottom: 1.5rem;
+        }
+
+        #demoSelect select {
+            height: 30px;
+            line-height: 30px;
+            border: 1px solid #eee !important;
+            padding: 0 5px;
+            box-sizing: border-box;
+            border-radius: 4px;
+            color: #666;
+            outline: none;
+            width: auto;
+            -webkit-appearance: menulist;
+            margin-bottom: 0;
+        }
+
+        .txtSearch {
+            background: #fff !important;
+            width: 78%;
+            margin-top: 5px;
+            padding-left: 35px !important;
+            box-sizing: border-box
+        }
+
+        .searchBox {
+            position: relative;
+            width: 100%;
+            float: right;
+        }
+
+        .searchBox img {
+            position: absolute;
+            left: 7px;
+            top: 13px;
+        }
+
+        body {
+            background-color: #fff;
+            padding-top: 0px;
+        }
+
+        .title {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        ul {
+            border-bottom: 1px solid #F3F3F3;
+        }
+
+        span {
+            font-size: 12px;
+        }
+
+        footer {
+            height: 1.5rem;
+            background-color: #f8f8f8;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: block;
+        }
+
+        footer ul li {
+            float: left;
+            width: 25%;
+            margin-top: 0.25rem;
+        }
+
+        footer ul li a {
+            font-size: 0.29333333rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        ul {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        [v-cloak] { display: none } 
+    </style>
+</head>
+
+<body>
+
+    <div id="app" v-cloak>
+        <div class="header" style="display: none">
+            <div class="container center">
+                <!--<span class="backBtn">-->
+                <!--<img src="../images/back.png" width="10px"/>-->
+                <!--返回-->
+                <!--</span>-->
+            </div>
+        </div>
+
+        <div class="" style="margin-top:10px;">
+
+        </div>
+        <div class="allService">
+
+            <div class="title" style="margin-left: 20px;background-color: #fff;">新闻资讯</div>
+            <div class="indexItem indexItem1">
+
+                <ul>
+                    <li v-for="item in list8" :key="item.id" :class="item.url" onclick="linkTo(this)"
+                        @click="whichTap(item.url,item.name)">
+                        <img :src="item.icon" width="40px" />
+                        <span>{{item.name}}</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="title" style="margin-top:7px;margin-left: 20px">成果对接</div>
+            <div class="indexItem indexItem1">
+
+                <ul>
+                    <li v-for="item in list6" :key="item.id" :class="item.url" onclick="linkTo(this)"
+                        @click="whichTap(item.url,item.name)">
+                        <img :src="item.icon" width="40px" />
+                        <span>{{item.name}}</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="title" style="margin-top:7px;margin-left: 20px">知识产权服务</div>
+            <div class="indexItem indexItem1">
+
+                <ul>
+                    <li v-for="item in list1" :key="item.id" :class="item.url" onclick="linkTo(this)"
+                        @click="whichTap(item.url,item.name)">
+                        <img :src="item.icon" width="40px" />
+                        <span>{{item.name}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="title" style="margin-top:7px;margin-left: 20px">科创资源共享</div>
+            <div class="indexItem indexItem1">
+
+                <ul>
+                    <li v-for="item in list3" :key="item.id" :class="item.url" onclick="linkTo(this)"
+                        @click="whichTap(item.url,item.name)">
+                        <img :src="item.icon" width="40px" />
+                        <span>{{item.name}}</span>
+                    </li>
+                </ul>
+            </div>
+
+
+            <div class="title" style="margin-top:7px;margin-left: 20px">第三方服务</div>
+            <div class="indexItem indexItem1">
+
+                <ul>
+                    <li v-for="item in list7" :key="item.id" :class="item.url" onclick="linkTo(this)"
+                        @click="whichTap(item.url,item.name)">
+                        <img :src="item.icon" width="40px" />
+                        <span>{{item.name}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="title" style="margin-top:7px;margin-left: 20px">人才服务</div>
+            <div class="indexItem indexItem1">
+
+                <ul>
+                    <li v-for="item in list2" :key="item.id" :class="item.url" onclick="linkTo(this)"
+                        @click="whichTap(item.url,item.name)">
+                        <img :src="item.icon" width="40px" />
+                        <span>{{item.name}}</span>
+                    </li>
+                </ul>
+            </div>
+
+
+
+
+            <div class="title" style="margin-top:7px;margin-left: 20px">政府服务</div>
+            <div class="indexItem indexItem1">
+                <ul>
+                    <li v-for="item in list5" :key="item.id" :class="item.url" onclick="linkTo(this)"
+                        @click="whichTap(item.url,item.name)">
+                        <img :src="item.icon" width="40px" />
+                        <span v-bind:class="[item.name]" a>{{item.name}}</span>
+                    </li>
+                </ul>
+            </div>
+
+
+            <div class="title" style="margin-top:7px;margin-left: 20px">公共研发</div>
+            <div class="indexItem indexItem1">
+                <ul>
+                    <li v-for="item in list9" :key="item.id" :class="item.url" onclick="linkTo(this)"
+                        @click="whichTap(item.url,item.name)">
+                        <img :src="item.icon" width="40px" />
+                        <span v-bind:class="[item.name]" a>{{item.name}}</span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <!-- 底线----------- -->
+        <!--    <div class="footerLine">-->
+        <!--        <div class="line"></div>-->
+        <!--        <span>这是底线</span>-->
+        <!--    </div>-->
+        <footer>
+            <ul class="clearfix">
+                <li class="active">
+                    <a href="../html/index.html">
+                        <div class="img" style="width: 0.58666667rem;height: 0.58666667rem;">
+                            <img src="index/images/微信图片_20190415090810.png" alt="">
+
+                        </div>
+                        <p>首页</p>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="../../g60kc/kejiyouyou/index.html">
+                        <div class="img" style="width: 0.58666667rem;height: 0.58666667rem;">
+                            <img src="index/images/kejiyouyou2.png" alt="">
+                        </div>
+                        <p>科技优优</p>
+                    </a>
+                </li>
+                <li class=" ">
+                    <a href="more.html">
+                        <div class="img" style="width: 0.58666667rem;height: 0.58666667rem;">
+                            <img src="index/images/所有服务高亮.png" alt="">
+                        </div>
+                        <p>所有服务</p>
+                    </a>
+                </li>
+                <li class="" @click="goToCenter()">
+                    <a>
+                        <div class="img" style="width: 0.58666667rem;height: 0.58666667rem;">
+                            <img src="index/images/个人中心@2x.png" alt="">
+                        </div>
+                        <p>个人中心</p>
+                    </a>
+                </li>
+            </ul>
+        </footer>
+    </div>
+
+</body>
+
+<script>
+    var userMobile = localStorage.getItem("Dingmobile");
+    var jrkc = "";
+    var lgwy = "";
+    function f() {
+        $.ajax({
+            async: false,
+            url: ip + 'DingTalk/getAllHomeProjects',
+            dataType: "json",
+            success: function (res) {
+                for (var i = 0; i < res.content.length; i++) {
+                    if (res.content[i].endsWith("/CN")) {
+                        jrkc = res.content[i];
+                    }
+
+                    if (res.content[i].endsWith("/EN")) {
+                        lgwy = res.content[i];
+                    }
+                }
+            }
+        });
+    }
+    f();
+    function linkTo(obj) {
+        
+        if (obj.className === "") {
+            if (obj.textContent === " 拍照识别") {
+                camera();
+            }
+            if (obj.textContent === "语音记事本") {
+                yuyin();
+            }
+
+            if (obj.textContent.trim() === "创业服务") {
+                var yedao_id = localStorage.getItem("yedao_id");
+                if (yedao_id == "" || yedao_id == null) {
+                    loginDialog();
+                } else {
+                    window.location.href = "cyfw.html";
+                }
+            } else if (obj.type === null || obj.type === undefined) {
+                //                toast("敬请期待");
+            }
+        } else {
+            // window.location.href = obj.className
+            // break;
+        }
+
+    }
+    
+    function to(url) {
+        window.location.href = url
+    }
+    mui.init();
+    //吐司
+    function toast(message) {
+        mui.toast(message, {
+            duration: "short(2000ms)"
+        });
+    }
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            //                公共研发
+            list9: [
+                {
+                    icon: "../images/g60/gyhlw2.png",
+                    name: "工业互联网",
+                    url: "module/serviceOrgJs.html"
+                }
+                , {
+                    icon: "../images/g60/5G1.png",
+                    name: "5G应用",
+                    url: "module/5GApplication.html"
+                }
+                , {
+                    icon: "../images/g60/AI.png",
+                    name: "人工智能",
+                    url: "../html/AI/html/AI.html"
+                }
+            ],
+            //                新闻资讯
+            list8: [
+                {
+                    icon: "index/images/jrkc2x.png",
+                    name: "今日科创",
+                    url: jrkc
+                },
+                {
+                    icon: "index/images/dgyy2x.png",
+                    name: "六国外语",
+                    url: lgwy
+                }
+                ,
+                {
+                    icon: "index/images/通知公告@2x.png",
+                    name: "通知公告",
+                    url: "../html/news/new_tzgg.html"
+                }
+                ,
+                {
+                    icon: "../images/g60/科创新论.png",
+                    name: "科创新论",
+                    url: "../html/news/new_kcxl.html"
+                }
+            ],
+            //                第三方服务
+            list7: [
+
+                {
+                    icon: "  ../images/g60/知识产权服务.png",
+                    name: "知识产权服务",
+                    url: "../../g60kc/mobile/service-list.html?kw=&type=知识产权&province=0"
+                },
+                {
+                    icon: "../images/g60/创业服务.png",
+                    name: "创业服务",
+                    url: "../../g60kc/mobile/service-list.html?kw=&type=%E5%88%9B%E4%B8%9A%E6%9C%8D%E5%8A%A1&province=0"
+                }, {
+                    icon: "../images/g60/科技创新.png",
+                    name: "科技创新服务",
+                    url: "../../g60kc/mobile/service-list.html?kw=&type=%E7%A7%91%E6%8A%80%E5%88%9B%E6%96%B0&province=0"
+                }
+                , {
+                    icon: "../images/g60/投融资服务.png",
+                    name: "科技快贷服务",
+                    url: "../../g60kc/mobile/service-list.html?kw=&type=%E6%8A%95%E8%9E%8D%E8%B5%84%E6%9C%8D%E5%8A%A1&province=0"
+                }
+                , {
+                    icon: "../images/g60/管理咨询.png",
+                    name: "管理咨询",
+                    url: "../../g60kc/mobile/service-list.html?kw=&type=%E7%AE%A1%E7%90%86%E5%92%A8%E8%AF%A2&province=0"
+                }
+                // ,{
+                //     icon: "../images/g60/工业互联网.png",
+                //     name: "工业互联网服务",
+                //     url: "module/serviceOrganization.html "
+                // }
+                , {
+                    icon: "../images/g60/法律服务.png",
+                    name: "法律服务",
+                    url: "../../g60kc/mobile/service-list.html?kw=&type=%E6%B3%95%E5%BE%8B%E6%9C%8D%E5%8A%A1&province=0"
+                }
+
+            ],
+            //                科技优优
+            list6: [
+
+                {
+                    icon: "  ../images/g60/成果中心.png",
+                    name: "科技优优",
+                    url: "../../g60kc/kejiyouyou/index.html"
+                }
+                , {
+                    icon: "../images/g60/chengguo.png",
+                    name: "发布成果",
+                    url: "../../g60kc/kejiyouyou/planPublish.html"
+                }
+                ,
+                {
+                    icon: "../images/g60/发布需求.png",
+                    name: "发布需求",
+                    url: "../../g60kc/kejiyouyou/releaseRequire.html"
+                }
+            ],
+
+            //                政府服务
+            list5: [
+
+                {
+                    icon: "  ../images/g60/一网通版.png",
+                    name: "一网通办",
+                    //url: "http://ywtb.g60.gov.cn:8090/g60zwdt/g60/pages/default/home"
+                    url:"http://116.236.129.45:8090/g60zwdt/g60/pages/default/home.html"
+                },
+                {
+                    icon: "../images/g60/高企自评打分.png",
+                    name: "高企自评打分",
+                    url: "questionnaire/questionnaireList.html"
+                }, {
+                    icon: "../images/g60/政策法规.png",
+                    name: "政策法规",
+                    url: "news/new_zcfg.html"
+                }
+                , {
+                    icon: "../images/g60/政策解读.png",
+                    name: "政策解读",
+                    url: "news/new_zcjd.html"
+                }
+                , {
+                    icon: "../images/g60/政策深度匹配.png",
+                    name: "政策深度匹配",
+                    url: "../../g60kc/mobile/policy-list.html"
+                }
+            ],
+
+            //                融媒体服务
+            list4: [
+
+                {
+                    icon: "  ../images/g60/今日科创.png",
+                    name: "今日科创",
+                    url: ""
+                },
+                {
+                    icon: "../images/g60/通知公告.png",
+                    name: "通知公告",
+                    url: "news/new_tzgg.html"
+                }, {
+                    icon: "../images/g60/科创新论.png",
+                    name: "科创新论",
+                    url: "news/new_kcxl.html"
+                }
+
+            ],
+            //                知识产权服务
+            list1: [
+                {
+                    icon: "../images/g60/专利检索.png",
+                    name: "专利检索",
+                    url: "../../g60kc/patentSearch/"
+                }, {
+                    icon: "../images/g60/专利评估.png",
+                    name: "专利评估",
+                    url: "../../g60kc/mobile/patent-assess-list.html"
+                }, {
+                    icon: "../images/g60/专利诉讼查询.png",
+                    name: "专利诉讼查询",
+                    url: "../../g60kc/mobile/patent-litigation-inform.html"
+                }, {
+                    icon: "../images/g60/专利区域监控.png",
+                    name: "专利区域监控",
+                    url: "zhuanli/html/cityEntrance.html"
+                }, {
+                    icon: "../images/g60/科技培训.png",
+                    name: "专利培训",
+                    url: "../../g60kc/mobile/patent-course-list.html"
+                }, {
+                    icon: "../images/g60/专利全生命周期管理.png",
+                    name: "专利全生命周期",
+                    url: "zhihuiya/manage.html"
+                }, {
+                    icon: "../images/g60/专利智能分析.png",
+                    name: "专利智能分析",
+                    url: "zhihuiya/analysis.html"
+                }, {
+                    icon: "../images/g60/专利追踪.png",
+                    name: "专利追踪",
+                    url: "../../g60kc/patentSearch/track.html"
+                }, {
+                    icon: "../images/g60/专利维权.png",
+                    name: "专利维权",
+                    url: "../../g60kc/mobile/patent-protectpower.html"
+                }, {
+                    icon: "../images/g60/行业分类地图.png",
+                    name: "行业分类地图",
+                    url: "../../g60kc/mobile/industry-map.html"
+                }, {
+                    icon: "../images/g60/专利3D地图.png",
+                    name: "专利3D地图",
+                    url: "zhuanli/html/3dMap.html"
+                }, {
+                    icon: "../images/g60/专利申报指南.png",
+                    name: "专利申报指南",
+                    url: "../../g60kc/mobile/patent-declaration-guide.html"
+                }
+
+            ],
+            //            科创资源共享
+            list3: [
+                {
+                    icon: "../images/g60/仪器共享.png",
+                    name: "仪器共享",
+                    // url: "zygx/zygxInstrument.html "
+                    url: "zygx/html/instrument.html"
+
+                },
+                {
+                    icon: "../images/g60/实验室共享.png",
+                    name: "实验室共享",
+                    url: "zygx/zygxLab.html"
+                }, {
+                    icon: "../images/g60/创新地图检索.png",
+                    name: "创新地图检索",
+                    url: "cxdt/html/map2.html"
+                },
+                {
+                    icon: "../images/g60/yanjiu.png",
+                    name: "研究平台",
+                    url: "zygx/zygxInnovationCarrier2.html"
+                },
+                {
+                    icon: "../images/g60/众创空间.png",
+                    name: "众创空间",
+                    url: "zygx/zygxInnovationCarrier0.html"
+                }, {
+                    icon: "../images/g60/孵化器.png",
+                    name: "孵化器",
+                    url: "zygx/zygxInnovationCarrier1.html"
+                },
+                {
+                    icon: "../images/g60/企业信息.png",
+                    name: "企业信息",
+                    url: "module/enterpriseList.html",
+                },
+                {
+                    icon: "../images/g60/项目信息.png",
+                    name: "项目信息",
+                    url: "module/projectList.html"
+
+                }
+                ,
+                {
+                    icon: "../images/g60/高校信息查询.png",
+                    name: "高校信息查询",
+                    url: "../../g60kc/mobile/university-home.html"
+                }
+                ,
+
+
+
+                // {
+                //     icon: "../images/g60/文献检索.png",
+                //     name: "文献检索",
+                //     url: "zscqfw/zscqfw_wxjs.html"
+                // },
+
+
+                // {
+                //     icon: "../images/g60/国际学术资源.png",
+                //     name: "国际学术资源",
+                //     url: "http://kc.kgxj.haikou.gov.cn/haikou/iconClick"
+                // },
+                //                ,
+                //                {
+                //                    icon: "../images/g60/专利地图.png",
+                //                    name: "专利地图",
+                //                    url: "../../g60kc/mobile/patent-map.html"
+                //                }
+                //,
+                {
+                    icon: "../images/g60/全国标准查询.png",
+                    name: "全国标准查询",
+                    url: "../../g60kc/mobile/standard-search-index.html"
+                }
+                ,
+
+                {
+                    icon: "../images/g60/科技活动.png",
+                    name: "科技活动",
+                    url: "kjhd/kjhdList.html"
+                }
+                ,
+                {
+                    icon: "../images/g60/投融资活动.png",
+                    name: "投融资活动",
+                    url: "../../g60kc/mobile/invest-service-index.html"
+                }
+                ,
+                // {
+                //     icon: "  ../images/g60/科普视频.png",
+                //     name: "科普视频",
+                //     url: "../../g60kc/mobile/scienceVideo-list.html"
+                // },
+                // {
+                //     icon: "../images/g60/科普机构.png",
+                //     name: "科普机构",
+                //     url: "kpfw/html/map.html"
+                // }
+
+            ],
+
+
+            //                人才服务
+            list2: [
+                {
+                    icon: "../images/g60/专家人才.png",
+                    name: "专家人才",
+                    url: "expert/html/expert.html"
+                },
+
+                {
+                    icon: "../images/g60/院士合作.png",
+                    name: "院士合作",
+                    url: "module/academicianList.html"
+                },
+                {
+                    icon: "../images/g60/专家自荐.png",
+                    name: "专家自荐",
+                    url: "module/expertSeltRecommend.html"
+
+                }
+
+            ],
+
+        },
+        created: function () {
+
+        },
+        methods: {
+            goToCenter() {
+                //判断登录
+                var arrUrl = location.href.split("/");
+                var pageName = arrUrl[arrUrl.length - 1];
+                if (!localStorage.getItem("token") && pageName != "login.html") {
+                    window.location.href = "http://kzcloud.g60.kechuang.cn/g60-h5/html/login.html";
+                } else {
+                    window.location.href = 'personCenter.html'
+                }
+            },
+            //跳转至外部嵌套页面
+            toIframe: function (title, url) {
+                var encodeUrl = encodeURI(url);
+                window.location.href = "iframe.html?title=" + title + "&url=" + encodeUrl;
+            },
+            //美丽乡村
+            toVillage: function (id) {
+                window.location.href = "newsVideo.html?id=" + id;
+            },
+            //新闻详情
+            detail: function (id) {
+                window.location.href = "articleDetails.html?id=" + id;
+            },
+            //图标点击跳转页面
+            whichTap: function (url, name) {
+
+                //判断登录
+                if (url == "zhuanli/html/cityEntrance.html" || url == "module/expertSeltRecommend.html" || url == "../../g60kc/patentSearch/track.html" || url == "../../g60kc/mobile/policy-list.html"
+                 || url == "../../g60kc/mobile/patent-protectpower.html" || url == "../../g60kc/kejiyouyou/releaseRequire.html" || url == "../../g60kc/kejiyouyou/planPublish.html"  ) {
+                    var arrUrl = location.href.split("/");
+                    var pageName = arrUrl[arrUrl.length - 1];
+                    if (!localStorage.getItem("token") && pageName != "login.html") {
+                        window.location.href = "http://kzcloud.g60.kechuang.cn/g60-h5/html/login.html?redirect="+url;
+                        // window.location.href = "file:///C:/Users/Administrator/Desktop/365/g60-h5/html/login.html?redirect="+url;                        
+                    } else {
+                        window.location.href = url
+                    }
+                } else {
+                    if (url === "") {
+                        //toast("敬请期待");
+                        //showToast("敬请期待")
+                        return;
+                    }
+                    apiJsonAjax("record/add", JSON.stringify({ url: url, name: name, tel: localStorage.getItem("get_DD_tel"), user: localStorage.getItem("get_DD_name") }))
+                    window.location.href = url
+                }
+
+            },
+        },
+
+        computed: {}
+    })
+</script>
+
+</html>

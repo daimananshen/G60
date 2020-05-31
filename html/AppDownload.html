@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>下载</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
+        .download {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        .down-img {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .down-content {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+        .down-a {
+            width: 50%;
+            font-size: 0.75rem;
+            position: absolute;
+            bottom: 24%;
+            left: 25%;
+            cursor: pointer;
+        }
+        .down-a img {
+            width: 100%;
+            height: auto;
+        }
+        .down-tips {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 1000;
+        }
+        .down-tips img {
+            width: 57%;
+            margin-left: 38%;
+            margin-top: 20%;
+        }
+       
+    </style>
+</head>
+<body>
+    <div class="download">
+
+        <!-- 为了自适应高度 -->
+        <img src="../images/g60/APPDownload.png" class="down-img" />
+
+        <!-- 内容区域 -->
+        <div class="down-content">
+
+            <!-- 下载按钮 -->
+            <a href="javascript:;" class="down-a" >
+                <img src="../images/g60/button.png" />
+            </a>
+
+            <!-- 提示 -->
+            <div class="down-tips">
+                <img src="../images/g60/APP-Tips.png" />
+            </div>
+
+        </div>
+       
+    </div>
+</body>
+<script>
+    var ua = navigator.userAgent.toLowerCase();//获取判断用的对象
+    var aWopen = document.getElementsByClassName("down-a")[0];
+    var back = document.getElementsByClassName("down-tips")[0];
+    aWopen.onclick = function(e){
+        
+        if(e && e.stopPropagation){
+            e.stopPropagation();
+        }else{
+            window.event.cancelBubble = true;
+        }
+
+        if (ua.match(/MicroMessenger/i) == "micromessenger") {
+            back.style.display = "block";
+        }else{
+            location.href = "http://download.kechuang.cn/g60/apk/G60_android_release_1.0.8_20190622.apk";
+        }
+    };
+
+    
+    back.onclick = function( e ){
+        if(e && e.stopPropagation){
+            e.stopPropagation();
+        }else{
+            window.event.cancelBubble = true;
+        }
+        
+        back.style.display = "none";
+    }
+</script>
+</html>

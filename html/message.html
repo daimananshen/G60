@@ -1,0 +1,195 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>消息中心</title>
+    <script src="../js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../js/vue.min.js"></script>
+</head>
+<style lang="less" scoped>
+
+body,
+    button,
+    dd,
+    div,
+    dl,
+    dt,
+    h1,
+    h2,
+    h3,
+    h4,
+    li,
+    ol,
+    p,
+    ul {
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        outline: 0;
+        list-style: none;
+    }
+    body {
+        background: #F0F0F0;
+    }
+
+    .main div.bottom {
+        margin-top: 10px;
+        -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        background-color: #fff;
+    }
+
+    .main div.bottom .card:first-child {
+        border-top: none;
+    }
+
+    .main div.bottom .card {
+        border-top: 1px solid #c3c3c3;
+    }
+
+    .main div.card {
+        width: 100%;
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 auto;
+        flex: 0 0 auto;
+        background-color: #fff;
+        padding: 0.2rem 0;
+    }
+
+    .main div.card div.itemBox {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        padding: 5px 4px 5px 10px;
+    }
+
+    .main div.card div.itemBox img {
+        width: 46px;
+        height: 46px;
+        display: block;
+    }
+
+    img {
+        border-style: none;
+    }
+
+    .main div.card div.itemBox .content {
+        margin-left: 10px;
+        margin-right: auto;
+    }
+
+    .main div.card div.itemBox .content .name {
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .main div.card div.itemBox .content .description {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 17rem;
+        font-size: 12px;
+        color: #989898;
+    }
+
+    .main .messageDate {
+        font-size: 0.65rem !important;
+        color: #999;
+        float: right;
+        right: 0.5rem;
+        position: absolute;
+        margin: -0.5rem 0.2rem;
+    }
+    .noData{
+        text-align:center;
+        margin-top: 50%;
+    }
+    .noData ul .none{
+       text-align: center;
+    }
+</style>
+
+<body>
+    <div class="main" id="message">
+
+        <div class="bottom">
+            <div class="card" v-for="item in lists" @click="goToDetail(item.secondaryModule)">
+                <div class="itemBox">
+                    <img :src="item.picUrl" alt="">
+                    <div class="content">
+                        <div class="name">{{item.secondaryModule}}</div>
+                        <div class="description">{{item.content}}</div>
+                    </div>
+                    <span class="messageDate">{{item.pushTime}}</span>
+                </div>
+            </div>
+        </div>
+        <div v-show="noData" class="noData">
+            <ul>
+                <li><img src="../images/g60/无图片状态图标.png"></li>
+                <li class="none">暂无数据</li>
+            </ul>
+        </div>
+    </div>
+
+
+</body>
+<script>
+
+    // 创建vue实例化对象
+    var vm = new Vue({
+        el: '#message',
+        data: {
+            // 数据创建
+            lists: [],
+            noData:false,
+        },
+        methods: {
+            // 创建方法函数
+            getMessage() {
+                var phoneNumber = localStorage.getItem("phoneNum");
+                var token = localStorage.getItem("token");
+                let that = this;
+                $.ajax({
+                    type: "get",
+                    url: "http://kzcloud.g60.kechuang.cn/api/message/push/recentNews/" + phoneNumber,
+                    headers:{Authorization: 'Bearer ' + token},
+                    success: function (response) {
+                        if (response.code == 200) {
+                            that.lists = response.result;
+                        }
+
+                        if(response.result == "" ||  response.result == null || response.result.length == 0){
+                            that.noData = true;
+                        }
+                    }, error: function (msg) {
+                    }
+                });
+            },
+            goToDetail(secondaryModule) {
+                localStorage.setItem("secondaryModule", secondaryModule);
+                location.href = "messageDetail.html";
+            }
+        },
+        mounted() {
+            // 页面初始化调用
+            this.getMessage();
+        }
+    })
+
+</script>
+
+</html>

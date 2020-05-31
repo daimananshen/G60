@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>点标记</title>
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <style>
+        .marker {
+            color: #ff6600;
+            padding: 4px 10px;
+            border: 1px solid #fff;
+            white-space: nowrap;
+            font-size: 12px;
+            font-family: "";
+            background-color: #0066ff;
+        }
+        *{font-size:14px;}
+        p{text-align:center;background:#f00;padding:10px 0;margin:20px 0 0 0; color:#fff}
+    </style>
+    <script src="http://webapi.amap.com/maps?v=1.3&key=c9a2ff9805d6cec994a60d44bac5e8f4"></script>
+     <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.10&key=c9a2ff9805d6cec994a60d44bac5e8f4&plugin=AMap.Geocoder"></script>
+    <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+    <script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/vue.min.js"></script>
+    <script src="../../js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/swiper-4.3.5.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/common.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/picker.min.js"></script>
+    <script src="../../js/city.js"></script>
+</head>
+<body style="padding-top:0;">
+<div id="container" style="display: block;top:0px"></div>
+<script>
+     var a=getCoordinate();
+    var marker, map = new AMap.Map("container", {
+        resizeEnable: true,
+        center: a,
+        zoom: 18
+    });
+    var geocoder,address;
+    var clickHandler = function(e) {
+    	a=[e.lnglat.lng,e.lnglat.lat];
+        regeoCode(e);
+    };
+    // 
+    map.on('click', clickHandler);
+    map.on('complete', function() {
+        setTimeout(function(){
+            // 模拟触发地图click事件
+            map.emit('click',{
+                lnglat : map.getCenter()
+            });
+        },1000)
+    })
+      function regeoCode(e) {
+        if(!geocoder){
+            geocoder = new AMap.Geocoder({
+                radius: 1000,//范围，默认：500
+                extensions:"all"
+            });
+        }
+        geocoder.getAddress(a, function(status, result) {
+            if (status === 'complete'&&result.regeocode) {
+                address = result.regeocode.formattedAddress;
+            }else{
+            	address="未获取到该点位置,请查看您的定位权限";
+            }
+       	 	new AMap.InfoWindow({
+	            content:address,
+	        }).open(map,e.lnglat)
+        });
+    }
+/*     map.plugin('AMap.Geolocation', function() {
+        geolocation = new AMap.Geolocation({
+            enableHighAccuracy: true,//是否使用高精度定位，默认:true
+            timeout: 100000,          //超过10秒后停止定位，默认：无穷大
+            showButton: false,        //显示定位按钮，默认：true
+            buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+            zoomToAccuracy: true,      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+            buttonPosition:'RB',
+            useNative:true
+        });
+        map.addControl(geolocation);
+        geolocation.getCurrentPosition();
+        AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
+        AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
+    });   */
+         //解析定位结果
+    function onComplete(data) {
+    	mui.toast("定位成功")
+    }
+    //解析定位错误信息
+    function onError(data) {
+    	 mui.toast("定位失败")
+    }
+
+
+
+
+</script>
+</body>
+</html>

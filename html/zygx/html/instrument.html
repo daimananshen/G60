@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <title>仪器共享</title>
+    <link rel="stylesheet" href="../css/guide.css" />
+    <script src="../../../js/API.js" type="text/javascript" charset="utf-8"></script>
+    <style>
+        .container_guide header .content {
+            font-size: 14px;
+            line-height: 24px;
+        }
+
+        .container_guide .info .img {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .container_guide .info .img img {
+            width: 37vw;
+            margin-bottom: 15px;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .footer a {
+            width: 49%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container_guide ">
+        <header>
+            <p class="title">
+                <span></span>
+                <span>仪器共享资源</span>
+            </p>
+            <p class="content">
+                提供各类共享仪器设备近15万台，涵盖10个领域的检测、校准、检验及认证等服务12万余项。平台还拥有一支超千人的高级科研顾问团队，覆盖生物医药、智能制造、化学化工、材料科学、能源环保等10多个领域。
+            </p>
+        </header>
+        <div class="color"></div>
+
+        <div class="info">
+            <p class="title">
+                <span></span>
+                <span>共享流程</span>
+            </p>
+            <div class="img">
+                <img src="../images/ins01.png" alt="" />
+                <img src="../images/ins02.png" alt="" />
+                <img src="../images/ins03.png" alt="" />
+                <img src="../images/ins04.png" alt="" />
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <a onclick="to()">点击进入仪器共享</a>
+
+        <a onclick="toLocal()">推荐仪器专区</a>
+    </div>
+</body>
+
+</html>
+<script>
+    function to() {
+        var arrUrl = location.href.split("/");
+        var pageName = arrUrl[arrUrl.length - 1];
+
+        if (!localStorage.getItem("token") && pageName != "login.html") {
+            location.href = "http://kzcloud.g60.kechuang.cn/g60-h5/html/login.html";
+        } else {
+            var userMobile = localStorage.getItem('Dingmobile')
+            window.location.href = 'https://www.renrenlab.com/front/search/ins?mobile=' + userMobile
+        }
+
+
+    }
+
+    function toLocal() {
+        window.location.href =
+            '../../zygx/zygxInstrument.html';
+    }
+</script>

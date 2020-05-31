@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+        <link rel="stylesheet" href="../../css/Myservice.css" />
+        <script src="../../js/flexible.js"></script>
+        <script src="../../js/jquery-3.3.1.min.js"></script>
+        <script src="../../js/API.js" type="text/javascript" charset="utf-8"></script>
+        <script src="http://g.alicdn.com/dingding/dingtalk-jsapi/2.6.41/dingtalk.open.js"></script>
+        <!--<title>收藏夹</title>-->
+    </head>
+    <body>
+        <div class="Myservice">
+            <ul class="Myservicelist" id="Myservicelist">
+            </ul>
+        </div>
+
+    <script>
+        var num = 1; //分页页码
+        $(function(){
+            dd.biz.navigation.setTitle({
+                title : '我的收藏',//控制标题文本，空字符串表示显示默认文本
+                onSuccess : function(result) {
+
+                },
+                onFail : function(err) {}
+            });
+
+            dd.ui.pullToRefresh.enable({
+                onSuccess: function() {
+                    num += 1;
+                    getList(num);
+                    dd.ui.pullToRefresh.stop();
+                },
+                onFail: function() {
+                    dd.ui.pullToRefresh.stop();
+                }
+            });
+
+        });
+
+        getList(num);
+        var urll = "";
+        function getList(num) {
+            $("#result_list li").remove();
+//            var dataid = localStorage.getItem("userID");
+            var dataid = '122047625020492523';
+            urll = ip + "favorite/showlist";
+            $.ajax({
+                url: urll,
+                type: 'post',
+                data: {
+                    size: 10,
+                    page: num,
+                    userId: dataid
+                },
+                dataType: "json",
+                success: function (data) {
+                        if (data.content.total  > 0) {
+                            for (var i = 0; i < data.content.list.length ; i++) {
+                                var param = data.content.list[i];
+                                $("#Myservicelist").append("<li><p class=\"title\">"+param.title+"</p>\n" +
+                                    "<p><span>"+param.type+"</span> <span>"+crtTimeFtt(param.starTime)+"</span></p>\n" +
+                                    "<div class=\"email\"><span class=\"btn \">查看详情</span></div></li>");
+                            }
+                        }else{
+                            $("#Myservicelist").append("<li class=\"title\">暂无数据</li>");
+                        }
+                }, error: function (msg) {
+                    console.log(msg)
+                }
+                    });
+                }
+
+        function dateFtt(fmt,date)
+        { //author: meizz
+            var o = {
+                "M+" : date.getMonth()+1,                 //月份
+                "d+" : date.getDate(),                    //日
+                "h+" : date.getHours(),                   //小时
+                "m+" : date.getMinutes(),                 //分
+                "s+" : date.getSeconds(),                 //秒
+                "q+" : Math.floor((date.getMonth()+3)/3), //季度
+                "S"  : date.getMilliseconds()             //毫秒
+            };
+            if(/(y+)/.test(fmt))
+                fmt=fmt.replace(RegExp.$1, (date.getFullYear()+"").substr(4 - RegExp.$1.length));
+            for(var k in o)
+                if(new RegExp("("+ k +")").test(fmt))
+                    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+            return fmt;
+        }
+
+        function crtTimeFtt(value){
+            var crtTime = new Date(value);
+            return top.dateFtt("yyyy/MM/dd hh:mm:ss",crtTime);//直接调用公共JS里面的时间类处理的办法
+        }
+    </script>
+
+    </body>
+
+</html>

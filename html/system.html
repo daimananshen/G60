@@ -1,0 +1,273 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>系统设置</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="../css/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../css/mui.min.css">
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <script src="../js/mui.min.js"></script>
+</head>
+<style lang="less" scoped>
+    body,
+    button,
+    dd,
+    div,
+    dl,
+    dt,
+    h1,
+    h2,
+    h3,
+    h4,
+    li,
+    ol,
+    p,
+    ul {
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        outline: 0;
+    }
+
+    .container {
+        overflow: hidden;
+        background: #fff;
+        min-height: 100%;
+    }
+
+    .mt20 {
+        height: .625rem;
+        background: #F0F0F0;
+    }
+
+    .mt21 {
+        height: .3rem;
+        background: #F0F0F0;
+    }
+
+    .list-icon li {
+        padding-left: 2.2em;
+    }
+
+    .listCom li {
+        position: relative;
+        font-size: .875rem;
+        height: 3rem;
+        line-height: 3rem;
+        border-bottom: 1px solid #dfdfdf;
+        cursor: pointer;
+    }
+
+    .signOut {
+        background-color: #fff;
+        height: 3rem;
+        line-height: 3rem;
+        text-align: center;
+        border-top: 1px solid #dfdfdf;
+        border-bottom: 1px solid #dfdfdf;
+        cursor: pointer;
+        color: #F25E53;
+    }
+
+    .list-arrow li.arrow:after {
+        content: "\f105";
+        font-size: .9375rem;
+        color: #a0a0a0;
+        right: .8125rem;
+    }
+
+    .list-arrow li.arrow:after,
+    .list-icon li.arrow:before {
+        position: absolute;
+        display: block;
+        font-family: 'FontAwesome';
+        line-height: 2rem;
+        top: 50%;
+        margin-top: -1rem;
+    }
+
+    .rightText {
+        float: right;
+        margin-right: 1.5rem;
+        color: #999999;
+    }
+
+    .hu-ajax-loading {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 10000;
+        text-align: center;
+        vertical-align: middle;
+        /* display:-webkit-box;
+        display:-ms-flexbox; */
+        /* display:flex; */
+        display: none;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        background: rgba(255, 255, 255, .5);
+        color: #9b9b9b;
+        font-size: 0.15rem;
+    }
+
+    .hu-ajax-loading img {
+        display: block;
+        position: absolute;
+        width: auto;
+        top: 50%;
+        height: auto;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .mui-popup-button {
+        color: #1975ff;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="mt21"></div>
+        <ul class="listCom list-arrow list-icon">
+            <!-- <li class="icon-jiekuan arrow">
+                <p>推送消息设置</p>
+            </li> -->
+            <li class="icon-huankuan">
+                <p>
+                    关于G60科创云
+                    <span class="rightText">版本1.0.2</span>
+                </p>
+            </li>
+            <li class="icon-jiangli" id="clearAll">
+                <p>
+                    清除本地缓存
+                    <span class="rightText">0</span>
+
+                </p>
+            </li>
+        </ul>
+        <div class="mt20"></div>
+        <p class="signOut" id="loginOut">退出登陆</p>
+    </div>
+
+    <div class="hu-ajax-loading">
+        <img src="../util/res/img/loading2.gif" alt="">
+    </div>
+
+</body>
+<script>
+    //退出登录
+    document.getElementById("loginOut").addEventListener('tap', function () {
+        var btnArray = ['否', '是'];
+        mui.confirm('是否退出登录', '', btnArray, function (e) {
+            if (e.index == 1) {
+                // loading - show
+                //var LoadingNone = document.getElementsByClassName("hu-ajax-loading")[0];
+                //LoadingNone.style.display = "flex";
+
+                var token = localStorage.getItem("token");
+
+                $.ajax({
+                    url: "http://kzcloud.g60.kechuang.cn/api/member/logout",
+                    type: 'post',
+                    headers: { Authorization: 'Bearer ' + token },
+                    success: function (data) {
+
+                    },
+                    error: function (msg) {
+
+                    }
+                })
+
+                var u = navigator.userAgent;
+                if (u.toLowerCase().indexOf("androidapp") !== -1) {
+
+                    // loading - none
+                    // setTimeout(function () {
+                    //     LoadingNone.style.display = "none";
+                    // }, 4000)
+
+                    window.android.loginout();
+                }else if(u.toLowerCase().indexOf("iosapp") !== -1){
+                    window.webkit.messageHandlers.loginout.postMessage({body:''});
+                }
+
+
+                localStorage.removeItem("DingworkPlace");
+                localStorage.removeItem("Dingmobile");
+                localStorage.removeItem("Dingname");
+                localStorage.removeItem("userID");
+                localStorage.removeItem("DduserId");
+                localStorage.removeItem("phoneNum");
+                localStorage.removeItem("mobile");
+                localStorage.removeItem("token");
+
+
+            } else {
+
+            }
+
+        })
+    });
+
+
+
+    clearSuccess();
+
+    // 获取缓存   
+    function clearSuccess() {
+        var u = navigator.userAgent;
+        if (u.toLowerCase().indexOf("androidapp") !== -1) {
+            var clearNum = window.android.postCacheSize();
+            postCacheSizeData(clearNum)
+        }else if(u.toLowerCase().indexOf("iosapp") !== -1){
+            window.webkit.messageHandlers.postCacheSize.postMessage({body:""})
+        }
+
+    };
+    function postCacheSizeData(data){
+        var clearNum = JSON.parse(data);
+        if (clearNum.versioncode) {
+            $(".icon-huankuan").find(".rightText").text(clearNum.versioncode);
+        }
+        if (clearNum.cachesize) {
+            $(".icon-jiangli").find(".rightText").text(clearNum.cachesize);
+        } else {
+            $(".icon-jiangli").find(".rightText").text("0k");
+        }
+    }
+
+    // 清除缓存
+    document.getElementById("clearAll").addEventListener('tap', function (e) {
+        var btnArray = ['否', '是'];
+        mui.confirm('是否清除全部缓存', '', btnArray, function (el) {
+            if (el.index == 1) {
+                var u = navigator.userAgent;
+                if (e && e.stopPropagation) {
+                    e.stopPropagation();
+                } else {
+                    window.event.cancelBubble = true;
+                }
+                if (u.toLowerCase().indexOf("androidapp") !== -1) {
+                    window.android.clearCache();
+                }else if(u.toLowerCase().indexOf("iosapp") !== -1){
+                    window.webkit.messageHandlers.clearCache.postMessage({body:''});
+                }
+
+            } else {
+
+            }
+
+        })
+    });
+
+</script>
+
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="format-detection" content="email=no" />
+	<link rel="stylesheet" href="../css/mui.min.css">
+	<link rel="stylesheet" type="text/css" href="../css/cssreset-min.css" />
+	<link rel="stylesheet" type="text/css" href="../css/main.css" />
+
+	<script src="../js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/vue.min.js"></script>
+	<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/jquery.citys.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+
+	<title>自定义功能</title>
+	<style type="text/css">
+
+		.bottomBtn {
+			position: fixed;
+			bottom: 0;
+			width: 100%;
+			height: 45px;
+			font-size: 16px;
+			color: #fff;
+			background-color: #f8f8f8;
+			padding: 5px 20px;
+			box-shadow: 0px -1px 0px 0px #e8e8e8;
+		}
+
+		.bottomBtn p {
+			height: 100%;
+			text-align: center;
+			line-height: 35px;
+			background-color: #1975ff;
+		}
+
+		.header {
+			position: fixed;
+			width: 100%;
+			top: 0;
+		}
+
+		#demoSelect select {
+			height: 30px;
+			line-height: 30px;
+			border: 1px solid #eee !important;
+			padding: 0 5px;
+			box-sizing: border-box;
+			border-radius: 4px;
+			color: #666;
+			outline: none;
+			width: auto;
+			-webkit-appearance: menulist;
+			margin-bottom: 0;
+		}
+		.cc_edit{
+			height:20px;
+		}
+		#liList {
+			padding-bottom:45px ;
+		}
+		#liList li span{
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 1;
+			overflow: hidden;}
+
+	</style>
+</head>
+
+<body>
+<div id="app" style="margin-top: -55px">
+	<div class="indexItem indexItem1" >
+		<ul id="liList">
+			<li v-for="item in list" :key="item.id" v-bind:data-id="item.id">
+				<div v-if="item.common==0">
+					<img :src="item.iconImageUrl" width="40px" />
+					<img src="../images/jia.png" style="height: 20px" class="cc_edit" v-bind:common="item.common">
+					<span style="margin-left: -10px">{{item.name}}</span>
+
+				</div>
+				<div v-else>
+					<img :src="item.iconImageUrl" width="40px" />
+					<img src="../images/jian.png" style="height: 20px" class="cc_edit" v-bind:common="item.common">
+					<span style="margin-left: -10px">{{item.name}}</span>
+				</div>
+			</li>
+		</ul>
+	</div>
+
+	<div class="bottomBtn">
+		<p onclick="SaveData()" style="color: white">保存设置</p>
+	</div>
+</div>
+
+</body>
+<script src="../js/API.js"></script>
+<script>
+	var yedao_id=localStorage.getItem("yedao_id");
+	function to(url) {
+		window.location.href = url
+	}
+	mui.init();
+	//吐司
+	function toast(message) {
+		mui.toast(message, {
+			duration: "short(2000ms)"
+		});
+	}
+	var showList=[]; //展示页面的数据
+	var selectNum=0; //已选择的个数
+	var selectId=[];  //已选择ID的集合
+	var userId=localStorage.getItem("userID");
+	// if(userId==null||userId==""){
+	// 	userId="123";
+	// }
+    // var userId="123";
+    var data={userId:userId};
+    //填充数据icon
+    getData()
+    function getData() {
+		selectNum=0;
+        apiAjax('userCustom/queryAllandUserMark',data);
+        if(API_result.content.length>0){
+            showList=[]
+            for (var i=0;i<API_result.content.length;i++) {
+                var temp=API_result.content[i];
+                temp.iconImageUrl="../images/g60/"+temp.iconImageUrl;
+                if(temp.common==1){
+                    selectNum++;
+                    selectId.push(temp.id);
+                }
+                showList.push(temp)
+            }
+        }
+
+    }
+
+    //vue双向绑定
+	var vm = new Vue({
+		el: "#app",
+		data: {
+			list:showList,
+		},
+		created: function() {
+		},
+
+	})
+
+	function removeSomeOne(arrays,one){
+		var newArrays=[];
+		for (var i=0;i<arrays.length;i++) {
+			if (arrays[i]!=one) {
+				newArrays.push(arrays[i]);
+			}
+		}
+		return newArrays;
+	}
+
+	$(document).ready(function(){
+
+		//----------------判断喜好数量
+		$(".cc_edit").click(function(){
+			var id=$(this).parent().parent().attr("data-id");
+			var common=$(this).attr("common"); //0是用户未选择的 1是用户已选择的
+			if(selectNum>6&&common==0){
+				mui.toast("我的爱好也是有限度的哦！")
+				return;
+			}
+			if(common==0){
+				$(this).attr("src","../images/jian.png").attr("common","1");
+				selectNum++;
+				selectId.push(id);
+			}else{
+				$(this).attr("src","../images/jia.png").attr("common","0");
+				selectNum--;
+				selectId=removeSomeOne(selectId,id);
+			}
+		})
+
+	})
+	var userId="";
+	function SaveData(){
+		userId=localStorage.getItem("userID");
+		// if(userId==null||userId==""){
+		// 	userId="123";
+		// }
+
+		var data={userId:userId,idList:selectId.toString()}
+		if(selectId.length<=0){
+		    debugger
+            mui.toast("请选择常用功能！")
+			return
+		}
+		apiAjax('userCustom/saveUserMark',data);
+		if(API_result.code==0){
+			mui.toast("设置成功！")
+			setTimeout(function () {
+				window.location.href='index.html';
+			},1000)
+            // getData()
+        }else{
+			mui.toast("操作失败！，请稍后重试")
+		}
+
+
+	}
+
+
+
+	//时间key
+	function set(key,value){
+		var curTime = new Date().getTime();
+		localStorage.setItem(key,JSON.stringify({data:value,time:curTime}));
+	}
+
+</script>
+
+</html>

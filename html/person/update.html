@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <link rel="stylesheet" href="../../css/list.css" />
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <script src="../../js/flexible.js"></script>
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/API.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/mui.min.js"></script>
+    <title>设置</title>
+    <style>
+        body {
+            background-color: #fff;
+        }
+        .input {
+            margin-top: 30PX;
+            height:60px;
+        }
+        .container .update_input .input  input {
+            height: 100%;
+            font-size: 20px;
+            background-color: #F3F3F3;
+        }
+        .container .update_input .button {
+            margin-top: 30px;
+        }
+        .container .update_input .input .img {
+            width: 15px;
+            height: 15px;
+        }
+        .container .update_input .input .img img {
+            width:100%;
+            height: 100%;
+        }
+        .container .update_input .button a {
+            width: 150px;
+            height: 45px;
+            line-height:45px;
+            text-align: center;
+            padding: 0;
+            font-size: 16px;
+        }
+
+        #alert {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            font-size: 14px;
+            padding: 4px 6px;
+            border-radius: 4px;
+        }
+    </style>
+    <script src="http://g.alicdn.com/dingding/dingtalk-jsapi/2.6.41/dingtalk.open.js"></script>
+
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="update_input">
+            <div class="input">
+                <input type="text" id="param" value="日常工作">
+                <div class="img">
+                    <img id="empty" src="../../images/closeforperson.png" alt="">
+                </div>
+            </div>
+            <div class="button">
+                <a href="javascript:void(0)" onclick="submitUpdate()">
+                    完成
+                </a>
+            </div>
+        </div>
+    </div>
+    <div id="alert" style="display: none">
+        <span>弹出效果</span>
+    </div>
+    <script>
+        $(function(){
+            var key = getQueryVariable("key");
+            var param ;
+            if(key == "title"){
+                param = "职位";
+            }else if(key == "email"){
+                param = "邮箱";
+            }else if(key == "extNumber"){
+                param = "分机号";
+            }else if(key == "hiredDate"){
+                param = "入职时间";
+            }else if(key == "workStation"){
+                param = "办公地址";
+            }
+            dd.biz.navigation.setTitle({
+                title : "修改" + param ,//控制标题文本，空字符串表示显示默认文本
+                onSuccess : function(result) {
+
+                },
+                onFail : function(err) {}
+            });
+            var value = getQueryVariable("value");
+            var decode = decodeURIComponent(value);
+            $("#param").val(decode);
+        });
+
+        $('.update_input #empty').click(function () {
+            // 清空input
+            $('input').val("");
+
+        });
+
+        function submitUpdate(){
+            /*localStorage.setItem("yedao_id" , "123456");
+            var dataid = localStorage.getItem("yedao_id");*/
+            var dataid = localStorage.getItem("userID");
+            var key = getQueryVariable("key");
+            var value = $("#param").val();
+            if(!isEmpty(key) && !isEmpty(value) && !isEmpty(dataid)){
+                $.ajax({
+                    url: ip + "personcentre/updateForMap",
+                    type: 'post',
+                    data: {
+                        userId: dataid,
+                        key:key,
+                        value:value
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        // $('#alert').fadeToggle().delay(1000).fadeToggle();
+                        if (data.msg == "ok") {
+                            mui.alert('更新成功', '', function () {});
+                        }
+
+                        // window.location.href = 'changInfo.html';
+                    }, error: function (msg) {
+                        console.log(msg)
+                    }
+                });
+            }
+
+        }
+
+        function isEmpty(obj){
+            if(typeof obj == "undefined" || obj == null || obj == ""){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        function getQueryVariable(variable)
+        {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i=0;i<vars.length;i++) {
+                var pair = vars[i].split("=");
+                if(pair[0] == variable){return pair[1];}
+            }
+            return;
+        }
+    </script>
+</body>
+
+</html>

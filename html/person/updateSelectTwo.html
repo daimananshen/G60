@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <link rel="stylesheet" href="../../css/list.css" />
+    <script src="../../js/flexible.js"></script>
+    <link rel="stylesheet" href="../../css/mobileSelect.css" />
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <script src="../../js/jquery-3.3.1.min.js"></script>
+    <script src="../../js/API.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/mobileSelect.min.js"></script>
+    <script src="../../js/mui.min.js"></script>
+    <title>设置</title>
+    <style>
+        body {
+            background-color: #fff;
+        }
+        .input {
+            margin-top: 30PX;
+            height:60px;
+        }
+        .container .update_input .input  input {
+            height: 100%;
+            font-size: 20px;
+            background-color: #F3F3F3;
+        }
+        .container .update_input .button {
+            margin-top: 30px;
+        }
+        .container .update_input .input .img {
+            width: 15px;
+            height: 15px;
+        }
+        .container .update_input .input .img img {
+            width:100%;
+            height: 100%;
+        }
+        .container .update_input .button a {
+            width: 150px;
+            height: 45px;
+            line-height:45px;
+            text-align: center;
+            padding: 0;
+            font-size: 16px;
+        }
+        .container .update_input .input input {
+            padding: 0;
+        }
+
+        #alert {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            font-size: 14px;
+            padding: 4px 6px;
+            border-radius: 4px;
+        }
+    </style>
+    <script src="http://g.alicdn.com/dingding/dingtalk-jsapi/2.6.41/dingtalk.open.js"></script>
+</head>
+
+<body>
+<div class="container">
+    <div class="update_input">
+        <div class="select input" id="area" style="background-color:#F3F3F3;font-size: 20px;line-height: 60px;padding:0 5px ">
+            <div id="seleceVal">请选择所在地区</div>
+        </div>
+        <div class="button">
+            <a href="javascript:void(0)" onclick="submitUpdate()">
+                完成
+            </a>
+        </div>
+        <input type="hidden" id="ext3" name="ext3">
+    </div>
+</div>
+<div id="alert" style="display: none">
+    <span>弹出效果</span>
+</div>
+<script>
+
+    var json = {
+        "3": [{
+            "4": "上海市"
+        }],
+        "11": [{
+            "91": "苏州市"
+        }],
+        "12": [{
+            "100": "杭州市"
+        }, {
+            "103": "嘉兴市"
+        }, {
+            "104": "湖州市"
+        }, {
+            "106": "金华市"
+        }],
+        "13": [{
+            "127": "宣城市"
+        }, {
+            "112": "芜湖市"
+        }, {
+            "111": "合肥市"
+        }]
+    };
+
+    $(function () {
+        dd.biz.navigation.setTitle({
+            title: '所在地区', //控制标题文本，空字符串表示显示默认文本
+            onSuccess: function (result) {},
+            onFail: function (err) {}
+        });
+
+        var value = getQueryVariable('value');
+        var decode = decodeURIComponent(value);
+        if(!isEmpty(decode)){
+            $("#ext3").val(decode);
+            var arr=decode.split(";");
+            var province = arr[0];
+            var city = arr[1];
+            var param1 = json[province];
+            for(var i=0;i<param1.length ; i++){
+                var param2 = param1[i];
+                var param3 = param2[city];
+                if(!isEmpty(param3)){
+                    $("#seleceVal").text(param3);
+                }
+            }
+        }
+
+        var mobileSelect4 = new MobileSelect({
+            trigger: '#area',
+            title: '地区选择',
+            wheels: [
+                {data:[
+                    {
+                        id:'3',
+                        value:'上海',
+                        childs:[
+                            {id:'4',value:'上海市'}
+                        ]
+                    },
+                    {id:'11',value:'江苏',
+                        childs:[
+                        {id:'91',value:'苏州市'}
+                    ]},
+                    {id:'12',value:'浙江',
+                        childs:[
+                        {id:'100',value:'杭州市'},
+                        {id:'103',value:'嘉兴市'},
+                        {id:'104',value:'湖州市'},
+                        {id:'106',value:'金华市'}
+                    ]},
+                    {id:'13',value:'安徽',
+                        childs:[
+                        {id:'127',value:'宣城市'},
+                        {id:'112',value:'芜湖市'},
+                        {id:'111',value:'合肥市'}
+                    ]}
+
+                ]}
+            ],
+            transitionEnd:function(indexArr, data){
+//                console.log(data);
+            },
+            callback:function(indexArr, data){
+                var ext3 ="";
+                for(var i = 0; i< data.length ; i++){
+                    if(i == data.length - 1 ){
+                        ext3 += data[i].id;
+                    }else{
+                        ext3 += data[i].id + ";";
+                    }
+                }
+                $("#ext3").val(ext3);
+//                console.log(ext3);
+            }
+        });
+    });
+
+    function submitUpdate() {
+        var dataid = localStorage.getItem("userID");
+        var key = getQueryVariable("key");
+        var value = $("#ext3").val();
+        if (!isEmpty(key) && !isEmpty(value) && !isEmpty(dataid)) {
+            $.ajax({
+                url: ip + 'personcentre/updateForMap',
+                type: 'post',
+                data: {
+                    userId: dataid,
+                    key: key,
+                    value: value
+                },
+                dataType: 'json',
+                success: function (data) {
+                    // $('#alert')
+                    //     .fadeToggle()
+                    //     .delay(1000)
+                    //     .fadeToggle();
+                    if (data.msg == "ok") {
+                        mui.alert('更新成功', '', function () {});
+                    }
+                    // window.location.href = 'changInfo.html';
+                },
+                error: function (msg) {
+                    console.log(msg)
+                }
+            })
+        }
+    }
+
+    function isEmpty(obj) {
+        if (typeof obj == 'undefined' || obj == null || obj == '' || obj == 'undefined') {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1)
+        var vars = query.split('&')
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split('=')
+            if (pair[0] == variable) {
+                return pair[1]
+            }
+        }
+        return
+    }
+</script>
+</body>
+
+</html>

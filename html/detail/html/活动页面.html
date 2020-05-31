@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0">
+    <title>活动页面</title>
+    <link rel="stylesheet" href="../css/activity.css">
+     <script src="../js/flexible.js"></script>
+    <script src="../js/jquery-3.3.1.min.js"></script>
+</head>
+    
+<body>
+    <div class="container_activity">
+        <div class="headerImg">
+            <img src="../images/活动页面.png" alt="">
+            <span>3D打印创客课堂--灵活的链接·鲸鱼</span>
+        </div>
+        <div class="content">
+            <div class="time">
+                <img src="../images/微信图片_20190419134130.png" alt="">
+                 <span>活动时间：</span>
+                <p>2018年6月1日-2018年7月1日</p>
+            </div>
+            <div class="address">
+                <img src="../images/微信图片_20190419134114.png" alt="">
+                <span>活动地点：</span>
+                <p>1F设计师摇篮3D打印创客课堂</p>
+            </div>
+            <div class="mind">
+                <img src="../images/微信图片_20190419134125.png" alt="">
+                <span>注意事项：</span>
+                <p>
+                    <span>1.请提前15分钟到集合地点签到！</span>
+                    <span>2.活动免费，门票自理！</span>
+                    <span>3.打印时长约90分钟。</span>
+                </p>
+            </div>
+        </div>
+        <!-- 添加的html -->
+        <div class="details">
+                这里有一段html
+        </div>
+    </div>  
+    <!-- 立即报名弹窗-------------- -->
+    <div class="model" style="display:none">
+        <div class="content">
+            <div class="header">
+                    <p class="title">参与成员</p>
+                    <input type="text" placeholder="姓名">
+                    <input type="number" placeholder="年龄">
+                    <p class="phone">联系电话</p>
+                    <input type="number" placeholder="13900393921">
+                    <p >电子邮箱</p>
+                    <input type="email" >
+            </div>
+            <div class="button">
+                <div class="leftBtn">取消</div>
+                <div class="rightBtn">确定</div>
+            </div>
+        </div> 
+    </div>
+
+    <div class="bottomBtn">
+            <p>立即报名</p>
+    </div>
+  <script>
+      $(function() {
+
+        $('.bottomBtn p').click(function() {
+            $('.model').fadeToggle()
+        })
+
+        
+
+      })
+  </script>
+</body>
+
+</html>

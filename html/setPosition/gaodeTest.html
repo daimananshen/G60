@@ -1,0 +1,300 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>点标记</title>
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <style>
+        .marker {
+            color: #ff6600;
+            padding: 4px 10px;
+            border: 1px solid #fff;
+            white-space: nowrap;
+            font-size: 12px;
+            font-family: "";
+            background-color: #0066ff;
+        }
+        *{font-size:14px;}
+        p{text-align:center;background:#f00;padding:10px 0;margin:20px 0 0 0; color:#fff}
+    </style>
+    <script src="http://webapi.amap.com/maps?v=1.3&key=c9a2ff9805d6cec994a60d44bac5e8f4"></script>
+    <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+    <script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/vue.min.js"></script>
+    <script src="../../js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/swiper-4.3.5.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/common.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/picker.min.js"></script>
+    <script src="../../js/city.js"></script>
+</head>
+<body style="padding-top:0;">
+请设置您的偏好位置：<a href="#" class="btn btn-info btn-lg active" role="button" id="sel_city" style="color: blue">点击选取省市区县</a>
+当前位置是：<span id="location"></span>
+<div id="container" style="display: block;top:7%"></div>
+<div id="tip" style="display: none"></div>
+
+<script>
+
+
+    var marker, map = new AMap.Map("container", {
+        resizeEnable: true,
+        center: [116.397428, 39.90923],
+        zoom: 13
+    });
+    map.plugin('AMap.Geolocation', function() {
+        geolocation = new AMap.Geolocation({
+            enableHighAccuracy: true,//是否使用高精度定位，默认:true
+            timeout: 100000,          //超过10秒后停止定位，默认：无穷大
+            showButton: false,        //显示定位按钮，默认：true
+            buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+            zoomToAccuracy: true,      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+            buttonPosition:'RB',
+            useNative:true
+        });
+        map.addControl(geolocation);
+        geolocation.getCurrentPosition();
+        AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
+        AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
+
+
+    });
+    // 高德地图查询周边
+    function aMapSearchNearBy(centerPoint) {
+        AMap.service(["AMap.PlaceSearch"], function() {
+            //实例化Geocoder
+           var  geocoder = new AMap.Geocoder({
+                city: ""//城市，默认：“全国”
+            });
+            // 第一个参数是关键字，这里传入的空表示不需要根据关键字过滤
+            // 第二个参数是经纬度，数组类型
+            // 第三个参数是半径，周边的范围
+            // 第四个参数为回调函数
+            geocoder.getAddress(centerPoint, function(status, result) {
+                if (status === 'complete' && result.info === 'OK') {
+                    //获得了有效的地址信息:
+                    //即，result.regeocode.formattedAddress
+                    //console.log(result);
+                    var city = result.regeocode.addressComponent.city;
+                    var province=result.regeocode.addressComponent.province;
+                    $("#location").html(province+" "+city)
+                    if(!userLocation){
+                        nameEl.innerText =province+" "+city;
+                        var Location=''
+                        if(!city){
+                            Location=province.replace('市',"");
+                        }else{
+                            Location=city.replace('市',"");
+                        }
+                        localStorage.setItem("userLocation",Location)
+                    }
+                }else{
+                    var city = '获取失败';
+                    //获取地址失败
+                }
+            });
+
+
+        });
+    }
+        //解析定位结果
+    function onComplete(data) {
+        var str=['定位成功'];
+        str.push('经度：' + data.position.getLng());
+        str.push('纬度：' + data.position.getLat());
+        str.push('精度：' + data.accuracy + ' 米');
+        str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
+        document.getElementById('tip').innerHTML = str.join('<br>');
+        var  a=[data.position.getLng(),data.position.getLat()];
+        aMapSearchNearBy(a);
+    }
+    //解析定位错误信息
+    function onError(data) {
+        document.getElementById('tip').innerHTML = '定位失败'+data.message;
+    }
+    /*Map.event.addDomListener(document.getElementById('addMarker'), 'click', function() {
+        addMarker();
+    }, false);
+    <!--AMap.event.addDomListener(document.getElementById('updateMarker'), 'click', function() {-->
+    <!--marker && updateMarker();-->
+    <!--}, false);-->
+    AMap.event.addDomListener(document.getElementById('clearMarker'), 'click', function() {
+        if (marker) {
+            marker.setMap(null);
+            marker = null;
+        }
+    }, false);*/
+
+    // 实例化点标记
+    function addMarker() {
+        if (marker) {
+            return;
+        }
+        marker = new AMap.Marker({
+            icon: "http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+            position: [116.405467, 39.907761]
+        });
+        marker.setMap(map);
+    }
+
+    function addLocationMarker(lon, lat){
+
+        if (!marker) {
+            marker = new AMap.Marker({
+                icon: "http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+                position: [lon, lat]
+            });
+
+            marker.setMap(map);
+        } else {
+            marker.setPosition([lon, lat]); //更新点标记位置
+        }
+
+        map.panTo([lon, lat]);
+    }
+
+    function updateMarker() {
+        // 自定义点标记内容
+        var markerContent = document.createElement("div");
+
+        // 点标记中的图标
+        var markerImg = document.createElement("img");
+        markerImg.className = "markerlnglat";
+        markerImg.src = "http://webapi.amap.com/theme/v1.3/markers/n/mark_r.png";
+        markerContent.appendChild(markerImg);
+
+        // 点标记中的文本
+        var markerSpan = document.createElement("span");
+        markerSpan.className = 'marker';
+        markerSpan.innerHTML = "Hi，我换新装备啦！";
+        markerContent.appendChild(markerSpan);
+
+        marker.setContent(markerContent); //更新点标记内容
+        marker.setPosition([116.391467, 39.927761]); //更新点标记位置
+    }
+
+/**
+ * 自由选择位置。可以到县
+ * */
+var nameEl = document.getElementById('sel_city');
+    var userLocation=localStorage.getItem("userLocation");
+    if(userLocation){
+        nameEl.innerText =userLocation
+    }
+    var first = []; /* 省，直辖市 */
+    var second = []; /* 市 */
+    var third = []; /* 镇 */
+
+    var selectedIndex = [26, 0, 0]; /* 默认选中的地区 */
+
+    var checked = [26, 0, 0]; /* 已选选项 */
+
+    function creatList(obj, list){
+        obj.forEach(function(item, index, arr){
+            var temp = new Object();
+            temp.text = item.name;
+            temp.value = index;
+            list.push(temp);
+        })
+    }
+
+    creatList(city, first);
+
+    if (city[selectedIndex[0]].hasOwnProperty('sub')) {
+        creatList(city[selectedIndex[0]].sub, second);
+    } else {
+        second = [{text: '', value: 0}];
+    }
+
+    if (city[selectedIndex[0]].sub[selectedIndex[1]].hasOwnProperty('sub')) {
+        creatList(city[selectedIndex[0]].sub[selectedIndex[1]].sub, third);
+    } else {
+        third = [{text: '', value: 0}];
+    }
+
+
+    var picker = new Picker({
+        data: [first, second],
+        selectedIndex: selectedIndex,
+        title: '地址选择'
+    });
+    picker.on('picker.select', function (selectedVal, selectedIndex) {
+        var text1 = first[selectedIndex[0]].text;
+        var text2 = second[selectedIndex[1]].text;
+        //var text3 = third[selectedIndex[2]] ? third[selectedIndex[2]].text : '';
+
+        nameEl.innerText = text1 + ' ' + text2 ;
+
+        localStorage.setItem("userLocation",text2)
+
+    });
+    picker.on('picker.valuechange', function (selectedVal, selectedIndex) {
+        console.log(selectedVal);
+        console.log(selectedIndex);
+    });
+    picker.on('picker.change', function (index, selectedIndex) {
+        if (index === 0){
+            firstChange();
+        } else if (index === 1) {
+            secondChange();
+        }
+
+        function firstChange() {
+            second = [];
+            third = [];
+            checked[0] = selectedIndex;
+            var firstCity = city[selectedIndex];
+            if (firstCity.hasOwnProperty('sub')) {
+                creatList(firstCity.sub, second);
+
+                var secondCity = city[selectedIndex].sub[0]
+                if (secondCity.hasOwnProperty('sub')) {
+                    creatList(secondCity.sub, third);
+                } else {
+                    third = [{text: '', value: 0}];
+                    checked[2] = 0;
+                }
+            } else {
+                second = [{text: '', value: 0}];
+                third = [{text: '', value: 0}];
+                checked[1] = 0;
+                checked[2] = 0;
+            }
+
+            picker.refillColumn(1, second);
+            picker.refillColumn(2, third);
+            picker.scrollColumn(1, 0)
+            picker.scrollColumn(2, 0)
+        }
+
+        function secondChange() {
+            third = [];
+            checked[1] = selectedIndex;
+            var first_index = checked[0];
+            if (city[first_index].sub[selectedIndex].hasOwnProperty('sub')) {
+                var secondCity = city[first_index].sub[selectedIndex];
+                creatList(secondCity.sub, third);
+                picker.refillColumn(2, third);
+                picker.scrollColumn(2, 0)
+            } else {
+                third = [{text: '', value: 0}];
+                checked[2] = 0;
+                picker.refillColumn(2, third);
+                picker.scrollColumn(2, 0)
+            }
+        }
+
+    });
+
+    nameEl.addEventListener('click', function () {
+    picker.show();
+});
+
+
+
+</script>
+</body>
+</html>

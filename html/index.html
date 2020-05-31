@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="index/css/main.css">
+    <link rel="stylesheet" href="index/js/swiper/css/swiper.min.css">
+    <script src="index/js/jquery-3.3.1.min.js"></script>
+    <script src="index/js/flexible.js"></script>
+    <script src="index/js/swiper/js/swiper.min.js"></script>
+    <script src="../js/vue.min.js"></script>
+    <script src="../js/API.js"></script>
+    <title>长三角G60科创云</title>
+
+</head>
+
+<style>
+    .laboratoryContent {
+        display: -webkit-box;
+        overflow-x: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .slide-item {
+        width: 200px;
+        /*height: 200px;*/
+        margin-right: 30px;
+    }
+
+    .container .headline .headlineHeader {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.26666667rem;
+    }
+
+    .container .headline .headlineHeader .left {
+        font-size: 0.34666667rem;
+        color: #333333;
+        display: flex;
+        align-items: center;
+    }
+
+    .container .headline .headlineHeader .left .img {
+        width: 0.13333333rem;
+        height: 0.34666667rem;
+    }
+
+
+    .container .headline .headlineHeader .right a {
+        color: #999999;
+        display: flex;
+        align-items: center;
+        font-size: 0.32rem;
+    }
+
+    .container .headline .headlineHeader .right a .img {
+        width: 0.22666667rem;
+        height: 0.38666667rem;
+    }
+
+    footer ul li a p {
+        line-height: 24px;
+        font-size: 12px;
+    }
+
+    .container .headline {
+        padding-bottom: 0.6rem;
+    }
+
+    .serve {
+        position: fixed;
+        bottom: 1.8rem;
+        right: 0.3rem;
+        z-index: 1000;
+    }
+
+    .serve img {
+        display: inline-block;
+        width: 50px;
+    }
+</style>
+
+<body>
+    <!-- 客服按钮 -->
+    <a onclick="login()" class="serve">
+        <img src="../images/kefuNEW1.png" alt="">
+    </a>
+    <div class="container" id="lab">
+        <!-- 头部
+    <header>
+
+    </header> -->
+        <!-- 轮播图 -->
+        <div class="slideShow">
+            <div class="swiper-container">
+                <div class="swiper-wrapper" id="bannerImg">
+
+                    <!--<div class="swiper-slide" v-for="img_items in img_item" v-bind:data-id="img_items.id">-->
+                    <!--<a v-bind:href="img_items.a"><img :src="img_items.url"></a>-->
+                    <!--</div>-->
+                    <!--<div class="swiper-slide">-->
+                    <!--<a href="../html/news/articleDetails.html?cmsId=305"><img src="http://47.101.195.208:10000/banner/banner4.png"></a>-->
+                    <!--</div>-->
+                    <!--<div class="swiper-slide">-->
+                    <!--<a href="../html/news/articleDetails.html?cmsId=308"><img src="http://47.101.195.208:10000/banner/banner5.png"></a>-->
+                    <!--</div>-->
+                    <!--<div class="swiper-slide">-->
+                    <!--<a href="../html/news/articleDetails.html?cmsId=211"><img src="http://47.101.195.208:10000/banner/banner1.png"></a>-->
+                    <!--</div>-->
+                    <!--<div class="swiper-slide">-->
+                    <!--<a href="../html/news/articleDetails.html?cmsId=210"><img src="http://47.101.195.208:10000/banner/banner2.png"></a>-->
+                    <!--</div>-->
+                    <!--<div class="swiper-slide">-->
+                    <!--<a href="../html/news/articleDetails.html?cmsId=213"><img src="http://47.101.195.208:10000/banner/banner3.png"></a>-->
+                    <!--</div>-->
+                </div>
+                <!-- 如果需要分页器 -->
+                <div class="swiper-pagination"></div>
+
+                <!-- 如果需要导航按钮 -->
+
+                <!-- 如果需要滚动条 -->
+            </div>
+        </div>
+        <div class="headerNav">
+            <ul>
+                <li>
+                    <a href="#" id="jrkc">
+                        <div style="background-color: rgba(25, 117, 255, 1);"><img src="index/images/今日科创@2x.png"
+                                alt="">
+                        </div>
+                    </a>
+                    <p>今日科创</p>
+                </li>
+                <li>
+                    <a href="#" id="lgwy">
+                        <div style="background-color: rgba(0, 191, 113, 1);"><img src="index/images/多国语言@2x.png" alt="">
+                        </div>
+                    </a>
+                    <p>六国外语</p>
+                </li>
+                <li>
+                    <a href="http://kczl.g60.kechuang.cn/g60app/kejiyouyou/index.html">
+                        <div style="background-color: rgba(47, 52, 201, 1);"><img src="index/images/成果中心@2x.png" alt="">
+                        </div>
+                    </a>
+                    <p>科技优优</p>
+                </li>
+                <li>
+                    <a href="../html/expert/html/expert.html">
+                        <div style="background-color: rgba(95, 101, 255, 1);"><img src="../images/g60/专家人才.png" alt="">
+                        </div>
+                    </a>
+                    <p>专家人才</p>
+                </li>
+            </ul>
+        </div>
+        <div class="content_nav">
+            <p class="title"><strong>常用服务</strong></p>
+            <ul>
+                <li v-for="item in service_all" :key="item.id">
+                    <!--<a v-bind:href="item.htmlUlr" @click="toUrl(item.htmlUlr)">-->
+                    <a @click="toUrls(item.htmlUlr,item.name)">
+                        <div style="background-color: rgba(25, 117, 255, 1);"><img :src="item.iconImageUrl" alt="">
+                        </div>
+                    </a>
+                    <p v-html="item.name"></p>
+                </li>
+
+                <li onclick="moreshow(this)">
+                    <a>
+                        <div style=""><img src="index/images/更多@2x.png" alt=""></div>
+                    </a>
+                    <p>更多</p>
+                </li>
+            </ul>
+        </div>
+        <!-- 科创头条-------------------------- -->
+        <div class="headline">
+            <div class="headlineHeader">
+                <div class="left">
+                    <div class="img">
+                        <img src="index/images/标题图标@2x.png" alt="">
+                    </div>
+                    <p style="padding-left:2px"><strong>科创头条</strong></p>
+                </div>
+                <div class="right">
+                    <a href="news/new_kctt.html">
+                        <p>查看更多</p>
+                        <div class="img">
+                            <img src="index/images/右箭头@2x.png" alt="">
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="headlineContent">
+                <ul>
+                    <li v-for="item in cms_show_item" v-bind:data-id="item.id" onclick="toCms(this)">
+                        <div class="left">
+                            <img :src="item.previewImage" alt=""
+                                onerror="javascript:this.src='http://47.101.195.208:10000/ImageNotFound.png';"
+                                style="max-height: 100%">
+                        </div>
+                        <div class="right">
+                            <p class="title"><strong v-html="item.title"></strong></p>
+                            <p class="content" v-html="item.content" style="display: none"></p>
+                            <span v-html="item.ext2.substring(0,10)"></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 实验室共享------------------------------- -->
+        <!-- <div class="laboratory" style="display:block">
+            <div class="laboratoryHeader">
+                <div class="left">
+                    <div class="img">
+                        <img src="index/images/标题图标@2x.png" alt="">
+                    </div>
+                    <p style="padding-left:2px"><strong>实验室共享</strong></p>
+                </div>
+                <div class="right">
+                    <a href="zygx/zygxLab.html">
+                        <p>查看更多</p>
+                        <div class="img">
+                            <img src="index/images/右箭头@2x.png" alt="">
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="laboratoryContent">
+                <div class="slide-item" v-for="item in show_item" v-bind:data-id="item.id" onclick="toURL(this)">
+                    <div class="img"><img :src="item.image" alt="" onerror="javascript:this.src='../images/企业1.png';">
+                    </div>
+                    <p class="title"><strong v-html="item.name"></strong></p>
+                    <p class="content">服务范围：<span v-html="item.service"></span></p>
+                </div>
+
+            </div>
+        </div> -->
+        <!-- 最新成果--------------------------- -->
+        <!-- <div class="achievement">
+            <div class="achievementHeader">
+                <div class="left">
+                    <div class="img">
+                        <img src="index/images/标题图标@2x.png" alt="">
+                    </div>
+                    <p style="padding-left:2px"><strong>科技优优</strong></p>
+                </div>
+                <div class="right">
+                    <a href="../../g60kc/kejiyouyou/index.html">
+                        <p>查看更多</p>
+                        <div class="img">
+                            <img src="index/images/右箭头@2x.png" alt="">
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <ul class="achievementContent">
+                <li v-for="(item, index) in zxcg_show_item " v-if='index<3' v-bind:data-id="item.id"
+                    @click="toZxcg(item.id,item.way)">
+                    <div class="left">
+                        <p class="title"><b v-html="item.title"></b></p>
+                        <div>
+                            <img src="index/images/技术需求@2x.png" alt=""> <span v-show="item.way==1">技术方案</span><span v-show="item.way==0">技术需求</span>
+                        </div>
+                        <div>
+                            <img src="index/images/标签@2x.png" alt=""> <span
+                                v-for="tag in JSON.parse(item.tag)"><span>{{tag}}</span></span>
+                        </div>
+                        <div>
+                            <div>
+                                <img src="index/images/金额@2x.png" alt=""> <span v-html="item.budget"></span>
+                            </div>
+                            <div>
+                                <img src="index/images/定位@2x.png" alt="">
+                                <span v-if="item.city==4">上海</span> <span v-if="item.city==111">合肥</span> <span
+                                    v-if="item.city==112">芜湖</span>
+                                <span v-if="item.city==127">宣城</span> <span v-if="item.city==91">苏州</span> <span
+                                    v-if="item.city==103">嘉兴</span>
+                                <span v-if="item.city==100">杭州</span> <span v-if="item.city==104">湖州</span> <span
+                                    v-if="item.city==106">金华</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <img :src="item.image" alt="" onerror="javascript:this.src='index/images/新闻图1@2x.png';">
+                    </div>
+                </li>
+            </ul>
+        </div> -->
+        <!-- 底线----------- -->
+        <!--<div class="footerLine">-->
+        <!--<div class="line"></div>-->
+        <!--<span>这是底线</span>-->
+        <!--</div>-->
+        <footer>
+            <ul class="clearfix">
+                <li class="active">
+                    <a href="#">
+                        <div class="img">
+                            <img src="index/images/首页高亮@2x.png" alt="">
+                        </div>
+                        <p>首页</p>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="../../g60kc/kejiyouyou/index.html">
+                        <div class="img">
+                            <img src="index/images/kejiyouyou2.png" alt="">
+                        </div>
+                        <p>科技优优</p>
+                    </a>
+                </li>
+                <li class=" ">
+                    <a href="more.html">
+                        <div class="img">
+                            <img src="index/images/所有服务@2x.png" alt="">
+                        </div>
+                        <p>所有服务</p>
+                    </a>
+                </li>
+                <li class="" onclick="goToCenter()">
+                    <a>
+                        <div class="img">
+                            <img src="index/images/个人中心@2x.png" alt="">
+                        </div>
+                        <p>个人中心</p>
+                    </a>
+                </li>
+            </ul>
+        </footer>
+    </div>
+    </div>
+
+    <div id='dd_pic' style='margin:0 auto;display:none;'>
+        <img src='index/images/今日科创@2x.png' />
+    </div>
+
+    <script src="../js/commonUse4index.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            let t1 = 0;
+            let t2 = 0;
+            let timer = null;
+            document.onscroll = function () {
+                $('.serve').hide()
+                clearTimeout(timer);
+                $('.serve').stop().fadeOut()
+                timer = setTimeout(isScrollEnd, 100);
+                t1 = document.documentElement.scrollTop || document.body.scrollTop;
+            }
+
+            function isScrollEnd() {
+                t2 = document.documentElement.scrollTop || document.body.scrollTop;
+                if (t2 == t1) {
+                    console.log('滚动结束了');
+                    $('.serve').fadeIn()
+                }
+            }
+        })
+
+
+
+        var strItem = [];
+        var show_items = []; //页面展示信息
+
+        var cmsItem = [];
+        var cms_items = []; //页面展示信息
+
+        var zxcg_strItem = [];
+        var zxcg_show_items = []; //页面展示信息
+
+        var img_strItem = [];
+        var img_show_items = []; //页面展示信息
+        //吐司
+        function toast(message) {
+            mui.toast(message, {
+                duration: "short(2000ms)"
+            });
+        }
+
+
+        $("#editLink").click(function () {
+            window.location.href = 'more.html';
+        })
+
+        //实验室共享
+        lab()
+
+        function lab() {
+            $.ajax({
+                type: 'post',
+                url: ip + 'share/queryPage',
+                data: {
+                    pageSize: 6,
+                    pageNum: 1,
+                    name: "",
+                    type: 0,
+                    city: ""
+                },
+                success: function (data) {
+
+                    for (var i = 0; i < data.content.list.length; i++) {
+                        strItem.push(data.content.list[i])
+                    }
+
+                    //回调
+                }
+            });
+        }
+        cms()
+
+        function cms() {
+            $.ajax({
+                type: 'post',
+                url: ip + 'cms/getCmsNews',
+                data: {
+                    size: 3,
+                    page: 1,
+                    columnId: 28, //栏目
+                    channelId: "",
+                    areaCode: "",
+                    keyword: ""
+                },
+                dataType: "json",
+                success: function (res) {
+                    for (var i = 0; i < res.data.length; i++) {
+                        cmsItem.push(res.data[i])
+                    }
+
+                }
+            });
+        }
+        zxcg()
+
+
+        function getIndexImage() {
+            $.ajax({
+                type: 'post',
+                url: ip + 'IndexImage/getByAll',
+                data: {
+                    status: 1
+                },
+                dataType: "json",
+                success: function (res) {
+                    $("#bannerImg").empty()
+                    var str = "";
+
+                    for (var i = 0; i < res.content.length; i++) {
+                        str += "<div class='swiper-slide'>"
+                        str += "<a href=" + res.content[i].a + "><img src=" + res.content[i].url + "></a></div>"
+                        //                        img_strItem.push(res.content[i])
+                    }
+                    $("#bannerImg").append(str)
+
+                    initImg()
+                }
+            });
+        }
+        getIndexImage()
+
+
+        function initImg() {
+            var mySwiper = new Swiper('.swiper-container', {
+                direction: 'horizontal', // 垂直切换选项
+                loop: true, // 循环模式选项
+                //播放速度
+
+                // 自动播放时间
+                autoplay: true,
+                // 如果需要分页器
+                pagination: {
+                    el: '.swiper-pagination',
+                },
+
+                // 如果需要前进后退按钮
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+
+                // 如果需要滚动条
+                scrollbar: {
+                    el: '.swiper-scrollbar',
+                },
+            })
+        }
+
+        function zxcg() {
+            $.ajax({
+                type: 'post',
+                url: 'http://kczl.g60.kechuang.cn/g60_ws/api/outcome/search/forLX?pageNo=1&pageSize=3',
+                data: {
+                    pageNo: 1,
+                    pageSize: 3,
+                    queryCondition: []
+                },
+                dataType: "json",
+                success: function (res) {
+                    for (var i = 0; i < res.data.rsData.length; i++) {
+                        zxcg_strItem.push(res.data.rsData[i])
+                    }
+
+                }
+            });
+        }
+
+        //客服登录
+        function login() {
+            var arrUrl = location.href.split("/");
+            var pageName = arrUrl[arrUrl.length - 1];
+            if (!localStorage.getItem("token") && pageName != "login.html") {
+                location.href = "http://kzcloud.g60.kechuang.cn/g60-h5/html/login.html";
+            } else {
+                window.location.href = 'http://kzcloud.g60.kechuang.cn/g60-h5/html/serve/html/serve.html';
+            }
+        }
+
+
+
+        var vm = new Vue({
+            el: "#lab",
+            data: {
+                item: strItem,
+                show_item: show_items,
+                cms_item: cmsItem,
+                cms_show_item: cms_items,
+                service_all: showList,
+                zxcg_item: zxcg_strItem,
+                zxcg_show_item: zxcg_show_items,
+                img_item: img_strItem,
+                img_show_item: img_show_items,
+
+
+            },
+
+            methods: {
+                toZxcg(id, way) {
+
+                    var arrUrl = location.href.split("/");
+                    var pageName = arrUrl[arrUrl.length - 1];
+                    if (!localStorage.getItem("token") && pageName != "login.html") {
+                        if( way == 0 ){
+                            location.href = "http://kzcloud.g60.kechuang.cn/g60-h5/html/login.html?redirect=../../g60kc/kejiyouyou/demandDetails.html?id="  + id;
+                        }else{
+                            location.href = "http://kzcloud.g60.kechuang.cn/g60-h5/html/login.html?redirect=../../g60kc/kejiyouyou/planDetails.html?id="  + id;
+                        }
+                    } else {
+                        if (way == 0) {
+                            window.location.href = "../../g60kc/kejiyouyou/demandDetails.html?id=" + id
+                        } else {
+                            window.location.href = "../../g60kc/kejiyouyou/planDetails.html?id=" + id
+                        }
+                    }
+
+                },
+                toUrls: function (url, name) {
+                    if (name == "专利区域监控") {
+                        var arrUrl = location.href.split("/");
+                        var pageName = arrUrl[arrUrl.length - 1];
+                        if (!localStorage.getItem("token") && pageName != "login.html") {
+                            location.href = "http://kzcloud.g60.kechuang.cn/g60-h5/html/login.html?redirect="+url;
+                        } else {
+                            apiJsonAjax("record/add", JSON.stringify({ url: url, name: name, tel: localStorage.getItem("get_DD_tel"), user: localStorage.getItem("get_DD_name") }))
+                            window.location.href = url
+                        }
+                    } else {
+                        apiJsonAjax("record/add", JSON.stringify({ url: url, name: name, tel: localStorage.getItem("get_DD_tel"), user: localStorage.getItem("get_DD_name") }))
+                        window.location.href = url
+                    }
+
+                },
+
+            },
+            created: function () {
+                this.show_item = this.item;
+                this.cms_show_item = this.cms_item;
+                this.zxcg_show_item = this.zxcg_item;
+                this.img_show_item = this.img_item;
+
+
+            }
+        })
+
+
+        function toURL(obj) {
+            var arrUrl = location.href.split("/");
+            var pageName = arrUrl[arrUrl.length - 1];
+            if (!localStorage.getItem("token") && pageName != "login.html") {
+                localStorage.removeItem("data-id");
+                localStorage.setItem("data-id", $(obj).attr("data-id"));
+                location.href = "http://kzcloud.g60.kechuang.cn/g60-h5/html/login.html?redirect=zygx/zygxLabDetail.html";
+            } else {
+                localStorage.removeItem("data-id");
+                localStorage.setItem("data-id", $(obj).attr("data-id"));
+                window.location.href = 'zygx/zygxLabDetail.html';
+            }
+        }
+
+        let toCms = (obj) => {
+            var cmsId = $(obj).attr("data-id");
+            window.location.href = '../html/news/articleDetails.html?cmsId=' + cmsId;
+        }
+
+
+        $(function () {
+            $.ajax({
+                async: false,
+                url: ip + 'DingTalk/getAllHomeProjects',
+                dataType: "json",
+                success: function (res) {
+                    var jrkc = "";
+                    var lgwy = "";
+                    for (var i = 0; i < res.content.length; i++) {
+                        if (res.content[i].endsWith("/CN")) {
+                            jrkc = res.content[i];
+                        }
+                        if (res.content[i].endsWith("/EN")) {
+                            lgwy = res.content[i];
+                        }
+                    }
+                    $("#jrkc").attr("href", jrkc);
+                    $("#lgwy").attr("href", lgwy);
+                }
+            });
+        })
+
+
+        function goToCenter() {
+            //判断登录
+            var arrUrl = location.href.split("/");
+            var pageName = arrUrl[arrUrl.length - 1];
+            if (!localStorage.getItem("token") && pageName != "login.html") {
+                window.location.href = "http://kzcloud.g60.kechuang.cn/g60-h5/html/login.html";
+            } else {
+                window.location.href = 'personCenter.html'
+            }
+        }
+
+        function moreshow(obj) {
+            var arrUrl = location.href.split("/");
+            var pageName = arrUrl[arrUrl.length - 1];
+            if (!localStorage.getItem("token") && pageName != "login.html") {
+                location.href = "http://kzcloud.g60.kechuang.cn/g60-h5/html/login.html?redirect=zidingyi.html";
+            } else {
+                localStorage.removeItem("data-id");
+                localStorage.setItem("data-id", $(obj).attr("data-id"));
+                window.location.href = "zidingyi.html";
+            }
+        }
+
+    </script>
+</body>
+
+</html>

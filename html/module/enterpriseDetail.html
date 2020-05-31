@@ -1,0 +1,236 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,viewport-fit=cover">
+    <title>企业信息详情页</title>
+    <link rel="stylesheet" href="../detail/css/mapScienceList.css">
+    <link rel="stylesheet" href="../detail/css/activity.css">
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <link rel="stylesheet" href="../../css/popup.css">
+
+    <script src="../../js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/API.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../detail/js/flexible.js"></script>
+    <script src="../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../laydate/laydate.js" type="text/javascript" charset="utf-8"></script>
+    <style>
+        .model .content .header > p {
+            margin-bottom:0;
+        }
+        .model .content .header input {
+            margin-bottom:0;
+        }
+        .container_ScienceParticular .content .tabContent p.intro{
+            font-size: 16px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+<div class="container_ScienceParticular" id="app">
+    <div class="content">
+
+        <div class="tabContent">
+            <div class="recommend">
+                <p class="intro">名称:</p>
+                <p id="enterpriseName" v-html="enterpriseName"></p>
+            </div>
+            <div class="recommend">
+                <p class="intro">公司地址:</p>
+                <p v-html="residence"></p>
+            </div>
+            <div class="recommend">
+                <p class="intro">信用编码:</p>
+                <p v-html="creditCode"></p>
+            </div>
+            <div class="recommend">
+                <p class="intro">公司性质:</p>
+                <p v-html="type"></p>
+            </div>
+            <div class="recommend">
+                <p class="intro">经营范围:</p>
+                <p v-html="manageRange"></p>
+            </div>
+            <div style="height: 20vh"></div>
+        </div>
+    </div>
+</div>
+<!------- 我要咨询弹窗-------- -->
+<div class="model" style="display:none">
+    <div class="content">
+        <div class="header">
+            <p class="title">姓名</p>
+            <input id="applyUserName" type="text" placeholder="姓名">
+            <p class="phone">联系电话</p>
+            <input id="applyUserPhone" type="number" placeholder="">
+            <p >电子邮箱</p>
+            <input id="applyUserEmail" type="email" >
+            <p >留言信息</p>
+            <input id="applyUserRemark" type="text" placeholder="留言">
+            <p>申请服务开始时间</p>
+            <input readonly="readonly" type="text" id="startTime" placeholder="请选择开始时间"
+                   style="border: 0px;width:50%"/>
+            <p>申请服务结束时间</p>
+            <input readonly="readonly" type="text" id="endTime" placeholder="请选择结束时间"
+                   style="border: 0px;width:50%"/>
+        </div>
+        <div class="button">
+            <div onclick="closeModel()" class="leftBtn">取消</div>
+            <div onclick="submit_qr()" class="rightBtn">确定</div>
+        </div>
+    </div>
+</div>
+<div class="bottomBtn">
+    <p style="color: white">我要咨询</p>
+</div>
+<script>
+
+</script>
+</body>
+
+</html>
+
+
+<script>
+    var nowDate="";
+    $(function(){
+        var myDate = new Date;
+        var year = myDate.getFullYear();//获取当前年
+        var yue = myDate.getMonth()+1;//获取当前月
+        if (yue<10){
+            yue="0"+yue;
+        }
+        var date = myDate.getDate();//获取当前日
+        if (date<10){
+            date="0"+date;
+        }
+        nowDate=year+"-"+yue+"-"+date;
+    })
+    var datas="";
+    var data={id: localStorage.getItem("data-id")}
+    window.onload=function () {
+        function getList() {
+            apiAjax("enierpriseAnalysis/queryInfoById",data)
+//            console.log(API_result)
+            datas=API_result.content;
+            var app = new Vue({
+                el: '#app',
+                data: datas,
+            })
+        }
+        getList();
+    }
+
+    $(function() {
+        $('.bottomBtn p').click(function() {
+            $('#applyUserName').val(localStorage.getItem("Dingname"));
+            $('#applyUserPhone').val(localStorage.getItem("Dingmobile"))
+            $('.model').fadeToggle()
+        })
+    })
+    function closeModel() {
+        $('.model').hide();
+    }
+
+    // var submitCount=0;
+    function submit_qr() {
+        // if (submitCount>0){
+        //     mui.toast("请勿重新提交！")
+        //     return ;
+        // }
+        var userId=localStorage.getItem("userID");
+        var dataId=localStorage.getItem("data-id"); //数据id
+
+        var applyUserName=$('#applyUserName').val();
+        var applyUserPhone=$('#applyUserPhone').val();
+        var applyUserEmail=$('#applyUserEmail').val();
+        var applyUserRemark=$('#applyUserRemark').val();
+
+        var startTime =$("#startTime").val();
+        var endTime =$("#endTime").val();
+
+
+        if (applyUserName==null||applyUserName==""){
+            mui.toast("联系人姓名不能为空")
+            return;
+        }
+
+        if(applyUserPhone==null||applyUserPhone==""||applyUserPhone.length>11||!isPhoneNo(applyUserPhone)){
+            mui.toast("联系电话不能为空")
+            return;
+        }
+        if (applyUserEmail == null || applyUserEmail == ""||!isEmail(applyUserEmail)) {
+            mui.toast("邮箱输入有误")
+            return;
+        }
+
+        if (startTime==null||startTime==""){
+            mui.toast("开始时间不能为空")
+            return;
+        }
+        if (endTime==null||endTime==""){
+            mui.toast("结束时间不能为空")
+            return;
+        }
+
+
+        if (startTime<nowDate||startTime>endTime) {
+            mui.toast("开始时间和结束时间选择不合理")
+            return;
+        }
+
+        var enterpriseName=$("#enterpriseName").html();
+
+        var requestData={
+            userId:userId,
+            serviceName:'企业服务申请',
+            type:"6",
+            tableName:"zygx_enierprise_analysis",
+            tableId:dataId,
+            name:applyUserName,
+            mobile:applyUserPhone,
+            email:applyUserEmail,
+            content:applyUserRemark,
+            ext1:startTime,
+            ext2:endTime,
+            ext3:enterpriseName,
+            ext4:localStorage.getItem("DduserId")
+        }
+        apiAjax("serverapp/save",requestData);
+        if (API_result.code==0){
+            // submitCount++;
+            mui.toast("提交成功")
+            closeModel()
+        }else{
+            if(API_result.tag!=""){
+                mui.toast(API_result.tag)
+            }else{
+                mui.toast("提交失败，请稍后重试！")
+            }
+        }
+    }
+
+    laydate.render({
+        elem: '#startTime'
+    });
+    laydate.render({
+        elem: '#endTime'
+    });
+
+    function isPhoneNo(phone) {
+        var pattern = /^1[34578]\d{9}$/;
+        return pattern.test(phone);
+    }
+
+    function isEmail(email) {
+        var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+        if(!reg.test(email))
+        {
+            return false;
+        }
+        return true;
+    }
+</script>

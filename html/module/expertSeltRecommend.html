@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta name="format-detection" content="email=no"/>
+	<link rel="stylesheet" href="../../css/mui.min.css">
+
+	<script src="../../js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/API.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/common.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" type="text/css" href="../../css/main.css"/>
+	<script src="../../laydate/laydate.js" type="text/javascript" charset="utf-8"></script>
+	<title>专家自荐</title>
+	<style type="text/css">
+		.bottomBtn {
+			bottom: 0;
+			width: 100%;
+			height: 45px;
+			font-size: 16px;
+			color: #fff;
+			background-color: #f8f8f8;
+			padding: 5px 20px;
+			box-shadow: 0px -1px 0px 0px #e8e8e8;
+		}
+
+		.bottomBtn p {
+			height: 100%;
+			text-align: center;
+			line-height: 35px;
+			background-color: #1975ff;
+		}
+
+		button{
+			COLOR:#7ED321
+		}
+		li .lab {
+			width: 7em;
+
+		}
+		li input[type="text"],li input[type="date"], li select {
+			width: calc(100% - 9em);
+			height: auto;
+			margin-bottom: 0;
+			padding: 5px;
+			line-height: 24px;
+		}
+		.jia p{ text-align: center; padding-top:20px; font-weight: bold}
+		.jia input{ opacity: 0; width: 100%; height: 100%; left: 0;top: 0; position: absolute; }
+	</style>
+</head>
+<body>
+<!--<div class="header">-->
+<!--	<div class="container center">-->
+<!--				&lt;!&ndash;<span class="backBtn">&ndash;&gt;-->
+<!--					&lt;!&ndash;<img src="../../images/back.png" width="10px"/>&ndash;&gt;-->
+<!--					&lt;!&ndash;返回&ndash;&gt;-->
+<!--				&lt;!&ndash;</span>&ndash;&gt;-->
+<!--		<span class="til">专家自荐</span>-->
+
+<!--	</div>-->
+<!--</div>-->
+<div class="marB70 loginBox">
+
+	<div style="margin-top: -45px;" class="userItem writeList" id="app">
+
+		<ul>
+			<li>
+				<div class="container">
+					<span class="lab">姓名：</span>
+					<span class="con"><input type="text" id="name" placeholder="请输入姓名" v-model="name"/></span>
+				</div>
+			</li>
+			<li>
+				<div class="container">
+					<span class="lab">最高学历：</span>
+					<span class="con">  <select name="" id='topEducation' >
+                        <option value="">请选择</option>
+                        <option value="本科">本科</option>
+						<option value="高中">高中</option>
+                        <option value="中专">中专</option>
+						<option value="中技">中技</option>
+                        <option value="大专">大专</option>
+                        <option value="硕士研究生">硕士研究生</option>
+                        <option value="博士研究生">博士研究生</option>
+                        </select></span>
+
+				</div>
+			</li>
+			<li>
+				<div class="container">
+					<span class="lab">城市：</span>
+					<span class="con">
+					<select name="" id='city' >
+                        <option value="" id="shanghai">请选择</option>
+						<option value="上海" id="shanghai">上海</option>
+						<option value="嘉兴" id="jiaxing">嘉兴</option>
+						<option value="杭州" id="hangzhou">杭州</option>
+						<option value="金华" id="jinhua">金华</option>
+						<option value="苏州" id="suzhou">苏州</option>
+						<option value="湖州" id="huzhou">湖州</option>
+						<option value="宣城" id="xuancheng">宣城</option>
+						<option value="芜湖" id="wuhu">芜湖</option>
+						<option value="合肥" id="hefei">合肥</option>
+                    </select>
+					</span>
+
+				</div>
+			</li>
+<!--			<li>-->
+<!--				<div class="container">-->
+<!--					<span class="lab">产品价格：</span>-->
+<!--					<span class="con" style="margin-right: 10px;"><input type="text" style="    width: calc(100% - 15em);" id="price" placeholder="请输入产品价格" v-model="price" onkeyup="clearNoNum(this)"/>(元/斤)</span>-->
+<!--				</div>-->
+<!--			</li>-->
+			<li>
+				<div class="container">
+					<span class="lab">开始工作时间：</span>
+					<span class="con">
+						<input type="text" readonly="readonly" id="jobTime" placeholder="请输入开始工作时间"
+							style="border: 0px;width:50%"/>
+					</span>
+				</div>
+			</li>
+<!--			<li>-->
+<!--				<div class="container">-->
+<!--					<span class="lab">发货地点：</span>-->
+<!--					<span class="con">-->
+<!--                        &lt;!&ndash; <input type="text" placeholder="请输入您的详细地址" name="" id="Address" value="" v-model="user.ADDRESS"/> &ndash;&gt;-->
+<!--                        <input type="hidden" placeholder="请输入您的详细地址" name="address" id="address" v-model="address" value="" />-->
+<!--                        <a href="#" class="btn btn-info btn-lg active" role="button" id="sel_city" value="" >点击选取省市区县</a>-->
+<!--                </span>-->
+<!--				</div>-->
+<!--			</li>-->
+			<li>
+				<div class="container">
+					<span class="lab">职称：</span>
+					<span class="con"><input type="text" id="job" placeholder="请输入你的职称，例如：教授" v-model="job"/></span>
+				</div>
+			</li>
+			<li>
+				<div class="container">
+					<span class="lab">科研方向：</span>
+					<span class="con"><input type="text" id="researchDirection" placeholder="请输入你的科研方向" v-model="researchDirection"/></span>
+				</div>
+			</li>
+			<li>
+				<div class="container">
+					<span class="lab">主研领域：</span>
+					<span class="con"><input type="text" id="expertField" placeholder="请输入你的主要研究领域" v-model="researchField"/></span>
+				</div>
+			</li>
+			<li>
+				<div class="container">
+					<span class="lab">所属单位：</span>
+					<span class="con"><input type="text" id="affiliation" placeholder="请输入你的所属单位" v-model="affiliation"/></span>
+				</div>
+			</li>
+			<li>
+				<div class="container">
+					<span class="lab">手机号码：</span>
+					<span class="con"><input type="text" id="tel" placeholder="请输入你的联系电话"  v-model="tel"  maxlength="11" onkeyup = "value=value.replace(/[^\d]/g,'')"/></span>
+				</div>
+			</li>
+			<li>
+				<div class="container">
+					<span class="lab">邮箱：</span>
+					<span class="con"><input type="text" id="email" placeholder="请输入你的邮箱账号" v-model="email"/></span>
+				</div>
+			</li>
+			<li>
+				<div class="container">
+					<span class="lab">所获荣誉：</span>
+					<span class="con"><textarea type="text" id="certificate" placeholder="请输入曾获得的荣誉或奖项，例如：
+1、2000-06 某某学院：优秀干部称号；
+2、2001-05 某某学院：优秀团干称号；" style="margin-left: 30px;width: 310px; height: 85px" v-model="certificate"></textarea>
+					</span>
+				</div>
+			</li>
+			<li>
+				<div class="container">
+					<span class="lab">工作经历：</span>
+					<span class="con"><textarea type="text" id="jobExperience" placeholder="请输入曾获得的荣誉或奖项，例如：
+1、2000-06~2010-06 在某某公司任职某某岗位，主要负责某某业务"
+					style="margin-left: 30px;width: 310px;height: 85px" v-model="jobExperience"></textarea>
+					</span>
+				</div>
+			</li>
+			<li>
+				<div class="container">
+					<span class="lab">学习经历：</span>
+					<span class="con"><textarea type="text" id="education" placeholder="请填写你的学习经历，例如：
+1、2003-09~2006-06 某省科技职业学院国际经济与贸易专业大专学历" style="margin-left: 30px;width: 310px;height: 85px" v-model="education"></textarea>
+					</span>
+				</div>
+			</li>
+			<li>
+				<div class="container">
+					<span class="lab">参与科研项目：</span>
+					<span class="con"><textarea type="text" id="researchProjects" placeholder="请填写你所参加过的科研项目，例如：
+1、2000-06~2010-06 参与某某科研项目，项目周期是10年，主要是为了解决某某问题，主要负责某某模块；" style="margin-left: 30px;width: 310px;height: 100px"
+												v-model="introduction"></textarea>
+					</span>
+				</div>
+			</li>
+			<li>
+				<div class="container">
+					<span class="lab">个人简介：</span>
+					<span class="con"><textarea type="text" id="introduce" placeholder="请对自己做个简单的介绍"
+												style="margin-left: 30px;width: 310px;height: 80px"
+												v-model="introduction"></textarea>
+					</span>
+				</div>
+			</li>
+			<li>
+				<div class="container">
+					<span class="lab"><img style="width: 100px" id="showImage" src=""></span>
+					<span class="con">
+						<input type="file" id="image" name="image" src="../../images/1555557717457ceshi.png" accept=“image/*” onchange='handleInputChange()'>
+					</span>
+				</div>
+			</li>
+<!--			<li>-->
+<!--				<div class="container">-->
+<!--					<span class="icon yuyinIcon" style="height: 34px;width: 20px;margin-left: 10px;margin-top: 15px;" onclick="yuyinshuru()"></span>-->
+<!--					<span class="con"><textarea type="text" id="introduction" placeholder="发布内容" style="margin-left: 30px;width: 310px;"-->
+<!--												v-model="introduction"></textarea></span>-->
+<!--				</div>-->
+<!--			</li>-->
+
+<!--			<li>-->
+<!--				<div class="container" style="height: 20vh">-->
+<!--					<div class="jia_frame">-->
+<!--						<div id="Images" class="mui-content-padded" style="height:75px;overflow: hidden;" >-->
+
+<!--                         <span onclick="openCarcme()" id="spanImg" style="width: 80px;float: left"  >-->
+<!--                            <img src="../../images/addtab.png" height="70" width="70">-->
+<!--                            </span>-->
+<!--						</div>-->
+
+
+<!--					</div>-->
+<!--				</div>-->
+<!--			</li>-->
+		</ul>
+
+
+	</div>
+<!--	<div class="completeBtn container" onclick='addFabu()'>-->
+<!--		发布-->
+<!--	</div>-->
+	<div onclick='addFabu()' class="bottomBtn">
+		<p style="color: white">发布</p>
+	</div>
+
+</div>
+
+</body>
+<script src="../../js/picker.min.js"></script>
+<script src="../../js/city.js"></script>
+<script src="../../js/fileUpload.js"></script>
+<script>
+
+	var nowDate="";
+	$(function(){
+		var myDate = new Date;
+		var year = myDate.getFullYear();//获取当前年
+		var yue = myDate.getMonth()+1;//获取当前月
+		if (yue<10){
+			yue="0"+yue;
+		}
+		var date = myDate.getDate();//获取当前日
+		nowDate=year+"-"+yue+"-"+date;
+	})
+	var base64 = "";
+	var base642 = "";
+	var base643 = "";
+	var temp = 0;
+	var id="";
+	var addresss="";
+	function toast() {
+		mui.toast("提交成功")
+	}
+
+	function clearNoNum(obj)
+	{
+		//先把非数字的都替换掉，除了数字和.
+		obj.value = obj.value.replace(/[^\d.]/g,"");
+		//必须保证第一个为数字而不是.
+		obj.value = obj.value.replace(/^\./g,"");
+		//保证只有出现一个.而没有多个.
+		obj.value = obj.value.replace(/\.{2,}/g,".");
+		//保证.只出现一次，而不能出现两次以上
+		obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+	}
+
+	function addFabu() {
+		var name = $("#name").val();
+		var topEducation = $("#topEducation").val(); //最高学历
+		var job=$('#job').val(); //职务
+		var jobTime = $("#jobTime").val(); //开始工作时间
+		var researchDirection = $("#researchDirection").val(); //科研方向
+		var expertField=$("#expertField").val(); //主研领域
+		var affiliation=$("#affiliation").val(); //所属单位
+		var tel=$("#tel").val(); //联系电话
+		var email=$("#email").val(); //邮箱账号
+		var certificate=$("#certificate").val(); //所获荣誉
+		var education=$("#education").val()  //  教育经历
+		var jobExperience=$("#jobExperience").val() //工作经历
+		var researchProjects=$("#researchProjects").val()  //参加的科研项目
+		var introduce=$("#introduce").val() //个人简介
+		var url=$("#showImage").attr("src")
+        var city=$("#city").val();
+
+		if (isEmptyObject(name) == true) {
+			mui.toast("专家名称不能为空！")
+			return
+		}
+        if (isEmptyObject(city) == true) {
+            mui.toast("城市不能为空！")
+            return
+        }
+		if (isEmptyObject(topEducation) == true) {
+			mui.toast("最高学历不能为空！")
+			return
+		}
+		if (isEmptyObject(jobTime) == true) {
+			mui.toast("开始工作时间不能为空！")
+			return
+		}
+		if (jobTime>nowDate) {
+			mui.toast("开始工作时间选择不合理！")
+			return
+		}
+		if (isEmptyObject(job) == true) {
+			mui.toast("职务不能为空！")
+			return
+		}
+
+		if(isEmptyObject(tel)== true){
+			mui.toast("手机号码不能为空！")
+			return
+		}
+		if(!isPhoneNo(tel)){
+			mui.toast("手机号码输入有误！")
+			return
+		}
+		if (isEmptyObject(email)== true){
+			mui.toast("邮箱不能为空！")
+			return
+		}
+		if(!isEmail(email)){
+			mui.toast("邮箱输入有误！")
+			return
+		}
+		if (isEmptyObject(researchDirection) == true) {
+			mui.toast("科研方向不能为空！")
+			return
+		}
+
+		if (isEmptyObject(expertField) == true) {
+			mui.toast("主研领域不能为空！")
+			return
+		}
+		if (isEmptyObject(affiliation) == true) {
+			mui.toast("所属单位不能为空！")
+			return
+		}
+		if (isEmptyObject(certificate) == true) {
+			mui.toast("所获荣誉不能为空！")
+			return
+		}
+		if (isEmptyObject(education) == true) {
+			mui.toast("教育经历不能为空！")
+			return
+		}
+		if (isEmptyObject(jobExperience) == true) {
+			mui.toast("工作经历不能为空！")
+			return
+		}
+		if (isEmptyObject(researchProjects) == true) {
+			mui.toast("参加的科研项目不能为空！")
+			return
+		}
+		if (isEmptyObject(introduce) == true) {
+			mui.toast("个人简介不能为空！")
+			return
+		}
+		if (base64 == "") {
+			base64 = "../images/index/nmsj.png";
+		}
+
+
+		var data = {
+			name: name,
+			topEducation: topEducation,
+			city:$("#city").val(),
+			job:job,
+			jobTime: jobTime,
+			researchDirection: researchDirection,
+			affiliation:affiliation,
+			expertField:expertField,
+			tel:tel,
+			email:email,
+			jobExperience:jobExperience,
+			certificate:certificate,
+			education:education,
+			researchProjects: researchProjects,
+			introduce:introduce,
+			url:url,
+			statusName:"1",
+			ex5:localStorage.getItem("userID")
+		}
+		apiAjax('expert/saveExpertInfo',data)
+		if(API_result.code==0){
+			mui.toast("提交成功,待审核")
+			var tableId=API_result.tag;//获取自增ID值
+			var userId=localStorage.getItem("userID");
+			var requestData = {
+				userId: userId,
+				serviceName: '专家自荐服务申请',
+				type: "11",
+				tableName: "zygx_expert",
+				tableId: tableId,
+				name: localStorage.getItem("Dingname"),
+				mobile: localStorage.getItem("Dingmobile"),
+				ext3:name,
+				ext4:localStorage.getItem("DduserId")
+			}
+			apiAjax("serverapp/save", requestData);
+			if (API_result.code==0){
+				setTimeout(function () {
+					window.location.href="expertSeltRecommend.html"
+				},1500)
+			} else{
+				mui.toast("服务提交失败,请稍后再试")
+			}
+		}else{
+			mui.toast("提交失败,请稍后再试")
+		}
+	}
+
+	var selectedIndex = [26, 0, 0]
+	var nameyy = document.getElementById('sel_city');
+
+	var first = []; /* 省，直辖市 */
+	var second = []; /* 市 */
+	var third = []; /* 镇 */
+
+
+
+	var checked = [26, 0, 0]; /* 已选选项 */
+
+	function creatList(obj, list){
+		obj.forEach(function(item, index, arr){
+			var temp = new Object();
+			temp.text = item.name;
+			temp.value = index;
+			list.push(temp);
+		})
+	}
+
+	creatList(city, first);
+
+	if (city[selectedIndex[0]].hasOwnProperty('sub')) {
+		creatList(city[selectedIndex[0]].sub, second);
+	} else {
+		second = [{text: '', value: 0}];
+	}
+
+	if (city[selectedIndex[0]].sub[selectedIndex[1]].hasOwnProperty('sub')) {
+		creatList(city[selectedIndex[0]].sub[selectedIndex[1]].sub, third);
+	} else {
+		third = [{text: '', value: 0}];
+	}
+
+	var picker = new Picker({
+		data: [first, second, third],
+		selectedIndex: selectedIndex,
+		title: '地址选择'
+	});
+
+	picker.on('picker.select', function (selectedVal, selectedIndex) {
+		var text1 = first[selectedIndex[0]].text;
+		var text2 = second[selectedIndex[1]].text;
+		var text3 = third[selectedIndex[2]] ? third[selectedIndex[2]].text : '';
+
+		nameyy.innerText = text1 + ' ' + text2 + ' ' + text3;
+		addresss=nameyy.innerText;
+	});
+
+	picker.on('picker.change', function (index, selectedIndex) {
+		if (index === 0){
+			firstChange();
+		} else if (index === 1) {
+			secondChange();
+		}
+
+		function firstChange() {
+			second = [];
+			third = [];
+			checked[0] = selectedIndex;
+			var firstCity = city[selectedIndex];
+			if (firstCity.hasOwnProperty('sub')) {
+				creatList(firstCity.sub, second);
+
+				var secondCity = city[selectedIndex].sub[0]
+				if (secondCity.hasOwnProperty('sub')) {
+					creatList(secondCity.sub, third);
+				} else {
+					third = [{text: '', value: 0}];
+					checked[2] = 0;
+				}
+			} else {
+				second = [{text: '', value: 0}];
+				third = [{text: '', value: 0}];
+				checked[1] = 0;
+				checked[2] = 0;
+			}
+
+			picker.refillColumn(1, second);
+			picker.refillColumn(2, third);
+			picker.scrollColumn(1, 0)
+			picker.scrollColumn(2, 0)
+		}
+
+		function secondChange() {
+			third = [];
+			checked[1] = selectedIndex;
+			var first_index = checked[0];
+			if (city[first_index].sub[selectedIndex].hasOwnProperty('sub')) {
+				var secondCity = city[first_index].sub[selectedIndex];
+				creatList(secondCity.sub, third);
+				picker.refillColumn(2, third);
+				picker.scrollColumn(2, 0)
+			} else {
+				third = [{text: '', value: 0}];
+				checked[2] = 0;
+				picker.refillColumn(2, third);
+				picker.scrollColumn(2, 0)
+			}
+		}
+
+	});
+
+	picker.on('picker.valuechange', function (selectedVal, selectedIndex) {
+		console.log(selectedVal);
+		console.log(selectedIndex);
+	});
+
+	function methodName(jsonParams) {
+		if ($("#Images .img").length >= 2) {
+			$("#spanImg").css("display","none");
+		}else{
+			$("#spanImg").css("display","block");
+		}
+		if ($("#Images .img").length == 0) {
+			base64 = jsonParams;
+		}
+		if ($("#Images .img").length == 1) {
+			base642 = jsonParams;
+		}
+		if ($("#Images .img").length == 2) {
+			base643 = jsonParams;
+		}
+		imgStr = " <span class='add_Img'><b></b><img src='" + jsonParams + "'   width='80px' class='img'  style='width: 20vw' data-preview-src='' data-preview-group='1'></span>";
+		$("#Images").append(imgStr)
+
+	}
+
+	$("#Images").on("click",".add_Img b",function(){
+
+		if ($("#Images .img").length >= 2) {
+			$("#spanImg").css("display","none");
+		}else{
+			$("#spanImg").css("display","block");
+		}
+		$(this).parent(".add_Img").remove();
+	})
+
+	laydate.render({
+		elem: '#jobTime'
+	});
+
+	function isPhoneNo(phone) {
+		var pattern = /^1[34578]\d{9}$/;
+		return pattern.test(phone);
+	}
+
+	function isEmail(email) {
+		var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+		if(!reg.test(email))
+		{
+			return false;
+		}
+		return true;
+	}
+</script>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="format-detection" content="email=no" />
+	<link rel="stylesheet" href="../../css/mui.min.css">
+	<link rel="stylesheet" type="text/css" href="../../css/main.css" />
+	
+	<script src="../../js/vue.min.js"></script>
+	<script src="../../js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/common.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/API.js" type="text/javascript" charset="utf-8"></script>
+
+	<title>长三角G60科创云</title>
+	<style>
+		img {
+			vertical-align: middle;
+			width: 80%;
+		}
+		.header {
+			position: fixed;
+			width: 100%;
+		}
+
+		.articalDetails .til {
+			margin-top: 40px;
+		}
+	</style>
+</head>
+
+<body style="background: #fff;">
+	<div id="app">
+		<div class="header">
+			<div class="container center">
+				<!--<span class="backBtn" onclick="		history.go(-1)">-->
+					<!--<img src="../../images/back.png" width="10px" />返回-->
+				<!--</span>-->
+				<span class="til">详情</span>
+			</div>
+		</div>
+		<div class="articalDetails marB70 container" style="margin-top: -44px;">
+			<div v-html="data">{{data.data}}</div>
+		</div>
+	</div>
+</body>
+<script>
+	var  data=localStorage.getItem("data-id")
+    new Vue({
+        el: "#app",
+        data: data,
+
+    })
+
+</script>
+
+</html>

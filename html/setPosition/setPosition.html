@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body, html {width: 100%;height: 100%;margin:0;font-family:"微软雅黑";font-family:"微软雅黑";}
+        #allmap{width:100%;height:100%;}
+        p{margin-left:5px; font-size:14px;}
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=SMUUmkCGz96VUyBmzm2Gs7GRyTWaSbIC"></script>
+    <script src="../../js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <title>农民云</title>
+    <style>
+        p {
+            color: #fff !important;
+        }
+    </style>
+</head>
+
+<body>
+<div id="allmap"></div>
+</body>
+
+<script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("allmap");
+    var point = new BMap.Point(116.331398,39.897445);
+    map.centerAndZoom(point,15);
+
+    // 开启辅助定位
+    var geolocation = new BMap.Geolocation();
+    // geolocation.enableSDKLocation();
+    // geolocation.getCurrentPosition(function(r){
+    //     if (this.getStatus() === BMAP_STATUS_SUCCESS) {
+    //         var mk = new BMap.Marker(r.point);
+    //         map.addOverlay(mk);
+    //         map.panTo(r.point);
+    //     }
+    // });
+
+
+    map.enableScrollWheelZoom();
+    map.enableInertialDragging();
+    map.enableContinuousZoom();
+
+    var geolocation = new BMap.Geolocation();
+    geolocation.getCurrentPosition( function(r) {   //定位结果对象会传递给r变量
+
+            if(this.getStatus() == BMAP_STATUS_SUCCESS) {
+                var mk = new BMap.Marker(r.point);
+                var circle = new BMap.Circle(r.point,500,{strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5}); //创建圆
+                map.addOverlay(mk);
+                map.addOverlay(circle);
+                map.panTo(r.point);
+                alert('您的位置：'+r.point.lng+','+r.point.lat);
+            }
+            else
+            {
+                //关于状态码
+                //BMAP_STATUS_SUCCESS   检索成功。对应数值“0”。
+                //BMAP_STATUS_CITY_LIST 城市列表。对应数值“1”。
+                //BMAP_STATUS_UNKNOWN_LOCATION  位置结果未知。对应数值“2”。
+                //BMAP_STATUS_UNKNOWN_ROUTE 导航结果未知。对应数值“3”。
+                //BMAP_STATUS_INVALID_KEY   非法密钥。对应数值“4”。
+                //BMAP_STATUS_INVALID_REQUEST   非法请求。对应数值“5”。
+                //BMAP_STATUS_PERMISSION_DENIED 没有权限。对应数值“6”。(自 1.1 新增)
+                //BMAP_STATUS_SERVICE_UNAVAILABLE   服务不可用。对应数值“7”。(自 1.1 新增)
+                //BMAP_STATUS_TIMEOUT   超时。对应数值“8”。(自 1.1 新增)
+                switch( this.getStatus() )
+                {
+                    case 2:
+                        mui.toast( '位置结果未知 获取位置失败.' );
+                        break;
+                    case 3:
+                        mui.toast( '导航结果未知 获取位置失败..' );
+                        break;
+                    case 4:
+                        mui.toast( '非法密钥 获取位置失败.' );
+                        break;
+                    case 5:
+                        mui.toast( '对不起,非法请求位置  获取位置失败.' );
+                        break;
+                    case 6:
+                        mui.toast( '对不起,当前 没有权限 获取位置失败.' );
+                        break;
+                    case 7:
+                        mui.toast( '对不起,服务不可用 获取位置失败.' );
+                        break;
+                    case 8:
+                        mui.toast( '对不起,请求超时 获取位置失败.' );
+                        break;
+
+                }
+            }
+
+        },
+        {enableHighAccuracy: true}
+    )
+    var size = new BMap.Size(100, 200);
+    map.addControl(new BMap.CityListControl({
+        anchor: BMAP_ANCHOR_TOP_LEFT,
+        offset: size,
+        // 切换城市之间事件
+        // onChangeBefore: function(){
+        //    alert('before');
+        // },
+        // 切换城市之后事件
+        // onChangeAfter:function(){
+        //   alert('after');
+        // }
+    }));
+    function showInfo(e){
+        map.clearOverlays();
+        var mk = new BMap.Marker(e.point);
+        map.addOverlay(mk);
+
+        var circle = new BMap.Circle(e.point,500,{strokeColor:"blue", strokeWeight:2, strokeOpacity:0.5}); //创建圆
+        map.addOverlay(circle);
+        //alert(e.point.lng + ", " + e.point.lat);
+    }
+    map.addEventListener("click", showInfo);
+
+</script>
+
+
+
+</html>

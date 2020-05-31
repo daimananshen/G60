@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,viewport-fit=cover">
+    <title>工业互联网详情</title>
+    <link rel="stylesheet" href="../../css/serviceList.css">
+    <link rel="stylesheet" href="../detail/css/activity.css">
+    <link rel="stylesheet" href="../../css/mui.min.css">
+    <link rel="stylesheet" href="../../css/popup.css">
+
+
+    <script src="../../js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/swiper-4.3.5.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/common.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/API.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../html/index/js/flexible.js"></script>
+    <script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../laydate/laydate.js" type="text/javascript" charset="utf-8"></script>
+    <style>
+        .model .content .header > p {
+            margin-bottom:0;
+        }
+        .model .content .header input {
+            margin-bottom:0;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container_ScienceParticular">
+        <div class="headerImg">
+            <img id="bgcImg" src="../../images/service-detail-topbg.png" alt="">
+            <div class="icon">
+                <img id="logo" src="../../images/hanpu.png" alt="">
+                <p style="color: white">
+                    <span id="name">海口汉普知识产权有限公司</span>
+                    <span id="address">海南省海口市海府路89号省科技厅负一楼专利所</span>
+                    <span id="telephone">(0898) 65339140</span>
+
+                </p>
+            </div>
+            <ul>
+                <li><span>12次</span><span>预约次数</span></li>
+                <li>|</li>
+                <li><span id="ext1"></span><span>浏览次数</span></li>
+                <li>|</li>
+                <li><span>面议</span><span>服务价格</span></li>
+            </ul>
+
+        </div>
+        <div class="content">
+            <div class="tabheader">
+                <ul>
+                    <li><a href="javascript:;">
+                            <img class="highlight" src="../../images/01service.png" alt="">
+                            <img class="default" src="../../images/service.png" alt="">
+                            <span class="active">服务详情</span>
+                        </a></li>
+                    <li>
+                        <a href="javascript:;">
+                            <img class="default" src="../../images/introduce.png" alt="">
+                            <img class="highlight" src="../../images/01introduce.png" alt="">
+                            <span>机构介绍</span>
+                        </a></li>
+                    <li><a href="javascript:;">
+                            <img class="default" src="../../images/comments.png" alt="">
+                            <img class="highlight" src="../../images/01comments.png" alt="">
+                            <span>服务评论</span></a></li>
+                </ul>
+            </div>
+            <div class="tabContent">
+                <div id="serviceContent"style="font-size: 12px" class="recommend">
+                    <p>上海地质科普馆又名月亮湾宝石城，坐落上海浦东国际机场后花园的浦东凌空农艺大观园内，科普馆主厅3600平方米，次厅1000多平方米，室外奇石展面积500亩。馆内分为地球厅、地球构造厅、矿物岩石厅、古生物厅、地质地貌厅、国土资源厅、宝石厅、关怀厅、奇石馆9个厅馆。
+                        上海地质科普馆又名月亮湾宝石城，坐落上海浦东国际机场后花园的浦东凌空农艺大观园内，科普馆主厅3600平方米，次厅1000多平方米，室外奇石展面积500亩。馆内分为地球厅、地球构造厅、矿物岩石厅、古生物厅、地质地貌厅、国土资源厅、宝石厅、关怀厅、奇石馆9个厅馆
+                        上海地质科普馆又名月亮湾宝石城，坐落上海浦东国际机场后花园的浦东凌空农艺大观园内，科普馆主厅3600平方米，次厅1000多平方米，室外奇石展面积500亩。馆内分为地球厅、地球构造厅、矿物岩石厅、古生物厅、地质地貌厅、国土资源厅、宝石厅、关怀厅、奇石馆9个厅馆
+                    </p>
+                </div>
+                <div class="appointment" style="display:none;font-size: 12px"></div>
+                <div class="problem" style="display:none;font-size: 12px"></div>
+            </div>
+        </div>
+    </div>
+
+    <!------- 我要咨询弹窗-------- -->
+    <div class="model" style="display:none">
+        <div class="content">
+            <div class="header">
+                <p class="title">姓名</p>
+                <input id="applyUserName" type="text" placeholder="姓名">
+                <p class="phone">联系电话</p>
+                <input id="applyUserPhone" type="number" placeholder="">
+                <p >电子邮箱</p>
+                <input id="applyUserEmail" type="email" >
+                <p >留言信息</p>
+                <input id="applyUserRemark" type="text" placeholder="留言">
+                <p>申请服务开始时间</p>
+                <input readonly="readonly" type="text" id="startTime" placeholder="请选择开始时间"
+                       style="border: 0px;width:50%"/>
+                <p>申请服务结束时间</p>
+                <input readonly="readonly" type="text" id="endTime" placeholder="请选择结束时间"
+                       style="border: 0px;width:50%"/>
+            </div>
+            <div class="button">
+                <div onclick="closeModel()" class="leftBtn">取消</div>
+                <div onclick="submit_qr()" class="rightBtn">确定</div>
+            </div>
+        </div>
+    </div>
+    <div class="bottomBtn">
+        <p style="color: white">申请服务</p>
+    </div>
+    <script>
+        var nowDate="";
+        $(function(){
+            var myDate = new Date;
+            var year = myDate.getFullYear();//获取当前年
+            var yue = myDate.getMonth()+1;//获取当前月
+            if (yue<10){
+                yue="0"+yue;
+            }
+            var date = myDate.getDate();//获取当前日
+            nowDate=year+"-"+yue+"-"+date;
+        })
+        $(function () {
+            $('.tabheader ul li ').click(function () {
+
+                $('.tabheader ul li ').find('span').removeClass('active');
+                $(this).find('span').addClass('active');
+                $('.tabheader ul li ').find('.default').show();
+                $('.tabheader ul li ').find('.highlight').hide();
+                $(this).find('.highlight').show();
+                $(this).find('.default').hide();
+
+                // 内容切换
+                let i = $(this).index()
+                $('.tabContent>div')
+                    .eq(i).show().siblings().hide()
+
+            })
+        })
+
+        var datas="";
+        var dataPram={id:localStorage.getItem("data-id")};
+
+        window.onload=function () {
+            getDetailInfo();
+            function getDetailInfo() {
+                apiAjax("serviceOrg/queryDetailInfo",dataPram);
+                datas=API_result.content;
+                $("#name").html(datas.name);
+                $("#address").html(datas.province+"-"+datas.city+datas.district);
+                $("#telephone").html(datas.telephone);
+                $("#serviceContent").html(datas.serviceContent);
+                $("#ext1").html(datas.ext1+'次')
+
+                $("#bgcImg").attr("src",datas.servicePic);
+                $("#logo").attr("src",datas.logo);
+            }
+        }
+
+        $(function() {
+
+            $('.bottomBtn p').click(function() {
+                $('#applyUserName').val(localStorage.getItem("Dingname"));
+                $('#applyUserPhone').val(localStorage.getItem("Dingmobile"))
+                $('.model').fadeToggle()
+            })
+
+        })
+
+        function closeModel() {
+            $('.model').hide();
+        }
+
+        var submitCount=0;
+        function submit_qr() {
+            if (submitCount > 0) {
+                mui.toast("请勿重新提交！")
+                return;
+            }
+            var userId=localStorage.getItem("userID");
+            // if(userId==null||userId==""){
+            //     userId="123";
+            // }
+            // var userId = "123"  //钉钉表用户ID
+
+            var dataId = localStorage.getItem("data-id"); //数据id
+
+            var applyUserName = $('#applyUserName').val();
+            var applyUserPhone = $('#applyUserPhone').val();
+            var applyUserEmail = $('#applyUserEmail').val();
+            var applyUserRemark = $('#applyUserRemark').val();
+
+            var startTime =$("#startTime").val();
+            var endTime =$("#endTime").val();
+
+
+            if (applyUserName == null || applyUserName == "") {
+                mui.toast("联系人姓名不能为空")
+                return;
+            }
+
+            if (applyUserPhone == null || applyUserPhone == ""||applyUserPhone.length>11||!isPhoneNo(applyUserPhone)) {
+                mui.toast("联系电话不能为空")
+                return;
+            }
+
+            if (applyUserEmail == null || applyUserEmail == "") {
+                mui.toast("邮箱不能为空")
+                return;
+            }
+
+            if (startTime==null||startTime==""){
+                mui.toast("开始时间不能为空")
+                return;
+            }
+
+            if (endTime==null||endTime==""){
+                mui.toast("结束时间不能为空")
+                return;
+            }
+
+            if (startTime<nowDate||startTime>endTime) {
+                mui.toast("开始时间和结束时间选择不合理")
+                return;
+            }
+
+
+            var requestData = {
+                userId: userId,
+                serviceName: '工业互联网活动',
+                type: "12",
+                tableName: "service_organization",
+                tableId: dataId,
+                name: applyUserName,
+                mobile: applyUserPhone,
+                email: applyUserEmail,
+                content: applyUserRemark,
+                ext1:startTime,
+                ext2:endTime,
+                ext4:localStorage.getItem("DduserId")
+            }
+            apiAjax("serverapp/save", requestData);
+            if (API_result.code == 0) {
+                submitCount++;
+                mui.toast("提交成功")
+                closeModel()
+            } else {
+                if(API_result.tag!=""){
+                    mui.toast(API_result.tag)
+                }else{
+                    mui.toast("提交失败，请稍后重试！")
+                }
+            }
+        }
+
+        laydate.render({
+            elem: '#startTime'
+        });
+        laydate.render({
+            elem: '#endTime'
+        });
+
+        function isPhoneNo(phone) {
+            var pattern = /^1[34578]\d{9}$/;
+            return pattern.test(phone);
+        }
+    </script>
+</body>
+
+</html>

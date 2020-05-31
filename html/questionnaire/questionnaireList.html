@@ -1,0 +1,1220 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="format-detection" content="email=no"/>
+    <title>高企自评打分</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <script type="text/javascript" src="../../js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/common.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/API.js" type="text/javascript" charset="utf-8"></script>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            color: #555;
+            font-size: 14px;
+            font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial,
+            sans-serif;
+        }
+
+        ul li {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+            color: #6e94cd;
+        }
+
+        input[type="text"], select {
+
+            border: 1px solid #ddd;
+            padding: 0 5px;
+            height: 32px;
+            line-height: 32px;
+            box-sizing: border-box;
+            vertical-align: middle;
+        }
+
+        textarea {
+            display: block;
+            border: 1px solid #ddd;
+            padding: 5px;
+            width: 100%;
+        }
+
+        input[type="checkbox"], input[type="radio"] {
+            vertical-align: middle;
+            margin-right: 3px;
+        }
+
+        .lightcolor {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        .darkcolor {
+            color: #555;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .topdes {
+            font-size: 16px;
+        }
+
+        .selfEvaluationBox {
+            padding: 10px 20px 100px 20px;
+        }
+
+        .maincolor {
+            color: #6e94cd
+        }
+
+        .red {
+            color: #ff0000;
+        }
+
+        .marT10 {
+            margin-top: 10px;
+        }
+
+        .closeBtn {
+            font-size: 36px;
+            color: #fff;
+            position: absolute;
+            right: 10px;
+            top: -45px;
+            font-weight: 200;
+            cursor: pointer;
+            border: 1px solid #fff;
+            display: inline-block;
+            height: 40px;
+            width: 40px;
+            text-align: center;
+            line-height: 34px;
+            border-radius: 40px;
+            box-sizing: border-box;
+        }
+
+        #mask {
+            position: absolute;
+            top: 0px;
+            filter: alpha(opacity=60);
+            background-color: #000;
+            z-index: 1;
+            left: 0px;
+            opacity: 0.3;
+            -moz-opacity: 0.3;
+        }
+
+        .evaluationCon .til:before {
+            content: "";
+            display: inline-block;
+            height: 20px;
+            width: 3px;
+            vertical-align: middle;
+            background: #5f8bc9;
+            margin-right: 5px;
+        }
+
+        .evaluationCon .til {
+            color: #333;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 20px 0 10px;
+        }
+
+        .evaluationDetails {
+            margin-bottom: 30px;
+        }
+
+        .evaluationDetails .evaluationDetails {
+            margin-bottom: 20px
+        }
+
+        .evaluationDetails .qes {
+            font-size: 14px;
+            color: #333;
+            margin: 20px 0 10px
+        }
+
+        .evaluationDetails .qes_s {
+            font-size: 14px;
+            color: #555;
+            margin: 20px 0 8px
+        }
+
+        .addBtn {
+            border: 1px solid #ddd;
+            background: #f8f8f8;
+            cursor: pointer;
+            margin-top: 10px;
+            display: inline-block;
+            padding: 6px 10px;
+            color: #333
+        }
+
+        .evaluationDetails li {
+            margin-top: 12px;
+        }
+
+        .evaluationDetails .con label, .evaluationDetails .des {
+            margin-right: 15px;
+        }
+
+        .evaluationDetails .con label {
+            display: block;
+            margin-top: 5px;
+            font-weight: 400;
+        }
+
+        .evaluationDetails .des {
+            padding-bottom: 15px;
+            color: #555;
+        }
+
+        .evaluationDetails .des p {
+            line-height: 24px;
+            margin-top: 10px;
+        }
+
+        .evaluationSaveBtn {
+            padding: 8px 30px;
+            background: #5f8bc9;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .con .fileBtn {
+            border: 1px solid #ddd;
+            display: inline-block;
+            height: 32px;
+            line-height: 32px;
+            padding: 0 20px;
+            background: #f8f8f8;
+            box-sizing: border-box;
+            vertical-align: middle;
+            cursor: pointer;
+        }
+
+        #fil {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .evaluationDetails .num {
+            width: 50px;
+        }
+
+        .manageMentWin, .manageMentWin2 {
+            display: none;
+            width: 90%;
+            background: #fff;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            z-index: 100;
+        }
+
+        .manageMentWin p {
+            line-height: 24px;
+            font-size: 12px;
+        }
+
+        .manageMentWin .mainTil {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .manageMentWin .til {
+            color: #333;
+            font-size: 16px;
+            margin: 10px 0;
+            font-weight: 600;
+        }
+
+        .manageMentWinContent {
+            max-height: 70vh;
+            width: 90%;
+            margin: 0 auto;
+            padding: 20px 5%;
+            overflow-y: auto;
+        }
+
+        .qes_check {
+            color: #ff0000;
+        }
+
+        .qes_check_blue {
+            color: green;
+        }
+
+        .header {
+            height: 44px;
+            line-height: 44px;
+            color: #fff;
+            background: #1975ff;
+            position: fixed;
+            top: 0;
+            width: 100vw;
+            z-index: 90;
+        }
+    </style>
+</head>
+<body style="background-color: #fff">
+
+<div class="selfEvaluationBox">
+
+    <div>
+        <div class="evaluationCon">
+            <p class="til">高企认定基本条件</p>
+            <div class="evaluationDetails">
+                <a id="q1"></a>
+                <p class="qes">
+                    一、企业申请时是否成立一年以上 <span class="red">*</span><span class="qes_check"
+                                                                    id="qes1"></span><span class="qes_check_blue"
+                                                                                           id="qes1_b"></span>
+                </p>
+                <div class="con">
+                    <label> <input type="radio" name="1" value="1"/> 是
+                    </label> <label> <input type="radio" name="1" value="0"/> 否
+                </label>
+                </div>
+            </div>
+            <div class="evaluationDetails">
+                <a id="q2"></a>
+                <p class="qes">
+                    二、是否具备（已授权）核心自主知识产权 <span class="red">*</span><span
+                        class="qes_check" id="qes2"></span><span class="qes_check_blue"
+                                                                 id="qes2_b"></span>
+                </p>
+                <div class="con">
+                    <p>
+                        <label> <input type="radio" name="2" value="1"/>
+                            Ⅰ类：发明专利（含国防专利）、植物新品种、国家级农作物品种、国家新药、国家一级中药保护品种、集成电路布图设计专有权
+                        </label> <label> <input type="radio" name="2" value="2"/>
+                        Ⅱ类：实用新型专利、外观设计专利、软件著作权等（不含商标）
+                    </label> <label> <input type="radio" name="2" value="0"/> 不具备
+                    </label>
+                    </p>
+                </div>
+
+            </div>
+            <div class="evaluationDetails">
+                <a id="q3"></a>
+                <p class="qes">
+                    三、对企业主要产品（服务）发挥核心支持作用的技术属于《国家重点支持的高新技术领域》规定的范围（参考：<span
+                        class="maincolor" onclick="showManageWin(1)"
+                        style="cursor: pointer;">高企认定管理办法</span>） <span class="red">*</span><span
+                        class="qes_check" id="qes3"></span><span class="qes_check_blue"
+                                                                 id="qes3_b"></span>
+                </p>
+                <div class="con">
+                    <label> <input type="radio" name="3" value="1"/> 是
+                    </label> <label> <input type="radio" name="3" value="0"/> 否
+                </label>
+                </div>
+            </div>
+            <div class="evaluationDetails">
+                <a id="q4"></a>
+                <p class="qes">
+                    四、企业从事研发和创新活动的科技人员占企业当年（2017年）职工的比 例达到10%以上 <span class="red">*</span><span
+                        class="qes_check" id="qes4"></span><span class="qes_check_blue"
+                                                                 id="qes4_b"></span>
+                </p>
+                <div class="con">
+                    <label> <input type="radio" name="4" value="1"/> 是
+                    </label> <label> <input type="radio" name="4" value="0"/> 否
+                </label>
+                </div>
+            </div>
+            <div class="evaluationDetails">
+                <a id="q5"></a>
+                <p class="qes">
+                    五、企业近三年会计年度（2015-2017年）研发费用总额占同期销售收入占比 <span class="red">*</span><span
+                        class="qes_check" id="qes5"></span><span class="qes_check_blue"
+                                                                 id="qes5_b"></span>
+                </p>
+
+                <div class="evaluationDetails">
+                    <div class="con">
+                        <p>
+                            <label> <input type="radio" name="5" value="1"/>
+                                a.2017年销售收入小于5000万（含），不低于5%;
+                            </label> <label> <input type="radio" name="5" value="2"/>
+                            b.2017销售收入在5,000万元至2亿元（含）的企业，比例不低于4%
+                        </label> <label> <input type="radio" name="5" value="3"/>
+                            c.2017年销售收入在2亿元以上的企业，比例不低于3%
+                        </label> <label> <input type="radio" name="5" value="0"/>
+                            d.均不符合
+                        </label>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="evaluationDetails">
+                <a id="q6"></a>
+                <p class="qes">
+                    六、2017年度高新技术产品（服务）收入占企业同期总收入的 比例是否达到60% <span class="red">*</span><span
+                        class="qes_check" id="qes6"></span><span class="qes_check_blue"
+                                                                 id="qes6_b"></span>
+                </p>
+                <div class="con">
+                    <label> <input type="radio" name="6" value="1"/> 是
+                    </label> <label> <input type="radio" name="6" value="0"/> 否
+                </label>
+                </div>
+            </div>
+            <div class="evaluationDetails">
+                <a id="q7"></a>
+                <p class="qes">
+                    七、企业创新能力评价 <span class="red">*</span><span
+                        style="font-size: 12px;">(通过此项需超过70分。)</span> <br/>
+                    <span class="qes_check" id="qes7"> </span><span
+                        class="qes_check_blue" id="qes7_b"></span>
+                </p>
+                <div class="con">
+
+                    <ul class="des">
+                        <li>
+                            <p class="darkcolor">Ａ. 知识产权</p>
+                            <p>
+                                （1）技术的先进程度<span class="red">*</span>
+                            </p>
+
+                            <p>
+                                <label> <input type="radio" name="7-1" value="a"/>a. 高
+                                </label> <label> <input type="radio" name="7-1" value="b"/>b.
+                                较高
+                            </label> <label> <input type="radio" name="7-1" value="c"/>c.
+                                一般
+                            </label> <label> <input type="radio" name="7-1" value="d"/>d.
+                                较低
+                            </label> <label> <input type="radio" name="7-1" value="e"/>e.
+                                无
+                            </label>
+                            </p>
+                            <p>
+                                （2）对主要产品（服务）在技术上发挥核心支持作用<span class="red">*</span>
+                            </p>
+                            <p>
+                                <label> <input type="radio" name="7-2" value="a"/>a. 强
+                                </label> <label> <input type="radio" name="7-2" value="b"/>b.
+                                较强
+                            </label> <label> <input type="radio" name="7-2" value="c"/>c.
+                                一般
+                            </label> <label> <input type="radio" name="7-2" value="d"/>d.
+                                较弱
+                            </label> <label> <input type="radio" name="7-2" value="e"/>e.
+                                无
+                            </label>
+                            </p>
+                            <p>
+                                （3）知识产权数量<span class="red">*</span>
+                            </p>
+                            <p>
+                                <label> <input type="radio" name="7-3" value="a"/>a.
+                                    1项及以上 （Ⅰ类）
+                                </label> <label> <input type="radio" name="7-3" value="b"/>b.
+                                5项及以上 （Ⅱ类）
+                            </label> <label> <input type="radio" name="7-3" value="c"/>c.
+                                3～4项 （Ⅱ类）
+                            </label> <label> <input type="radio" name="7-3" value="d"/>d.
+                                1～2项 （Ⅱ类）
+                            </label> <label> <input type="radio" name="7-3" value="e"/>e.
+                                0项
+                            </label>
+                            </p>
+                            <p>
+                                （4）知识产权获得方式<span class="red">*</span>
+                            </p>
+                            <p>
+                                <label> <input type="radio" name="7-4" value="a"/>a.
+                                    有自主研发
+                                </label> <label> <input type="radio" name="7-4" value="b"/>b.
+                                仅有受让、受赠和并购等
+                            </label>
+                            </p>
+                            <p>
+                                （5）企业参与编制国家标准、行业标准、检测方法、技术规范的情况（此项为加分项，加分后“知识产权”总分不超过30分。相关标准、方法和规范须经国家有关部门认证认可。)
+                            </p>
+                            <p>
+                                <label> <input type="radio" name="7-5" value="a"/>a. 是
+                                </label> <label> <input type="radio" name="7-5" value="b"/>b.
+                                否
+                            </label>
+                            </p>
+                            <p class="darkcolor">
+                                Ｂ.近三年科技成果转化能力及年均转化数量<span class="red">*</span>
+                            </p>
+                            <p>
+                                <label> <input type="radio" name="7-6" value="a"/>a.
+                                    转化能力强， ≥5项
+                                </label> <label> <input type="radio" name="7-6" value="b"/>b.
+                                转化能力较强，≥4项
+                            </label> <label> <input type="radio" name="7-6" value="c"/>c.
+                                转化能力一般，≥3项
+                            </label> <label> <input type="radio" name="7-6" value="d"/>d.
+                                转化能力较弱，≥2项
+                            </label> <label> <input type="radio" name="7-6" value="e"/>e.
+                                转化能力弱， ≥1项
+                            </label> <label> <input type="radio" name="7-6" value="f"/>f.
+                                转化能力无， 0项
+                            </label>
+                            </p>
+                            <p class="darkcolor">
+                                Ｃ. 研究开发组织管理水平<span class="red">*</span>
+                            </p>
+                            <p>
+                                <label> <input type="checkbox" name="7c-1" value="1"/>（1）制定了企业研究开发的组织管理制度，建立了研发投入核算体系，编制了研发费用辅助账；
+                                </label> <label> <input type="checkbox" name="7c-2" value="1"/>（2）设立了内部科学技术研究开发机构并具备相应的科研条件，与国内外研究开发机构开展多种形式产学研合作；
+                            </label> <label> <input type="checkbox" name="7c-3" value="1"/>（3）建立了科技成果转化的组织实施与激励奖励制度，建立开放式的创新创业平台；
+                            </label> <label> <input type="checkbox" name="7c-4" value="1"/>（4）建立了科技人员的培养进修、职工技能培训、优秀人才引进，以及人才绩效评价奖励制度。
+                            </label>
+                        </li>
+                        <li>
+
+
+                            <p class="darkcolor">Ｄ.净资产增长率和销售增长率</p>
+                            <div class="lightcolor">
+                                <p style="font-size: 12px;">
+                                    (备注：1.企业实际经营期不满三年的按实际经营时间计算。2.企业净资产增长率或销售收入增长率为负的，按0分计算。第一年末净资产或销售收入为0的，按后两年计算；第二年末净资产或销售收入为0的，按0分计算。3.销售收入＝主营业务收入+其他业务收入之和。)</p>
+                            </div>
+                            <div class="evaluationDetails">
+                                <p class="qes qes_s">
+                                    （1）、请输入2015年、2016年、2017年的资产总额（单位：元） <span class="red">*</span>
+                                </p>
+                                <div class="con">
+                                    <label> 2015年: <input type="number" id="zc_1" pattern="\d*"
+                                                          maxlength="10"
+                                                          onkeyup="this.value=this.value.replace(/[^\d]/g,'') "
+                                                          onafterpaste="this.value=this.value.replace(/[^\d]/g,'') "/>
+                                    </label> <label> 2016年: <input type="number" id="zc_2" pattern="\d*"
+                                                                   maxlength="10"
+                                                                   onkeyup="this.value=this.value.replace(/[^\d]/g,'') "
+                                                                   onafterpaste="this.value=this.value.replace(/[^\d]/g,'') "/>
+                                </label> <label> 2017年: <input type="number" id="zc_3" pattern="\d*"
+                                                               maxlength="10"
+                                                               onkeyup="this.value=this.value.replace(/[^\d]/g,'') "
+                                                               onafterpaste="this.value=this.value.replace(/[^\d]/g,'') "/>
+                                </label>
+                                </div>
+                            </div>
+                            <div class="evaluationDetails">
+                                <p class="qes qes_s">
+                                    （2）、请输入2015年、2016年、2017年的负债总额（单位：元） <span class="red">*</span>
+                                </p>
+                                <div class="con">
+                                    <label> 2015年: <input type="number" id="fz_1" pattern="\d*"
+                                                          maxlength="10"
+                                                          onkeyup="this.value=this.value.replace(/[^\d]/g,'') "
+                                                          onafterpaste="this.value=this.value.replace(/[^\d]/g,'') "/>
+                                    </label> <label> 2016年: <input type="number" id="fz_2" pattern="\d*"
+                                                                   maxlength="10"
+                                                                   onkeyup="this.value=this.value.replace(/[^\d]/g,'') "
+                                                                   onafterpaste="this.value=this.value.replace(/[^\d]/g,'') "/>
+                                </label> <label> 2017年: <input type="number" id="fz_3" pattern="\d*"
+                                                               maxlength="10"
+                                                               onkeyup="this.value=this.value.replace(/[^\d]/g,'') "
+                                                               onafterpaste="this.value=this.value.replace(/[^\d]/g,'') "/>
+                                </label>
+                                </div>
+                            </div>
+                            <div class="evaluationDetails">
+                                <p class="qes qes_s">
+                                    （3）请输入2015年、2016年、2017年的销售收入（单位：元） <span class="red">*</span>
+                                </p>
+                                <div class="con">
+                                    <label> 2015年: <input type="number" id="xs_1" pattern="\d*"
+                                                          maxlength="10"
+                                                          onkeyup="this.value=this.value.replace(/[^\d]/g,'') "
+                                                          onafterpaste="this.value=this.value.replace(/[^\d]/g,'') "/>
+                                    </label> <label> 2016年: <input type="number" id="xs_2" pattern="\d*"
+                                                                   maxlength="10"
+                                                                   onkeyup="this.value=this.value.replace(/[^\d]/g,'') "
+                                                                   onafterpaste="this.value=this.value.replace(/[^\d]/g,'') "/>
+                                </label> <label> 2017年: <input type="number" id="xs_3" pattern="\d*"
+                                                               maxlength="10"
+                                                               onkeyup="this.value=this.value.replace(/[^\d]/g,'') "
+                                                               onafterpaste="this.value=this.value.replace(/[^\d]/g,'') "/>
+                                </label>
+                                </div>
+                            </div>
+
+                        </li>
+
+                    </ul>
+                </div>
+
+            </div>
+            <div class="evaluationDetails">
+                <a id="q8"></a>
+                <p class="qes">
+                    八、企业申请认定前一年内是否发生重大安全、重大质量事故或严重环境违法行为 <span class="red">*</span><span
+                        class="qes_check" id="qes8"></span><span class="qes_check_blue"
+                                                                 id="qes8_b"></span>
+                </p>
+                <div class="con">
+                    <label> <input type="radio" name="8" value="1"/> 是
+                    </label> <label> <input type="radio" name="8" value="0"/> 否
+                </label>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div style="text-align: center; margin-top: 30px;">
+        <span onclick="save();" id="save" class="evaluationSaveBtn">提交</span>
+    </div>
+</div>
+<div class="manageMentWin2">
+    <span class="closeBtn" onclick="hideManageWin(2)">×</span>
+    <div class="manageMentWinContent">
+        <p>第十一条 认定为高新技术企业须同时满足以下条件：</p>
+        <p>（一）企业申请认定时须注册成立一年以上；</p>
+        <p>（二）企业通过自主研发、受让、受赠、并购等方式，获得对其主要产品（服务）在技术上发挥核心支持作用的知识产权的所有权；</p>
+        <p>（三）对企业主要产品（服务）发挥核心支持作用的技术属于《国家重点支持的高新技术领域》规定的范围；</p>
+        <p>（四）企业从事研发和相关技术创新活动的科技人员占企业当年职工总数的比例不低于10%；</p>
+        <p>
+            （五）企业近三个会计年度（实际经营期不满三年的按实际经营时间计算，下同）的研究开发费用总额占同期销售收入总额的比例符合如下要求：</p>
+        <p>1. 最近一年销售收入小于5,000万元（含）的企业，比例不低于5%；</p>
+        <p>2. 最近一年销售收入在5,000万元至2亿元（含）的企业，比例不低于4%；</p>
+        <p>3. 最近一年销售收入在2亿元以上的企业，比例不低于3%。</p>
+        <p>其中，企业在中国境内发生的研究开发费用总额占全部研究开发费用总额的比例不低于60%；</p>
+        <p>（六）近一年高新技术产品（服务）收入占企业同期总收入的比例不低于60%；</p>
+        <p>（七）企业创新能力评价应达到相应要求；</p>
+        <p>（八）企业申请认定前一年内未发生重大安全、重大质量事故或严重环境违法行为。</p>
+    </div>
+</div>
+<div class="manageMentWin">
+    <div class="manageMentWinContent">
+        <p class="mainTil">高新技术企业认定管理办法</p>
+        <p class="til">第一章 总 则</p>
+        <p>第一条
+            为扶持和鼓励高新技术企业发展，根据《中华人民共和国企业所得税法》（以下称《企业所得税法》）、《中华人民共和国企业所得税法实施条例》（以下称《实施条例》）有关规定，特制定本办法。</p>
+        <p>第二条
+            本办法所称的高新技术企业是指：在《国家重点支持的高新技术领域》内，持续进行研究开发与技术成果转化，形成企业核心自主知识产权，并以此为基础开展经营活动，在中国境内（不包括港、澳、台地区）注册的居民企业。</p>
+        <p>第三条 高新技术企业认定管理工作应遵循突出企业主体、鼓励技术创新、实施动态管理、坚持公平公正的原则。</p>
+        <p>第四条
+            依据本办法认定的高新技术企业，可依照《企业所得税法》及其《实施条例》、《中华人民共和国税收征收管理法》（以下称《税收征管法》）及《中华人民共和国税收征收管理法实施细则》（以下称《实施细则》）等有关规定，申报享受税收优惠政策。</p>
+        <p>第五条 科技部、财政部、税务总局负责全国高新技术企业认定工作的指导、管理和监督。</p>
+        <p class="til">第二章 组织与实施</p>
+        <p>第六条 科技部、财政部、税务总局组成全国高新技术企业认定管理工作领导小组（以下称“领导小组”），其主要职责为：</p>
+        <p>（一）确定全国高新技术企业认定管理工作方向，审议高新技术企业认定管理工作报告；</p>
+        <p>（二）协调、解决认定管理及相关政策落实中的重大问题；</p>
+        <p>（三）裁决高新技术企业认定管理事项中的重大争议，监督、检查各地区认定管理工作，对发现的问题指导整改。</p>
+        <p>第七条 领导小组下设办公室，由科技部、财政部、税务总局相关人员组成，办公室设在科技部，其主要职责为：</p>
+        <p>（一）提交高新技术企业认定管理工作报告，研究提出政策完善建议；</p>
+        <p>（二）指导各地区高新技术企业认定管理工作，组织开展对高新技术企业认定管理工作的监督检查，对发现的问题提出整改处理建议；</p>
+        <p>（三）负责各地区高新技术企业认定工作的备案管理，公布认定的高新技术企业名单，核发高新技术企业证书编号；</p>
+        <p>（四）建设并管理“高新技术企业认定管理工作网”；</p>
+        <p>（五）完成领导小组交办的其他工作。</p>
+        <p>第八条
+            各省、自治区、直辖市、计划单列市科技行政管理部门同本级财政、税务部门组成本地区高新技术企业认定管理机构（以下称“认定机构”）。认定机构下设办公室，由省级、计划单列市科技、财政、税务部门相关人员组成，办公室设在省级、计划单列市科技行政主管部门。认定机构主要职责为：</p>
+        <p>（一）负责本行政区域内的高新技术企业认定工作，每年向领导小组办公室提交本地区高新技术企业认定管理工作报告；</p>
+        <p>（二）负责将认定后的高新技术企业按要求报领导小组办公室备案，对通过备案的企业颁发高新技术企业证书；</p>
+        <p>（三）负责遴选参与认定工作的评审专家（包括技术专家和财务专家），并加强监督管理；</p>
+        <p>（四）负责对已认定企业进行监督检查，受理、核实并处理复核申请及有关举报等事项，落实领导小组及其办公室提出的整改建议；</p>
+        <p>（五）完成领导小组办公室交办的其他工作。</p>
+        <p>第九条 通过认定的高新技术企业，其资格自颁发证书之日起有效期为三年。</p>
+        <p>第十条
+            企业获得高新技术企业资格后，自高新技术企业证书颁发之日所在年度起享受税收优惠，可依照本办法第四条的规定到主管税务机关办理税收优惠手续。</p>
+        <p class="til">第三章 认定条件与程序</p>
+        <p>第十一条 认定为高新技术企业须同时满足以下条件：</p>
+        <p>（一）企业申请认定时须注册成立一年以上；</p>
+        <p>（二）企业通过自主研发、受让、受赠、并购等方式，获得对其主要产品（服务）在技术上发挥核心支持作用的知识产权的所有权；</p>
+        <p>（三）对企业主要产品（服务）发挥核心支持作用的技术属于《国家重点支持的高新技术领域》规定的范围；</p>
+        <p>（四）企业从事研发和相关技术创新活动的科技人员占企业当年职工总数的比例不低于10%；</p>
+        <p>
+            （五）企业近三个会计年度（实际经营期不满三年的按实际经营时间计算，下同）的研究开发费用总额占同期销售收入总额的比例符合如下要求：</p>
+        <p>1. 最近一年销售收入小于5,000万元（含）的企业，比例不低于5%；</p>
+        <p>2. 最近一年销售收入在5,000万元至2亿元（含）的企业，比例不低于4%；</p>
+        <p>3. 最近一年销售收入在2亿元以上的企业，比例不低于3%。</p>
+        <p>其中，企业在中国境内发生的研究开发费用总额占全部研究开发费用总额的比例不低于60%；</p>
+        <p>（六）近一年高新技术产品（服务）收入占企业同期总收入的比例不低于60%；</p>
+        <p>（七）企业创新能力评价应达到相应要求；</p>
+        <p>（八）企业申请认定前一年内未发生重大安全、重大质量事故或严重环境违法行为。</p>
+        <p>第十二条 高新技术企业认定程序如下：</p>
+        <p>（一）企业申请</p>
+        <p>
+            企业对照本办法进行自我评价。认为符合认定条件的在“高新技术企业认定管理工作网”注册登记，向认定机构提出认定申请。申请时提交下列材料：</p>
+        <p>1. 高新技术企业认定申请书；</p>
+        <p>2. 证明企业依法成立的相关注册登记证件；</p>
+        <p>3. 知识产权相关材料、科研项目立项证明、科技成果转化、研究开发的组织管理等相关材料；</p>
+        <p>4. 企业高新技术产品（服务）的关键技术和技术指标、生产批文、认证认可和相关资质证书、产品质量检验报告等相关材料；</p>
+        <p>5. 企业职工和科技人员情况说明材料；</p>
+        <p>6.
+            经具有资质的中介机构出具的企业近三个会计年度研究开发费用和近一个会计年度高新技术产品（服务）收入专项审计或鉴证报告，并附研究开发活动说明材料；</p>
+        <p>7. 经具有资质的中介机构鉴证的企业近三个会计年度的财务会计报告（包括会计报表、会计报表附注和财务情况说明书）；</p>
+        <p>8. 近三个会计年度企业所得税年度纳税申报表。</p>
+        <p>（二）专家评审</p>
+        <p>认定机构应在符合评审要求的专家中，随机抽取组成专家组。专家组对企业申报材料进行评审，提出评审意见。</p>
+        <p>（三）审查认定</p>
+        <p>
+            认定机构结合专家组评审意见，对申请企业进行综合审查，提出认定意见并报领导小组办公室。认定企业由领导小组办公室在“高新技术企业认定管理工作网”公示10个工作日，无异议的，予以备案，并在“高新技术企业认定管理工作网”公告，由认定机构向企业颁发统一印制的“高新技术企业证书”；有异议的，由认定机构进行核实处理。</p>
+        <p>第十三条
+            企业获得高新技术企业资格后，应每年5月底前在“高新技术企业认定管理工作网”填报上一年度知识产权、科技人员、研发费用、经营收入等年度发展情况报表。</p>
+        <p>第十四条 对于涉密企业，按照国家有关保密工作规定，在确保涉密信息安全的前提下，按认定工作程序组织认定。</p>
+        <p class="til">第四章 监督管理</p>
+        <p>第十五条
+            科技部、财政部、税务总局建立随机抽查和重点检查机制，加强对各地高新技术企业认定管理工作的监督检查。对存在问题的认定机构提出整改意见并限期改正，问题严重的给予通报批评，逾期不改的暂停其认定管理工作。</p>
+        <p>第十六条
+            对已认定的高新技术企业，有关部门在日常管理过程中发现其不符合认定条件的，应提请认定机构复核。复核后确认不符合认定条件的，由认定机构取消其高新技术企业资格，并通知税务机关追缴其不符合认定条件年度起已享受的税收优惠。</p>
+        <p>第十七条
+            高新技术企业发生更名或与认定条件有关的重大变化（如分立、合并、重组以及经营业务发生变化等）应在三个月内向认定机构报告。经认定机构审核符合认定条件的，其高新技术企业资格不变，对于企业更名的，重新核发认定证书，编号与有效期不变；不符合认定条件的，自更名或条件变化年度起取消其高新技术企业资格。</p>
+        <p>第十八条
+            跨认定机构管理区域整体迁移的高新技术企业，在其高新技术企业资格有效期内完成迁移的，其资格继续有效；跨认定机构管理区域部分搬迁的，由迁入地认定机构按照本办法重新认定。</p>
+        <p>第十九条 已认定的高新技术企业有下列行为之一的，由认定机构取消其高新技术企业资格：</p>
+        <p>（一）在申请认定过程中存在严重弄虚作假行为的；</p>
+        <p>（二）发生重大安全、重大质量事故或有严重环境违法行为的；</p>
+        <p>（三）未按期报告与认定条件有关重大变化情况，或累计两年未填报年度发展情况报表的。</p>
+        <p>
+            对被取消高新技术企业资格的企业，由认定机构通知税务机关按《税收征管法》及有关规定，追缴其自发生上述行为之日所属年度起已享受的高新技术企业税收优惠。</p>
+        <p>第二十条
+            参与高新技术企业认定工作的各类机构和人员对所承担的有关工作负有诚信、合规、保密义务。违反高新技术企业认定工作相关要求和纪律的，给予相应处理。</p>
+        <p class="til">第五章 附 则</p>
+        <p>第二十一条 科技部、财政部、税务总局根据本办法另行制定《高新技术企业认定管理工作指引》。</p>
+        <p>第二十二条 本办法由科技部、财政部、税务总局负责解释。</p>
+        <p>第二十三条 本办法自2016年1月1日起实施。原《高新技术企业认定管理办法》（国科发火〔2008〕172号）同时废止。</p>
+    </div>
+    <span class="closeBtn" onclick="hideManageWin(1)">×</span>
+</div>
+
+
+<div id="successDialog" class="modal  fade " tabindex="-1"
+     role="dialog" aria-hidden="true" data-backdrop="static"
+     style="z-index: 1041;">
+    <div class="modal-dialog modal-photo-viewer modal-lg"
+         style="width: 90%; position: fixed; left: 50%;margin-left:-45%; top: 50%; transform: translateY(-50%)">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" style="font-size: 26px" aria-label="Close"
+                        class="close" data-dismiss="modal" aria-hidden="true">×
+                </button>
+                <h4 class="modal-title"
+                    style="text-align: center; font-size: 16px; color: #3ba5e4">提示</h4>
+            </div>
+            <div class="modal-body no-padding">
+                <form class="form-horizontal form-bordered" action="#"
+                      id="tenantFrom">
+                    <div class="form-body">
+
+                        <div class="form-group" style="margin-top: 20px;">
+                            <p id="tipMsg" style="text-align: center; font-size: 16px">保存成功！</p>
+                        </div>
+                        <div class="form-group" style="margin-top: 20px;text-align: center">
+                            <a onclick="hide()" class="blueBtn marR20" style="font-size: 14px">返回</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
+<script type="text/javascript">
+    var tel = "";
+    //企业名称
+    var name = "";
+    var dataid = localStorage.getItem("userID");
+
+
+    function addMore1() {
+        $(".addContent1")
+            .find("ul")
+            .append(
+                '<li><label><select name=""><option value="">请选择</option></select></label><label><input type="text" placeholder="请输入知识产权名称"/></label><label><input type="text" placeholder="请输入公开号"/></label><label><select name=""><option value="">年份</option></select></label><label><select name=""><option value="">月份</option></select></label></li>')
+    }
+    function addMore2() {
+        $(".addContent2")
+            .find("ul")
+            .append(
+                '<li><label><select name=""><option value="">请选择</option></select></label><textarea name="" rows="5" cols="" placeholder="请填写情况说明" class="marT10"></textarea></li>')
+    }
+    function addMore3() {
+        $(".addContent3")
+            .find("ul")
+            .append(
+                '<li><label><input type="text" placeholder="请输入项目名称"/></label><label><input type="text" placeholder="请输入公开号"/></label><label><select name=""><option value="">年份</option></select></label><label><select name=""><option value="">月份</option></select></label></li>')
+    }
+    function showManageWin(n) {
+        if (n == 1) {
+            $(".manageMentWin").show();
+        } else {
+            $(".manageMentWin2").show();
+        }
+
+        showMask();
+    }
+    function hideManageWin(n) {
+        if (n == 1) {
+            $(".manageMentWin").hide();
+        } else {
+            $(".manageMentWin2").hide();
+        }
+        hideMask();
+    }
+    function selIsProperty(n) {
+        if (n == 1) {
+            $(".addContent1").show()
+        } else {
+            $(".addContent1").hide()
+        }
+    }
+    //弹窗隐藏
+    function hide() {
+        $("#successDialog").modal("hide");
+    }
+    //显示遮罩层
+    function showMask() {
+        $("body").append('<div id="mask"></div>');
+        $("#mask").css("height", $(document).height());
+        $("#mask").css("width", $(document).width());
+    }
+    //隐藏遮罩层
+    function hideMask() {
+        $("#mask").remove();
+    }
+    $(function () {
+        addMore1();
+        addMore2();
+        addMore3();
+        var str;
+        $('#fil').change(function () {//<input name="" type="file" id="fil"/>
+            var str = $(this).val();
+            $("#txtFile").val(str)
+        })
+    })
+
+    window.onload = function () {
+
+        $.ajax({
+            url: ip + "personcentre/info",
+            type: 'post',
+            data: {
+                userId: dataid
+            },
+            dataType: "json",
+            success: function (data) {
+//            name=data.content.name
+                if(data.content==null){
+                    return
+                }
+                tel = data.content.mobile;
+                findTel(tel)
+//            $("#dept").html(data.content.deptName);
+//            $("#job").html(data.content.title);
+            }, error: function (msg) {
+                console.log(msg)
+            }
+        });
+
+        //手机号
+        function findTel(tel) {
+            $.ajax({
+                type: 'POST',
+                url: ip + 'zygxQuestionnaire/findTel',
+                data: {
+                    tel: tel
+                },
+                success: function (data) {
+                    var rs = data.rs;
+                    var questionnaire = data.questionnaire;
+                    if (rs == 1) {
+                        //已参加过自评
+                        //window.location.href="${ctx}/questionnaire/mobile/info?msg="+"您已参加过自评";
+                        checkedQes(questionnaire);
+                    }
+                }
+            });
+        }
+
+        $("#loading").hide();
+    };
+
+
+    //查询是否绑定企业
+    function checkEnterprise(tel) {
+        var flag = false;
+        $.ajax({
+            type: "post",
+            url: ip + "zygxQuestionnaire/getEnterpriseApp",
+            data: JSON.stringify({
+                tel: tel
+            }),
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            async: false, //同步
+            success: function (result) {
+                var data = result.data;
+                if (data.length > 0) {
+                    name = data[0].enterpriseName;
+                    flag = true;
+                }
+            }
+        });
+        return flag;
+    };
+
+
+    //提交保存
+    var x = 0;
+    function save() {
+        if (x > 0) {
+            return;
+        }
+        $("#loading").show();
+        x = 1;
+        /* if(!checkEnterprise(tel)){
+         //未绑定企业
+         $("#loading").hide();
+         alert("请绑定企业后评价");
+         x=0;
+         return;
+         } */
+        var one = $("input[name='1']:checked").val();
+        var two = $("input[name='2']:checked").val();
+        var three = $("input[name='3']:checked").val();
+        var four = $("input[name='4']:checked").val();
+        var five = $("input[name='5']:checked").val();
+        var six = $("input[name='6']:checked").val();
+        var eight = $("input[name='8']:checked").val();
+        var nine = "1";
+        var seven_1 = $("input[name='7-1']:checked").val();
+        var seven_2 = $("input[name='7-2']:checked").val();
+        var seven_3 = $("input[name='7-3']:checked").val();
+        var seven_4 = $("input[name='7-4']:checked").val();
+        var seven_5 = $("input[name='7-5']:checked").val();
+        var seven_6 = $("input[name='7-6']:checked").val();
+        var seven_c_1 = $("input[name='7c-1']:checked").val() == null ? 0 : 1;
+        var seven_c_2 = $("input[name='7c-2']:checked").val() == null ? 0 : 1;
+        var seven_c_3 = $("input[name='7c-3']:checked").val() == null ? 0 : 1;
+        var seven_c_4 = $("input[name='7c-4']:checked").val() == null ? 0 : 1;
+        var zc_1 = $("#zc_1").val();
+        var zc_2 = $("#zc_2").val();
+        var zc_3 = $("#zc_3").val();
+        var fz_1 = $("#fz_1").val();
+        var fz_2 = $("#fz_2").val();
+        var fz_3 = $("#fz_3").val();
+        var xs_1 = $("#xs_1").val();
+        var xs_2 = $("#xs_2").val();
+        var xs_3 = $("#xs_3").val();
+
+        var myreg = /^\d{1,10}$/;
+        if (!myreg.test(zc_1)) {
+            $("#loading").hide();
+            $("#successDialog").modal("show");
+            x = 0;
+            $("#tipMsg").text("请输入正确数值范围!");
+            $("#zc_1").focus()
+            return;
+        } else {
+
+        }
+        if (!myreg.test(zc_2)) {
+            $("#loading").hide();
+            $("#successDialog").modal("show");
+            x = 0;
+
+            $("#tipMsg").text("请输入正确数值范围!");
+            $("#zc_2").focus()
+            return;
+        } else {
+
+        }
+        if (!myreg.test(zc_3)) {
+            $("#loading").hide();
+            $("#successDialog").modal("show");
+            x = 0;
+            $("#tipMsg").text("请输入正确数值范围!");
+            $("#zc_3").focus()
+            return;
+        } else {
+
+        }
+        if (!myreg.test(fz_1)) {
+            $("#loading").hide();
+            $("#successDialog").modal("show");
+            x = 0;
+            $("#tipMsg").text("请输入正确数值范围!");
+            $("#fz_1").focus()
+            return;
+        } else {
+
+        }
+        if (!myreg.test(fz_2)) {
+            $("#loading").hide();
+            $("#successDialog").modal("show");
+            x = 0;
+            $("#tipMsg").text("请输入正确数值范围!");
+            $("#fz_2").focus()
+            return;
+        } else {
+
+        }
+        if (!myreg.test(fz_3)) {
+            $("#loading").hide();
+            $("#successDialog").modal("show");
+            x = 0;
+            $("#tipMsg").text("请输入正确数值范围!");
+            $("#fz_3").focus()
+            return;
+        } else {
+
+        }
+        if (!myreg.test(xs_1)) {
+            $("#loading").hide();
+            $("#successDialog").modal("show");
+            x = 0;
+            $("#tipMsg").text("请输入正确数值范围!");
+            $("#xs_1").focus()
+            return;
+        } else {
+
+        }
+        if (!myreg.test(xs_2)) {
+            $("#loading").hide();
+            $("#successDialog").modal("show");
+            x = 0;
+            $("#tipMsg").text("请输入正确数值范围!");
+            $("#xs_2").focus()
+            return;
+        } else {
+
+        }
+        if (!myreg.test(xs_3)) {
+            $("#loading").hide();
+            $("#successDialog").modal("show");
+            x = 0;
+            $("#tipMsg").text("请输入正确数值范围!");
+            $("#xs_3").focus()
+            return;
+        } else {
+
+        }
+
+
+        if (!(one && two && three && four && five && six && eight && seven_1
+            && seven_2 && seven_3 && seven_4 && seven_5 && seven_5
+            && seven_6 && zc_1 && zc_2 && zc_3 && fz_1 && fz_2 && fz_3
+            && xs_1 && xs_2 && xs_3)) {
+
+
+//             window.location.hash = "#q1";
+            $("#loading").hide();
+            $("#tipMsg").text("请检查必填项!");
+            $("#successDialog").modal("show");
+
+            x = 0;
+            return;
+        }
+
+        if(seven_c_1==""&&seven_c_2==""&&seven_c_3==""&&seven_c_4==""){
+            $("#loading").hide();
+            $("#tipMsg").text("请检查必填项! *企业创新能力评价*");
+            $("#successDialog").modal("show");
+//            window.location.hash = "#qes7";
+            x = 0;
+            return;
+        }
+        $.ajax({
+            url: ip + 'zygxQuestionnaire/mobile',
+            type: 'POST',
+            data: {
+                tel: tel,
+                name: name,
+                one: one,
+                two: two,
+                three: three,
+                four: four,
+                five: five,
+                six: six,
+                eight: eight,
+                nine: nine,
+                seven_1: seven_1,
+                seven_2: seven_2,
+                seven_3: seven_3,
+                seven_4: seven_4,
+                seven_5: seven_5,
+                seven_6: seven_6,
+                seven_c_1: seven_c_1,
+                seven_c_2: seven_c_2,
+                seven_c_3: seven_c_3,
+                seven_c_4: seven_c_4,
+                zc_1: zc_1,
+                zc_2: zc_2,
+                zc_3: zc_3,
+                fz_1: fz_1,
+                fz_2: fz_2,
+                fz_3: fz_3,
+                xs_1: xs_1,
+                xs_2: xs_2,
+                xs_3: xs_3
+            },
+            success: function (data) {
+                $("#loading").hide();
+                var rs = data.rs;
+                var q = data.questionnaire;
+                x = 0;
+                if (rs == "1") {
+                    checkQuestionnaira(q);
+                    if (q.pass == 1) {
+                        $("#tipMsg").text("基本符合《认定办法》第十一条的要求，已满足高企认定基本条件");
+                        $("#successDialog").modal("show");
+                    } else {
+                        $("#tipMsg").text(
+                            "不符合《认定办法》第十一条的要求，暂不满足高企认定基本条件，请根据提示查看未通过项");
+                        $("#successDialog").modal("show");
+                    }
+                } else {
+                    $("#tipMsg").text("提交失败!");
+                    $("#successDialog").modal("show");
+                }
+            }
+        });
+    }
+
+    //检查各个项目
+    function checkQuestionnaira(questionnaire) {
+        var flag = 0;
+        //清空原提示
+        $(".qes_check").html("");
+        $(".qes_check_blue").html("");
+        if ("0" == questionnaire.one) {
+            $("#qes1").html("该项不符合高新企业要求!");
+            window.location.href = "#q1";
+            flag = 1;
+        } else {
+            $("#qes1_b").html("该项已通过!");
+        }
+        if ("0" == questionnaire.two) {
+            $("#qes2").html("必须具备（已授权）Ⅰ类或Ⅱ类核心自主知识产权!");
+            if (flag == 0) {
+                window.location.href = "#q2";
+            }
+            flag = 1;
+        } else {
+            $("#qes2_b").html("该项已通过!");
+        }
+        if ("0" == questionnaire.three) {
+            $("#qes3").html("该项不符合高新企业要求!");
+            if (flag == 0) {
+                window.location.href = "#q3";
+            }
+            flag = 1;
+        } else {
+            $("#qes3_b").html("该项已通过!");
+        }
+
+        if ("0" == questionnaire.four) {
+            $("#qes4").html("该项不符合高新企业要求!");
+            if (flag == 0) {
+                window.location.href = "#q4";
+            }
+            flag = 1;
+        } else {
+            $("#qes4_b").html("该项已通过!");
+        }
+
+        if ("0" == questionnaire.five) {
+            $("#qes5").html("必须符合a、b、c三项之一!");
+            if (flag == 0) {
+                window.location.href = "#q5";
+            }
+            flag = 1;
+        } else {
+            $("#qes5_b").html("该项已通过!");
+        }
+        if ("0" == questionnaire.six) {
+            $("#qes6").html("该项不符合高新企业要求!");
+            if (flag == 0) {
+                window.location.href = "#q6";
+            }
+            flag = 1;
+        } else {
+            $("#qes6_b").html("该项已通过!");
+        }
+        if ("0" == questionnaire.seven) {
+            $("#qes7").html("得分:" + questionnaire.score);
+            if (flag == 0) {
+                window.location.href = "#q7";
+            }
+            flag = 1;
+        } else {
+            $("#qes7_b").html("得分:" + questionnaire.score + "，该项已通过!");
+        }
+        if ("1" == questionnaire.eight) {
+            $("#qes8").html("认定高企前一年内不能发生有重大安全、重大质量事故或严重环境违法行为!");
+            if (flag == 0) {
+                window.location.href = "#q8";
+            }
+            flag = 1;
+        } else {
+            $("#qes8_b").html("该项已通过!");
+        }
+    }
+    //填入用户历史自评
+    function checkedQes(questionnaire) {
+        $(":radio[name='1'][value='" + questionnaire.one + "']").click();
+        $(":radio[name='2'][value='" + questionnaire.two + "']").click();
+        $(":radio[name='3'][value='" + questionnaire.three + "']").click();
+        $(":radio[name='4'][value='" + questionnaire.four + "']").click();
+        $(":radio[name='5'][value='" + questionnaire.five + "']").click();
+        $(":radio[name='6'][value='" + questionnaire.six + "']").click();
+        $(":radio[name='8'][value='" + questionnaire.eight + "']").click();
+
+        $(":radio[name='7-1'][value='" + questionnaire.seven1 + "']").click();
+        $(":radio[name='7-2'][value='" + questionnaire.seven2 + "']").click();
+        $(":radio[name='7-3'][value='" + questionnaire.seven3 + "']").click();
+        $(":radio[name='7-4'][value='" + questionnaire.seven4 + "']").click();
+        $(":radio[name='7-5'][value='" + questionnaire.seven5 + "']").click();
+        $(":radio[name='7-6'][value='" + questionnaire.seven6 + "']").click();
+        if (questionnaire.sevenC1 == 1) {
+            $(":checkbox[name='7c-1']").click();
+        }
+        if (questionnaire.sevenC2 == 1) {
+            $(":checkbox[name='7c-2']").click();
+        }
+        if (questionnaire.sevenC3 == 1) {
+            $(":checkbox[name='7c-3']").click();
+        }
+        if (questionnaire.sevenC4 == 1) {
+            $(":checkbox[name='7c-4']").click();
+        }
+        $("#zc_1").val(questionnaire.zc1);
+        $("#zc_2").val(questionnaire.zc2);
+        $("#zc_3").val(questionnaire.zc3);
+        $("#fz_1").val(questionnaire.fz1);
+        $("#fz_2").val(questionnaire.fz2);
+        $("#fz_3").val(questionnaire.fz3);
+        $("#xs_1").val(questionnaire.xs1);
+        $("#xs_2").val(questionnaire.xs2);
+        $("#xs_3").val(questionnaire.xs3);
+
+    }
+</script>

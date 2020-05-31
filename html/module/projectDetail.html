@@ -1,0 +1,184 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0,viewport-fit=cover">
+    <title>项目信息详情页</title>
+    <link rel="stylesheet" href="../detail/css/mapScienceList.css">
+    <link rel="stylesheet" href="../detail/css/activity.css">
+    <link rel="stylesheet" href="../../css/mui.min.css">
+
+    <script src="../../js/jquery-3.3.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/API.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/flexible.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+
+    <style>
+        .model .content .header > p {
+            margin-bottom:0;
+        }
+        .model .content .header input {
+            margin-bottom:0;
+        }
+        .container_ScienceParticular .content .tabContent p.intro{
+            font-size: 16px;
+            font-weight: 600;
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="container_ScienceParticular" id="app">
+    <div class="headerImg">
+<!--        <img  onerror="javascript:this.src='../detail/images/试用图片.png';">-->
+        <img  src='http://47.101.195.208:10000/ImageNotFound.png'>
+        <span v-html="name"></span>
+    </div>
+    <div class="content">
+        <div class="tabheader">
+            <ul style="margin-left: 30%">
+                <li><a href="javascript:;"><span class="active">图文介绍</span></a></li>
+                <!--<li><a href="javascript:;"><span>预约指南</span></a></li>-->
+                <!--<li><a href="javascript:;"><span>常见问题</span></a></li>-->
+            </ul>
+        </div>
+        <div class="tabContent">
+            <div class="recommend">
+                <p class="intro">地址:</p>
+                <p v-html="address"></p>
+            </div>
+            <div class="recommend">
+                <p class="intro">申报责任公司:</p>
+                <p v-html="applyPrincipal"></p>
+            </div>
+            <div class="recommend">
+                <p class="intro">申报结果:</p>
+                <p v-html="description"></p>
+            </div>
+            <div class="recommend">
+                <p class="intro">申报日期:</p>
+                <p v-html="applyDate"></p>
+            </div>
+            <div class="recommend">
+                <p class="intro">项目号:</p>
+                <p v-html="itemNumber"></p>
+            </div>
+            <div style="height: 20vh"></div>
+        </div>
+    </div>
+</div>
+<!------- 我要咨询弹窗-------- -->
+<div class="model" style="display:none">
+    <div class="content">
+        <div class="header">
+            <p class="title">姓名</p>
+            <input id="applyUserName" type="text" placeholder="姓名">
+            <p class="phone">联系电话</p>
+            <input id="applyUserPhone" type="number" placeholder="13900393921">
+            <p >电子邮箱</p>
+            <input id="applyUserEmail" type="email" >
+            <p >留言信息</p>
+            <input id="applyUserRemark" type="text" placeholder="留言">
+        </div>
+        <div class="button">
+            <div onclick="closeModel()" class="leftBtn">取消</div>
+            <div onclick="submit_qr()" class="rightBtn">确定</div>
+        </div>
+    </div>
+</div>
+<!--<div class="bottomBtn">-->
+<!--    <p style="color: white">我要咨询</p>-->
+<!--</div>-->
+<script>
+
+</script>
+</body>
+
+</html>
+
+
+<script>
+    var datas="";
+    var data={id: localStorage.getItem("data-id")}
+    window.onload=function () {
+        function getList() {
+            apiAjax("projectInfo/queryDetailInfo",data)
+//            console.log(API_result)
+            datas=API_result.content;
+            var app = new Vue({
+                el: '#app',
+                data: datas,
+            })
+        }
+        getList();
+    }
+
+    $(function() {
+
+        $('.bottomBtn p').click(function() {
+            $('.model').fadeToggle()
+        })
+
+    })
+
+    function closeModel() {
+        $('.model').hide();
+    }
+
+
+    var submitCount=0;
+    function submit_qr() {
+        if (submitCount > 0) {
+            mui.toast("请勿重新提交！")
+            return;
+        }
+        var userId = "123"  //钉钉表用户ID
+
+        var dataId = localStorage.getItem("data-id"); //数据id
+
+        var applyUserName = $('#applyUserName').val();
+        var applyUserPhone = $('#applyUserPhone').val();
+        var applyUserEmail = $('#applyUserEmail').val();
+        var applyUserRemark = $('#applyUserRemark').val();
+
+
+        if (applyUserName == null || applyUserName == "") {
+            mui.toast("联系人姓名不能为空")
+            return;
+        }
+
+        if (applyUserPhone == null || applyUserPhone == "") {
+            mui.toast("联系电话不能为空")
+            return;
+        }
+
+
+        var requestData = {
+            userId: userId,
+            serviceName: '项目信息申请',
+            type: "7",
+            tableName: "zygx_project_info",
+            tableId: dataId,
+            name: applyUserName,
+            mobile: applyUserPhone,
+            email: applyUserEmail,
+            content: applyUserRemark
+        }
+        apiAjax("serverapp/save", requestData);
+        if (API_result.code == 0) {
+            submitCount++;
+            mui.toast("提交成功")
+            closeModel()
+        } else {
+            if(API_result.tag!=""){
+                mui.toast(API_result.tag)
+            }else{
+                mui.toast("提交失败，请稍后重试！")
+            }
+        }
+    }
+
+</script>
